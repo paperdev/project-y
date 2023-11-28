@@ -1,6 +1,6 @@
 import '@/css/globals.css';
 import TemplateHome from '@/components/template/home';
-import { Providers } from "./providers";
+import { Providers } from './providers';
 
 export default function RootLayout({
   children,

@@ -14,6 +14,7 @@ const nextConfig = {
     YOUTUBE_KEY: process.env.YOUTUBE_KEY,
     YOUTUBE_TREND_VIDEO: process.env.YOUTUBE_TREND_VIDEO,
     YOUTUBE_URL_WATCH: process.env.YOUTUBE_URL_WATCH,
+    YOUTUBE_URL_CHANNEL: process.env.YOUTUBE_URL_CHANNEL, 
   },
 
   distDir: 'build',

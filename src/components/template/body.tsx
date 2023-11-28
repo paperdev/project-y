@@ -1,11 +1,13 @@
 export default function Body({
   children,
+  className
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode,
+  className?: string
 }) {
   return (
     <>
-      <div>
+      <div className={`${className}`}>
         {children}
       </div>
     </>
