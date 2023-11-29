@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ComponentThumbnail from '@/components/(youtube)/thumbnail';
+import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
 
 import {
   List,
@@ -12,7 +13,6 @@ import {
   CardActions,
   Typography,
   IconButton,
-  Chip,
   Collapse,
   Divider,
 } from '@mui/material';
@@ -22,18 +22,23 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import CommentIcon from '@mui/icons-material/Comment';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import TagIcon from '@mui/icons-material/Tag';
 
 export default function ComponentVideo({
   dataVideo
 }: {
   dataVideo: any[]
 }) {
-  const [expanded, setExpanded] = React.useState(false);
+  const [descExpanded, setDescExpanded] = React.useState(false);
+  const [tagExpanded, setTagExpanded] = React.useState(false);
 
-  const onClickExpand = () => {
-    setExpanded(!expanded);
+  const onClickDescExpand = () => {
+    setDescExpanded(!descExpanded);
+  };
+
+  const onClickTagExpand = () => {
+    setTagExpanded(!tagExpanded);
   };
 
   return (
@@ -47,20 +52,19 @@ export default function ComponentVideo({
 
                   <Card>
                     <CardHeader
-                      title={video.snippet.title} 
+                      title={video.snippet.title}
                       subheader={video.snippet.publishedAt}
                     />
 
                     <CardContent>
                       <div className='flex gap-1 flex-wrap mx-auto'>
-                        {
-                          video.snippet.tags &&
-                          video.snippet.tags.map((tag: string, index: number) => {
-                            return <Chip key={index} label={`#${tag}`} />
-                          })
-                        }
+
+                        <ComponentTag tags={video.snippet.tags} />
+                        <IconButton onClick={onClickTagExpand} >
+                          <TagIcon />
+                        </IconButton>
+                        <ComponentHiddenTag tags={video.snippet.tags} tagExpanded={tagExpanded} />
                       </div>
-                      <MoreVertIcon />
                     </CardContent>
 
                     <CardContent>
@@ -70,35 +74,47 @@ export default function ComponentVideo({
                       />
                     </CardContent>
 
-                    <CardActions >
-                      <IconButton>
-                        <ThumbUpIcon />
-                        <div>{video.statistics.likeCount}</div>
-                      </IconButton>
+                    <CardActions className='justify-between'>
+                      <div className='justify-start'>
+                        <IconButton>
+                          <ThumbUpIcon />
+                          <div className='text-sm'>
+                            {video.statistics.likeCount}
+                          </div>
+                        </IconButton>
 
-                      <IconButton>
+                        <IconButton>
                         <VisibilityIcon />
-                        <div>{video.statistics.viewCount}</div>
-                      </IconButton>
+                        <div className='text-sm'>
+                          {video.statistics.viewCount}
+                        </div>
+                        </IconButton>
 
-                      <IconButton>
-                        <FavoriteIcon />
-                        <div>{video.statistics.commentCount}</div>
-                      </IconButton>
+                        <IconButton>
+                          <FavoriteIcon />
+                          <div className='text-sm'>
+                            {video.statistics.commentCount}
+                          </div>
+                        </IconButton>
 
-                      <IconButton>
-                        <CommentIcon />
-                        <div>{video.statistics.favoriteCount}</div>
-                      </IconButton>
+                        <IconButton>
+                          <CommentIcon />
+                          <div className='text-sm'>
+                            {video.statistics.favoriteCount}
+                          </div>
+                        </IconButton>
+                      </div>
 
-                      <IconButton onClick={onClickExpand}>
-                        {
-                          expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />
-                        }
-                      </IconButton>
+                      <div className='justify-end'>
+                        <IconButton onClick={onClickDescExpand}>
+                          {
+                            descExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />
+                          }
+                        </IconButton>
+                      </div>
                     </CardActions>
 
-                    <Collapse in={expanded} timeout='auto' unmountOnExit>
+                    <Collapse in={descExpanded} timeout='auto' unmountOnExit>
                       <CardContent>
                         <Typography paragraph>Method:</Typography>
                         <Typography paragraph>
