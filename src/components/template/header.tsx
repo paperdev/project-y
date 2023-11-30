@@ -10,7 +10,7 @@ export default function Header({
 }) {
   return (
     <>
-      <div className={`${className} flex justify-between`}>
+      <div className={`${className}`}>
         <div>Header1</div>
         <div>Header2</div>
 
