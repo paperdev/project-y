@@ -1,37 +1,28 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import HomeIcon from '@mui/icons-material/Home';
-import WhatshotIcon from '@mui/icons-material/Whatshot';
-import HistoryIcon from '@mui/icons-material/History';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import { MdHome, MdWhatshot, MdHistory } from 'react-icons/md';
+import { Tabs, Tab } from '@nextui-org/react';
 
 const bottomMenu = [
   {
     name: 'home',
     href: 'home',
-    icon: <HomeIcon />,
+    icon: <MdHome />,
   },
   {
     name: 'trend',
     href: 'youtube',
-    icon: <WhatshotIcon />,
+    icon: <MdWhatshot />,
   },
   {
     name: 'history',
     href: 'history',
-    icon: <HistoryIcon />,
+    icon: <MdHistory />,
   },
 ];
 
-function NavgationFooter({
-  className
-}: {
-  className?: string
-}) {
+function NavgationFooter({ className }: { className?: string }) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -41,7 +32,7 @@ function NavgationFooter({
   return (
     <>
       <div className={`${className}`}>
-          <BottomNavigation
+        {/* <BottomNavigation
             showLabels
             value={value}
             onChange={handleChange}
@@ -56,21 +47,17 @@ function NavgationFooter({
                 />
               ))
             }
-          </BottomNavigation>
+          </BottomNavigation> */}
       </div>
     </>
-  )
+  );
 }
 
-function TabsFooter({
-  className
-}: {
-  className?: string
-}) {
-  const [value, setValue] = useState(0);
+function TabsFooter({ className }: { className?: string }) {
+  const [value, setValue] = useState('home');
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+  const handleChange = (key: React.Key) => {
+    setValue(key.toString());
   };
 
   return (
@@ -78,26 +65,22 @@ function TabsFooter({
       <div className={`${className}`}>
         <Tabs
           aria-label='bottom tabs'
-          value={value}
-          onChange={handleChange}
+          selectedKey={value}
+          onSelectionChange={handleChange}
+          // onChange={handleChange}
         >
-          {
-            bottomMenu.map((menu, index) => (
-              <Tab
-                key={index}
-                label={menu.name}
-                href={menu.href}
-                icon={menu.icon}
-              />
-            ))
-          }
+          {bottomMenu.map((menu, index) => (
+            <Tab
+              key={index}
+              // label={menu.name}
+              href={menu.href}
+              // icon={menu.icon}
+            />
+          ))}
         </Tabs>
       </div>
     </>
   );
 }
 
-export {
-  TabsFooter,
-  NavgationFooter,
-};
+export { TabsFooter, NavgationFooter };

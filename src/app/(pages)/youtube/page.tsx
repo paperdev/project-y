@@ -1,12 +1,12 @@
 import ComponentVideo from '@/components/(youtube)/video';
 
-const URL_YOUTUBE = 'https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=KR&key=';
-
 async function getYoutubeList() {
-  const baseUrl = process.env.YOUTUBE_TREND_VIDEO ? process.env.YOUTUBE_TREND_VIDEO : URL_YOUTUBE;
+  if (!process.env.YOUTUBE_TREND_VIDEO || !process.env.YOUTUBE_KEY) {
+    return undefined;
+  }
 
   const res = await fetch(
-    baseUrl + process.env.YOUTUBE_KEY,
+    process.env.YOUTUBE_TREND_VIDEO + process.env.YOUTUBE_KEY,
     {
       headers: {
         'Content-type': 'application/json;',
@@ -28,5 +28,5 @@ export default async function Page() {
     <>
       <ComponentVideo dataVideo={dataYoutube.items} />
     </>
-  )
+  );
 }

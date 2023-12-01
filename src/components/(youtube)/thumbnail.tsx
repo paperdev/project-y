@@ -1,11 +1,7 @@
 'use client';
 
 import React from 'react';
-import {
-  Link,
-  ImageList,
-  ImageListItem,
-} from '@mui/material';
+import { Listbox, ListboxItem, Link } from "@nextui-org/react";
 
 export default function ComponentThumbnail({
   dataThumbnail,
@@ -24,13 +20,13 @@ export default function ComponentThumbnail({
   return (
     <>
       <Link href={process.env.YOUTUBE_URL_WATCH + videoId}>
-        <ImageList>
+        <Listbox aria-label='thumbnail'>
 
-          <ImageListItem>
+          <ListboxItem key={videoId} textValue={videoId}>
             <img src={dataThumbnail.url} />
-          </ImageListItem>
+          </ListboxItem>
 
-        </ImageList>
+        </Listbox>
       </Link>
     </>
   )

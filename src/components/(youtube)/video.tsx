@@ -3,35 +3,32 @@
 import React from 'react';
 import ComponentThumbnail from '@/components/(youtube)/thumbnail';
 import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
-
 import {
-  List,
-  ListItem,
+  Listbox,
+  ListboxItem,
+  Button,
   Card,
   CardHeader,
-  CardContent,
-  CardActions,
-  Typography,
-  IconButton,
+  CardBody,
+  CardFooter,
   Link,
-  Collapse,
   Divider,
-} from '@mui/material';
+} from '@nextui-org/react';
+import {
+  MdThumbUp,
+  MdVisibility,
+  MdComment,
+  MdFavorite,
+  MdExpandMore,
+  MdExpandLess,
+  MdUnfoldMore,
+  MdUnfoldLess,
+} from 'react-icons/md';
 
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import CommentIcon from '@mui/icons-material/Comment';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
-import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
+const iconWeight = 'w-7';
+const iconHeight = 'h-7';
 
-export default function ComponentVideo({
-  dataVideo
-}: {
-  dataVideo: any[]
-}) {
+export default function ComponentVideo({ dataVideo }: { dataVideo: any[] }) {
   const [descExpanded, setDescExpanded] = React.useState(false);
 
   const onClickDescExpand = (event: React.SyntheticEvent) => {
@@ -39,12 +36,14 @@ export default function ComponentVideo({
       return;
     }
 
-    const currentDescElement = event.currentTarget.parentElement?.parentElement?.parentElement?.getElementsByClassName('hiddenDescClass')[0];
+    const currentDescElement =
+      event.currentTarget.parentElement?.parentElement?.parentElement?.getElementsByClassName(
+        'hiddenDescClass'
+      )[0];
     const isHidden = currentDescElement?.classList.contains('hidden');
     if (isHidden) {
       currentDescElement?.classList.remove('hidden');
-    }
-    else {
+    } else {
       currentDescElement?.classList.add('hidden');
     }
 
@@ -56,111 +55,122 @@ export default function ComponentVideo({
       return;
     }
 
-    const currentTagElement = event.currentTarget.parentElement?.getElementsByClassName('hiddenTagClass')[0];
+    const currentTagElement =
+      event.currentTarget.parentElement?.parentElement?.getElementsByClassName(
+        'hiddenTagClass'
+      )[0];
     const isHidden = currentTagElement?.classList.contains('hidden');
     if (isHidden) {
       currentTagElement?.classList.remove('hidden');
-    }
-    else {
+    } else {
       currentTagElement?.classList.add('hidden');
     }
   };
 
   return (
     <>
-      <List>
-        {
-          dataVideo.map((video, index) => {
-            return (
-              <div key={index}>
-                <ListItem disablePadding>
-
-                  <Card>
-                    <CardHeader
-                      title={video.snippet.title}
-                      subheader={video.snippet.publishedAt}
-                    />
-
-                    <CardContent className='flex'>
-                      <div>Channel : </div>
-                      <Link href={process.env.YOUTUBE_URL_CHANNEL + video.snippet.channelId}>
+      <Listbox aria-label='videoList'>
+        {dataVideo.map((video, index) => {
+          return (
+            <ListboxItem key={index} textValue={index.toString()}>
+              <Card>
+                <CardHeader>
+                  <div>
+                    <div className='text-2xl font-bold text-primary-500'>
+                      {video.snippet.title}
+                    </div>
+                    <span className='text-xs ml-2 text-default-500'>
+                      {video.snippet.publishedAt}
+                    </span>
+                    <div className='flex mt-2 gap-1'>
+                      <div className='text-primary-500'>Channel : </div>
+                      <Link
+                        isExternal
+                        showAnchorIcon
+                        href={
+                          process.env.YOUTUBE_URL_CHANNEL +
+                          video.snippet.channelId
+                        }
+                      >
                         {video.snippet.channelTitle}
                       </Link>
-                    </CardContent>
+                    </div>
+                  </div>
+                </CardHeader>
 
-                    <CardContent>
-                      <ComponentThumbnail
-                        dataThumbnail={video.snippet.thumbnails.standard}
-                        videoId={video.id}
-                      />
-                    </CardContent>
+                <CardBody className='flex '>
+                  <div className='flex justify-between'>
+                    <ComponentTag
+                      className='flex flex-wrap gap-1'
+                      tags={video.snippet.tags}
+                    />
 
-                    <CardActions className='justify-between'>
-                      <div className='justify-start'>
-                        <IconButton>
-                          <ThumbUpIcon />
-                          <div className='text-sm'>
-                            {video.statistics.likeCount}
-                          </div>
-                        </IconButton>
+                    <Button
+                      isIconOnly
+                      variant='flat'
+                      className='w-7 h-7'
+                      onClick={onClickTagExpand}
+                    >
+                      <MdUnfoldMore />
+                    </Button>
+                  </div>
 
-                        <IconButton>
-                          <VisibilityIcon />
-                          <div className='text-sm'>
-                            {video.statistics.viewCount}
-                          </div>
-                        </IconButton>
+                  <div className='hiddenTagClass hidden pt-1'>
+                    <ComponentHiddenTag
+                      className='flex flex-wrap gap-1'
+                      tags={video.snippet.tags}
+                    />
+                  </div>
+                </CardBody>
 
-                        <IconButton>
-                          <FavoriteIcon />
-                          <div className='text-sm'>
-                            {video.statistics.commentCount}
-                          </div>
-                        </IconButton>
+                <CardBody>
+                  <ComponentThumbnail
+                    dataThumbnail={video.snippet.thumbnails.standard}
+                    videoId={video.id}
+                  />
+                </CardBody>
 
-                        <IconButton>
-                          <CommentIcon />
-                          <div className='text-sm'>
-                            {video.statistics.favoriteCount}
-                          </div>
-                        </IconButton>
-                      </div>
+                <CardFooter className='justify-between'>
+                  <div className='flex flex-row gap-4'>
+                    <div className='flex gap-1 items-center text-gray-600'>
+                      <MdThumbUp />
+                      <div>{video.statistics.likeCount}</div>
+                    </div>
 
-                      <div className='justify-end'>
-                        <IconButton onClick={onClickDescExpand} >
-                          {
-                            descExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />
-                          }
-                        </IconButton>
-                      </div>
-                    </CardActions>
+                    <div className='flex gap-1 items-center text-gray-600'>
+                      <MdVisibility />
+                      <div>{video.statistics.viewCount}</div>
+                    </div>
 
-                    
-                    <CardContent className='hiddenDescClass hidden'>
-                      <Typography paragraph>
-                        {video.snippet.description}
-                      </Typography>
-                    </CardContent>
-                    
+                    <div className='flex gap-1 items-center text-gray-600'>
+                      <MdComment />
+                      <div>{video.statistics.commentCount}</div>
+                    </div>
 
-                    <CardContent className='flex gap-1 flex-wrap mx-auto'>
-                      <ComponentTag tags={video.snippet.tags} />
-                      <IconButton onClick={onClickTagExpand} size='small'>
-                        <UnfoldMoreIcon fontSize='inherit' />
-                      </IconButton>
-                      <ComponentHiddenTag className={'hiddenTagClass hidden'} tags={video.snippet.tags} />
-                    </CardContent>
+                    <div className='flex gap-1 items-center text-gray-600'>
+                      <MdFavorite />
+                      <div>{video.statistics.favoriteCount}</div>
+                    </div>
+                  </div>
 
-                  </Card>
+                  <Button
+                    isIconOnly
+                    variant='flat'
+                    className='w-7 h-7'
+                    onClick={onClickDescExpand}
+                  >
+                    {descExpanded ? <MdExpandLess /> : <MdExpandMore />}
+                  </Button>
+                </CardFooter>
 
-                </ListItem>
-
-                <Divider />
-              </div>
-            )
-          })
-        }
-      </List>
+                <CardBody className='hiddenDescClass hidden '>
+                  {video.snippet.description}
+                </CardBody>
+              </Card>
+            </ListboxItem>
+          );
+        })}
+      </Listbox>
     </>
-  )
+  );
 }

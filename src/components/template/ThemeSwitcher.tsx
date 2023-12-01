@@ -2,9 +2,8 @@
 
 import { useTheme } from 'next-themes';
 import React, { useEffect, useState } from 'react';
-import Switch from '@mui/material/Switch';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+import {Switch} from "@nextui-org/react";
+import { MdLightMode, MdDarkMode } from "react-icons/md";
 
 export function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
@@ -26,14 +25,14 @@ export function ThemeSwitcher() {
     <>
       <Switch
         checked={isChecked}
-        checkedIcon={
-          <LightModeIcon />
-        }
-        icon={
-          <DarkModeIcon />
-        }
+        // checkedIcon={
+        //   <LightModeIcon />
+        // }
+        // icon={
+        //   <DarkModeIcon />
+        // }
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => { onChange(event); }}
-        size='medium'
+        // size='medium'
         color='primary'
       />
     </>
