@@ -10,13 +10,13 @@ export default function TemplateHome({
 }) {
   return (
     <>
-      <div className='bg-emerald-500 h-screen max-w-2xl mx-auto flex flex-col justify-between'>
-        <Header className='bg-indigo-500 flex-none flex justify-between sticky top-0 z-50 h-12' />
-        <Body className='bg-slate-500 overflow-auto'>
+      <div className='h-screen max-w-2xl mx-auto flex flex-col justify-between'>
+        <Header className='bg-primary-500 flex-none flex justify-between sticky top-0 z-50 h-14' />
+        <Body className='overflow-auto'>
           {children}
         </Body>
-        {/* <TabsFooter className='bg-indigo-500 flex-none flex justify-center sticky bottom-0' /> */}
-        <NavgationFooter className='bg-indigo-500 flex-none flex justify-center sticky bottom-0' />
+        <TabsFooter className='bg-primary-500 flex-none flex justify-center sticky bottom-0 h-14' />
+        {/* <NavgationFooter className='flex-none flex justify-center sticky bottom-0 h-14' /> */}
       </div>
     </>
   );

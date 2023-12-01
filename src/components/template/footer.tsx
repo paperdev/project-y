@@ -1,8 +1,15 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { MdHome, MdWhatshot, MdHistory } from 'react-icons/md';
 import { Tabs, Tab } from '@nextui-org/react';
+import { usePathname, useRouter } from 'next/navigation';
+import {
+  Navbar,
+  NavbarItem,
+  Link,
+  Button,
+} from '@nextui-org/react';
 
 const bottomMenu = [
   {
@@ -23,58 +30,57 @@ const bottomMenu = [
 ];
 
 function NavgationFooter({ className }: { className?: string }) {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
   return (
     <>
       <div className={`${className}`}>
-        {/* <BottomNavigation
-            showLabels
-            value={value}
-            onChange={handleChange}
-          >
-            {
-              bottomMenu.map((menu, index) => (
-                <BottomNavigationAction
-                  key={index}
-                  label={menu.name}
-                  href={menu.href}
-                  icon={menu.icon}
-                />
-              ))
-            }
-          </BottomNavigation> */}
+        <Navbar position='sticky' >
+          {bottomMenu.map((menu, index) => (
+            <NavbarItem key={index}>
+              {/* <Button
+                href={menu.href}
+                as={Link}
+              >
+                {menu.name}
+              </Button> */}
+              <Link href={menu.href}>{menu.name}</Link>
+            </NavbarItem>
+          ))}
+        </Navbar>
       </div>
     </>
   );
 }
 
 function TabsFooter({ className }: { className?: string }) {
-  const [value, setValue] = useState('home');
+  const router = useRouter();
+  const currentUrl = usePathname();
+  const currentMenuHref = currentUrl.slice(1);
 
-  const handleChange = (key: React.Key) => {
-    setValue(key.toString());
+  const onSelectionChange = (key: React.Key) => {
+    router.push(key.toString());
   };
 
   return (
     <>
       <div className={`${className}`}>
         <Tabs
-          aria-label='bottom tabs'
-          selectedKey={value}
-          onSelectionChange={handleChange}
-          // onChange={handleChange}
+          selectedKey={currentMenuHref}
+          color='default'
+          radius='md'
+          variant='light'
+          fullWidth={true}
+          onSelectionChange={onSelectionChange}
         >
-          {bottomMenu.map((menu, index) => (
+          {bottomMenu.map((menu) => (
             <Tab
-              key={index}
-              // label={menu.name}
-              href={menu.href}
-              // icon={menu.icon}
+              key={menu.href}
+              className='h-12'
+              title={
+                <div className='flex items-center gap-2 font-bold text-base'>
+                  {menu.icon}
+                  <div className='capitalize'>{menu.name}</div>
+                </div>
+              }
             />
           ))}
         </Tabs>
