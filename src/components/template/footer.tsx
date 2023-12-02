@@ -4,12 +4,6 @@ import React from 'react';
 import { MdHome, MdWhatshot, MdHistory } from 'react-icons/md';
 import { Tabs, Tab } from '@nextui-org/react';
 import { usePathname, useRouter } from 'next/navigation';
-import {
-  Navbar,
-  NavbarItem,
-  Link,
-  Button,
-} from '@nextui-org/react';
 
 const bottomMenu = [
   {
@@ -29,29 +23,7 @@ const bottomMenu = [
   },
 ];
 
-function NavgationFooter({ className }: { className?: string }) {
-  return (
-    <>
-      <div className={`${className}`}>
-        <Navbar position='sticky' >
-          {bottomMenu.map((menu, index) => (
-            <NavbarItem key={index}>
-              {/* <Button
-                href={menu.href}
-                as={Link}
-              >
-                {menu.name}
-              </Button> */}
-              <Link href={menu.href}>{menu.name}</Link>
-            </NavbarItem>
-          ))}
-        </Navbar>
-      </div>
-    </>
-  );
-}
-
-function TabsFooter({ className }: { className?: string }) {
+export default function Footer({ className }: { className?: string }) {
   const router = useRouter();
   const currentUrl = usePathname();
   const currentMenuHref = currentUrl.slice(1);
@@ -88,5 +60,3 @@ function TabsFooter({ className }: { className?: string }) {
     </>
   );
 }
-
-export { TabsFooter, NavgationFooter };

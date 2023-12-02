@@ -2,6 +2,12 @@
 
 import React from 'react';
 import { ThemeSwitcher } from './ThemeSwitcher';
+import {
+  Navbar,
+  NavbarItem,
+  NavbarContent,
+} from '@nextui-org/react';
+import { MdDataThresholding } from "react-icons/md";
 
 export default function Header({
   className
@@ -11,13 +17,21 @@ export default function Header({
   return (
     <>
       <div className={`${className}`}>
-        <div>Header1</div>
-        <div>Header2</div>
+        <Navbar>
+          <NavbarContent justify='start' className='text-3xl'>
+            <MdDataThresholding />
+          </NavbarContent>
 
-        <div className='flex'>
-          <ThemeSwitcher />
-          <div>Header3</div>
-        </div>
+          <NavbarContent justify='center'>
+            <NavbarItem>
+              <div></div>
+            </NavbarItem>
+          </NavbarContent>
+
+          <NavbarContent justify='end'>
+            <ThemeSwitcher />
+          </NavbarContent>
+        </Navbar>
       </div>
     </>
   );

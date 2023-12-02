@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './header';
 import Body from './body';
-import { TabsFooter, NavgationFooter } from './footer';
+import Footer from './footer';
 
 export default function TemplateHome({
   children,
@@ -15,8 +15,7 @@ export default function TemplateHome({
         <Body className='overflow-auto'>
           {children}
         </Body>
-        <TabsFooter className='bg-primary-500 flex-none flex justify-center sticky bottom-0 h-14' />
-        {/* <NavgationFooter className='flex-none flex justify-center sticky bottom-0 h-14' /> */}
+        <Footer className='bg-primary-500 flex-none flex justify-center sticky bottom-0 h-14' />
       </div>
     </>
   );
