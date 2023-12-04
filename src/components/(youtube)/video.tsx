@@ -1,11 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ComponentThumbnail from '@/components/(youtube)/thumbnail';
 import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
 import {
-  Listbox,
-  ListboxItem,
   Button,
   Card,
   CardHeader,
@@ -25,11 +23,17 @@ import {
   MdUnfoldLess,
 } from 'react-icons/md';
 
-const iconWeight = 'w-7';
-const iconHeight = 'h-7';
-
 export default function ComponentVideo({ dataVideo }: { dataVideo: any[] }) {
-  const [descExpanded, setDescExpanded] = React.useState(false);
+  const [recentVideo, setRecentVideo] = useState(dataVideo);
+
+  useEffect(() => {
+    recentVideo.map((video) => {
+      video.tagExpanded = false;
+      video.descExpanded = false;
+    });
+
+    setRecentVideo(recentVideo);
+  }, [dataVideo.length]);
 
   const onClickDescExpand = (event: React.SyntheticEvent) => {
     if (!event || !event.currentTarget) {
@@ -47,7 +51,21 @@ export default function ComponentVideo({ dataVideo }: { dataVideo: any[] }) {
       currentDescElement?.classList.add('hidden');
     }
 
-    setDescExpanded(!descExpanded);
+    if (!event.currentTarget.hasAttribute('data-videoid')) {
+      return;
+    }
+    const videoId = event.currentTarget.getAttribute('data-videoid');
+    if (null == videoId) {
+      return;
+    }
+
+    const temp = Array.from(recentVideo);
+    temp.map((video) => {
+      if (videoId === video.id) {
+        video.descExpanded = !video.descExpanded;
+      }
+    });
+    setRecentVideo(temp);
   };
 
   const onClickTagExpand = (event: React.SyntheticEvent) => {
@@ -65,112 +83,130 @@ export default function ComponentVideo({ dataVideo }: { dataVideo: any[] }) {
     } else {
       currentTagElement?.classList.add('hidden');
     }
+
+    if (!event.currentTarget.hasAttribute('data-videoid')) {
+      return;
+    }
+    const videoId = event.currentTarget.getAttribute('data-videoid');
+    if (null == videoId) {
+      return;
+    }
+
+    const temp = Array.from(recentVideo);
+    temp.map((video) => {
+      if (videoId === video.id) {
+        video.tagExpanded = !video.tagExpanded;
+      }
+    });
+    setRecentVideo(temp);
   };
 
   return (
     <>
-      <Listbox aria-label='videoList'>
-        {dataVideo.map((video, index) => {
-          return (
-            <ListboxItem key={index} textValue={index.toString()}>
-              <Card>
-                <CardHeader>
-                  <div>
-                    <div className='text-2xl font-bold text-primary-500'>
-                      {video.snippet.title}
-                    </div>
-                    <span className='text-xs ml-2 text-default-500'>
-                      {video.snippet.publishedAt}
-                    </span>
-                    <div className='flex mt-2 gap-1'>
-                      <div className='text-primary-500'>Channel : </div>
-                      <Link
-                        isExternal
-                        showAnchorIcon
-                        href={
-                          process.env.YOUTUBE_URL_CHANNEL +
-                          video.snippet.channelId
-                        }
-                      >
-                        {video.snippet.channelTitle}
-                      </Link>
-                    </div>
+      {recentVideo.map((video, index) => {
+        return (
+          <div key={index}>
+            <Card shadow='none'>
+              <CardHeader>
+                <div>
+                  <div className='text-2xl font-bold text-primary-500'>
+                    {video.snippet.title}
                   </div>
-                </CardHeader>
-
-                <CardBody className='flex '>
-                  <div className='flex justify-between'>
-                    <ComponentTag
-                      className='flex flex-wrap gap-1'
-                      tags={video.snippet.tags}
-                    />
-
-                    <Button
-                      isIconOnly
-                      variant='flat'
-                      className='w-7 h-7'
-                      onClick={onClickTagExpand}
+                  <span className='text-xs ml-2 text-default-500'>
+                    {video.snippet.publishedAt}
+                  </span>
+                  <div className='flex mt-2 gap-1'>
+                    <div className='text-primary-500'>Channel : </div>
+                    <Link
+                      isExternal
+                      showAnchorIcon
+                      href={
+                        process.env.YOUTUBE_URL_CHANNEL +
+                        video.snippet.channelId
+                      }
                     >
-                      <MdUnfoldMore />
-                    </Button>
+                      {video.snippet.channelTitle}
+                    </Link>
                   </div>
+                </div>
+              </CardHeader>
 
-                  <div className='hiddenTagClass hidden pt-1'>
-                    <ComponentHiddenTag
-                      className='flex flex-wrap gap-1'
-                      tags={video.snippet.tags}
-                    />
-                  </div>
-                </CardBody>
-
-                <CardBody>
-                  <ComponentThumbnail
-                    dataThumbnail={video.snippet.thumbnails.standard}
-                    videoId={video.id}
+              <CardBody className='flex '>
+                <div className='flex justify-between'>
+                  <ComponentTag
+                    className='flex flex-wrap gap-1'
+                    tags={video.snippet.tags}
                   />
-                </CardBody>
-
-                <CardFooter className='justify-between'>
-                  <div className='flex flex-row gap-4'>
-                    <div className='flex gap-1 items-center text-gray-600'>
-                      <MdThumbUp />
-                      <div>{video.statistics.likeCount}</div>
-                    </div>
-
-                    <div className='flex gap-1 items-center text-gray-600'>
-                      <MdVisibility />
-                      <div>{video.statistics.viewCount}</div>
-                    </div>
-
-                    <div className='flex gap-1 items-center text-gray-600'>
-                      <MdComment />
-                      <div>{video.statistics.commentCount}</div>
-                    </div>
-
-                    <div className='flex gap-1 items-center text-gray-600'>
-                      <MdFavorite />
-                      <div>{video.statistics.favoriteCount}</div>
-                    </div>
-                  </div>
 
                   <Button
                     isIconOnly
                     variant='flat'
                     className='w-7 h-7'
-                    onClick={onClickDescExpand}
+                    onClick={onClickTagExpand}
+                    data-videoid={video.id}
                   >
-                    {descExpanded ? <MdExpandLess /> : <MdExpandMore />}
+                    {video.tagExpanded ? <MdUnfoldLess /> : <MdUnfoldMore />}
                   </Button>
-                </CardFooter>
+                </div>
 
-                <CardBody className='hiddenDescClass hidden '>
-                  {video.snippet.description}
-                </CardBody>
-              </Card>
-            </ListboxItem>
-          );
-        })}
-      </Listbox>
+                <div className='hiddenTagClass hidden pt-1'>
+                  <ComponentHiddenTag
+                    className='flex flex-wrap gap-1'
+                    tags={video.snippet.tags}
+                  />
+                </div>
+              </CardBody>
+
+              <CardBody>
+                <ComponentThumbnail
+                  dataThumbnail={video.snippet.thumbnails.standard}
+                  videoId={video.id}
+                />
+              </CardBody>
+
+              <CardFooter className='justify-between'>
+                <div className='flex flex-row gap-4'>
+                  <div className='flex gap-1 items-center text-gray-600'>
+                    <MdThumbUp />
+                    <div>{video.statistics.likeCount}</div>
+                  </div>
+
+                  <div className='flex gap-1 items-center text-gray-600'>
+                    <MdVisibility />
+                    <div>{video.statistics.viewCount}</div>
+                  </div>
+
+                  <div className='flex gap-1 items-center text-gray-600'>
+                    <MdComment />
+                    <div>{video.statistics.commentCount}</div>
+                  </div>
+
+                  <div className='flex gap-1 items-center text-gray-600'>
+                    <MdFavorite />
+                    <div>{video.statistics.favoriteCount}</div>
+                  </div>
+                </div>
+
+                <Button
+                  isIconOnly
+                  variant='flat'
+                  className='w-7 h-7'
+                  onClick={onClickDescExpand}
+                  data-videoid={video.id}
+                >
+                  {video.descExpanded ? <MdExpandLess /> : <MdExpandMore />}
+                </Button>
+              </CardFooter>
+
+              <CardBody className='hiddenDescClass hidden '>
+                {video.snippet.description}
+              </CardBody>
+            </Card>
+
+            <Divider />
+          </div>
+        );
+      })}
     </>
   );
 }
