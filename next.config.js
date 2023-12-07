@@ -13,6 +13,7 @@ const nextConfig = {
   env: {
     YOUTUBE_KEY: process.env.YOUTUBE_KEY,
     YOUTUBE_BASE_URL: process.env.YOUTUBE_BASE_URL,
+    YOUTUBE_REGION_URL: process.env.YOUTUBE_REGION_URL,
     YOUTUBE_URL_WATCH: process.env.YOUTUBE_URL_WATCH,
     YOUTUBE_URL_CHANNEL: process.env.YOUTUBE_URL_CHANNEL, 
   },

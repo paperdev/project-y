@@ -24,7 +24,7 @@ import {
   MdUnfoldLess,
 } from 'react-icons/md';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { getYoutubeList } from '@/app/(pages)/youtube/page';
+import { getYoutubeList } from '@/utils/request';
 
 export default function ComponentVideo({
   dataVideo,

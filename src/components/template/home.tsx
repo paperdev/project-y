@@ -2,12 +2,19 @@ import React from 'react';
 import Header from './header';
 import Body from './body';
 import Footer from './footer';
+import { getRegionList } from '@/utils/request';
 
-export default function TemplateHome({
+export default async function TemplateHome({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const regionList = await getRegionList();
+  const regionCode: Record<string, string> = {};
+  regionList.items.forEach((region: any) => {
+    regionCode[region.snippet.gl] = region.snippet.name;
+  });
+  
   return (
     <>
       <div className='h-screen max-w-2xl mx-auto flex flex-col justify-between'>
