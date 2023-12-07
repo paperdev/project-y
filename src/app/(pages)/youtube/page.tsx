@@ -46,12 +46,18 @@ async function getYoutubeList(nextPageToken?: string) {
 
 export default async function Page() {
   const dataYoutube = await getYoutubeList();
-  // const nextPageToken = dataYoutube.nextPageToken;
-  // const totalResults = dataYoutube.pageInfo.totalResults;
 
   return (
     <>
-      <ComponentVideo dataVideo={dataYoutube.items} />
+      <ComponentVideo 
+      dataVideo={dataYoutube.items} 
+      nextPageToken={dataYoutube.nextPageToken}
+      totalResults={dataYoutube.pageInfo.totalResults}
+      />
     </>
   );
+}
+
+export {
+  getYoutubeList
 }

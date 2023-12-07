@@ -7,7 +7,7 @@ export default function Body({
 }) {
   return (
     <>
-      <div className={`${className}`}>
+      <div id='scrollableElementDiv' className={`${className}`}>
         {children}
       </div>
     </>
