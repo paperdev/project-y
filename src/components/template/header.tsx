@@ -3,19 +3,15 @@
 import React from 'react';
 import { ThemeSwitcher } from './ThemeSwitcher';
 import { RegionSelecter } from '@/components/RegionSelecter';
-import {
-  Navbar,
-  NavbarItem,
-  NavbarContent,
-} from '@nextui-org/react';
-import { MdDataThresholding } from "react-icons/md";
+import { Navbar, NavbarItem, NavbarContent } from '@nextui-org/react';
+import { MdDataThresholding } from 'react-icons/md';
 
 export default function Header({
   className,
-  regionCode
+  regionCode,
 }: {
-  className?: string
-  regionCode: Record<string, string>
+  className?: string;
+  regionCode: Record<string, string>;
 }) {
   return (
     <>
@@ -25,14 +21,11 @@ export default function Header({
             <MdDataThresholding />
           </NavbarContent>
 
-          <NavbarContent justify='center'>
-            <NavbarItem>
-              <div></div>
-            </NavbarItem>
+          <NavbarContent justify='center' className='sm:w-5/12 w-7/12 '>
+            <RegionSelecter regionCode={regionCode} />
           </NavbarContent>
 
           <NavbarContent justify='end'>
-            <RegionSelecter regionCode={regionCode} />
             <ThemeSwitcher />
           </NavbarContent>
         </Navbar>

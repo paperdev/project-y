@@ -16,11 +16,11 @@ const bottomMenu = [
     href: 'youtube',
     icon: <MdWhatshot />,
   },
-  {
-    name: 'post',
-    href: 'post',
-    icon: <MdCamera />,
-  },
+  // {
+  //   name: 'post',
+  //   href: 'post',
+  //   icon: <MdCamera />,
+  // },
   // {
   //   name: 'history',
   //   href: 'history',

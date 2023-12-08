@@ -12,12 +12,12 @@ export default async function TemplateHome({
   const regionList = await getRegionList();
   const regionCode: Record<string, string> = {};
   regionList.items.forEach((region: any) => {
-    regionCode[region.snippet.name] = region.snippet.gl;
+    regionCode[region.snippet.gl] = region.snippet.name;
   });
   
   return (
     <>
-      <div className='h-screen max-w-2xl mx-auto flex flex-col justify-between'>
+      <div className='h-screen max-w-2xl mx-auto flex flex-col justify-between pt-16 sm:pt-0 pb-4 sm:pb-0'>
         <Header className='bg-primary-500 flex-none flex justify-between sticky top-0 z-50 h-14' regionCode={regionCode} />
         <Body className='overflow-auto'>
           {children}
