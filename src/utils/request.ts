@@ -8,7 +8,7 @@ const generateURL = (url: string, params: Record<string, any>): string | undefin
   return newURL + '?' + seartchParams.toString();
 }
 
-async function getYoutubeList(nextPageToken?: string) {
+async function getYoutubeList(regionCode: string | null | undefined, nextPageToken?: string) {
   if (!process.env.YOUTUBE_BASE_URL) {
     return;
   }
@@ -16,7 +16,7 @@ async function getYoutubeList(nextPageToken?: string) {
   let params = {
     part: 'snippet,contentDetails,statistics',
     chart: 'mostPopular',
-    regionCode: 'KR',
+    regionCode: regionCode ? regionCode : 'KR',
     maxResults: 5,
   };
 
@@ -55,7 +55,7 @@ async function getRegionList() {
 
   let params = {
     part: 'snippet',
-    hl: 'es_MX',
+    hl: 'en_US',
   };
   
   const url = generateURL(process.env.YOUTUBE_REGION_URL, params);

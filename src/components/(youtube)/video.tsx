@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation'
 import ComponentThumbnail from '@/components/(youtube)/thumbnail';
 import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
 import {
@@ -35,6 +36,8 @@ export default function ComponentVideo({
   nextPageToken: string
   totalResults: number
 }) {
+  const searchParams = useSearchParams();
+  const [regionCode, setRegionCode] = useState('');
   const [recentVideo, setRecentVideo] = useState(dataVideo);
   const [pageToken, setPageToken] = useState(nextPageToken);
   const [loadMore, setLoadMore] = useState(true);
@@ -45,10 +48,15 @@ export default function ComponentVideo({
       return;
     }
 
-    const resData = await getYoutubeList(pageToken);
+    const resData = await getYoutubeList(regionCode, pageToken);
     setRecentVideo((video) => [...video, ...resData.items]);
     setPageToken(resData.nextPageToken);
   };
+
+  useEffect(() => {
+    const paramCode = searchParams.get('regionCode');
+    setRegionCode(paramCode ? paramCode : 'KR');
+  }, []);
 
   useEffect(() => {
     recentVideo.map((video) => {

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { ThemeSwitcher } from './ThemeSwitcher';
+import { RegionSelecter } from '@/components/RegionSelecter';
 import {
   Navbar,
   NavbarItem,
@@ -10,9 +11,11 @@ import {
 import { MdDataThresholding } from "react-icons/md";
 
 export default function Header({
-  className
+  className,
+  regionCode
 }: {
   className?: string
+  regionCode: Record<string, string>
 }) {
   return (
     <>
@@ -29,6 +32,7 @@ export default function Header({
           </NavbarContent>
 
           <NavbarContent justify='end'>
+            <RegionSelecter regionCode={regionCode} />
             <ThemeSwitcher />
           </NavbarContent>
         </Navbar>
