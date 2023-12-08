@@ -1,36 +1,28 @@
 'use client';
 
+import useSWR from 'swr';
 import { useSearchParams } from 'next/navigation';
 import ComponentVideo from '@/components/(youtube)/video';
 import { getYoutubeList } from '@/utils/request';
-import { useEffect, useState, Suspense } from 'react';
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const [regionCode, setRegionCode] = useState('');
-  const [dataYoutube, setDataYoutube] = useState<any>(null);
-
-  useEffect(() => {
-    const paramCode = searchParams.get('regionCode');
-    setRegionCode(paramCode ? paramCode : 'KR');
-
-    (async () => {
-      const resData = await getYoutubeList(regionCode);
-      setDataYoutube(resData);
-    })();
-  }, []);
+  const regionCode = searchParams.has('regionCode') ? searchParams.get('regionCode') : 'KR';
+  const resData = useSWR(regionCode, getYoutubeList);
+  const isLoading = resData.isLoading;
+  const isError = resData.error;
+  const dataYoutube = resData.data;
 
   return (
     <>
-      <Suspense fallback={'Loading...'}>
-        {dataYoutube && (
+      {
+        isLoading || isError || !dataYoutube ? <div> loading ..... </div> :
           <ComponentVideo
             dataVideo={dataYoutube.items}
             nextPageToken={dataYoutube.nextPageToken}
             totalResults={dataYoutube.pageInfo.totalResults}
           />
-        )}
-      </Suspense>
+      }
     </>
   );
 }
