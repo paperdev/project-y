@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
-import ComponentThumbnail from '@/components/(youtube)/thumbnail';
+import ComponentPlayer from '@/components/(youtube)/player';
 import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
 import {
   Button,
@@ -149,7 +149,7 @@ export default function ComponentVideo({
         {recentVideo.map((video, index) => {
           return (
             <div key={index}>
-              <Card shadow='none'>
+              <Card shadow='none' className='rounded-none'>
                 <CardHeader>
                   <div>
                     <div className='text-2xl font-bold text-primary-500'>
@@ -201,8 +201,7 @@ export default function ComponentVideo({
                 </CardBody>
 
                 <CardBody>
-                  <ComponentThumbnail
-                    dataThumbnail={video.snippet.thumbnails.standard}
+                  <ComponentPlayer
                     videoId={video.id}
                   />
                 </CardBody>
