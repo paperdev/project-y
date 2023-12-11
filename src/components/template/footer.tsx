@@ -1,35 +1,25 @@
 'use client';
 
 import React from 'react';
-import { MdHome, MdWhatshot, MdHistory, MdCamera, MdAccountBox } from 'react-icons/md';
+import { MdWhatshot, MdSmartDisplay, MdInfo } from 'react-icons/md';
 import { Tabs, Tab } from '@nextui-org/react';
 import { usePathname, useRouter } from 'next/navigation';
 
 const bottomMenu = [
   {
-    name: 'home',
-    href: 'home',
-    icon: <MdHome />,
-  },
-  {
     name: 'trend',
-    href: 'youtube',
+    href: 'trend',
     icon: <MdWhatshot />,
   },
-  // {
-  //   name: 'post',
-  //   href: 'post',
-  //   icon: <MdCamera />,
-  // },
-  // {
-  //   name: 'history',
-  //   href: 'history',
-  //   icon: <MdHistory />,
-  // },
   {
-    name: 'profile',
-    href: 'profile',
-    icon: <MdAccountBox />,
+    name: 'youtube',
+    href: 'youtube',
+    icon: <MdSmartDisplay />,
+  },
+  {
+    name: 'about',
+    href: 'about',
+    icon: <MdInfo />,
   },
 ];
 
