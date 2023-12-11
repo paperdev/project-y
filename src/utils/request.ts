@@ -1,4 +1,10 @@
 const generateURL = (url: string, params: Record<string, any>): string | undefined => {
+  const newURL = new URL(url);
+  const seartchParams = new URLSearchParams({...params});
+  return newURL + '?' + seartchParams.toString();
+}
+
+const generateYoutubeURL = (url: string, params: Record<string, any>): string | undefined => {
   if (!process.env.YOUTUBE_KEY || !params) {
     return;
   }
@@ -16,7 +22,7 @@ async function getYoutubeList(regionCode: string | null | undefined, nextPageTok
   let params = {
     part: 'snippet,contentDetails,statistics',
     chart: 'mostPopular',
-    regionCode: regionCode ? regionCode : 'KR',
+    regionCode: regionCode ? regionCode : process.env.YOUTUBE_DEFAULT_REGION,
     maxResults: 5,
   };
 
@@ -26,7 +32,7 @@ async function getYoutubeList(regionCode: string | null | undefined, nextPageTok
     });
   }
 
-  const url = generateURL(process.env.YOUTUBE_BASE_URL, params);
+  const url = generateYoutubeURL(process.env.YOUTUBE_BASE_URL, params);
   if (!url) {
     return;
   }
@@ -46,7 +52,6 @@ async function getYoutubeList(regionCode: string | null | undefined, nextPageTok
 
   return res.json();
 }
-
 
 async function getRegionList() {
   if (!process.env.YOUTUBE_REGION_URL) {
@@ -58,7 +63,7 @@ async function getRegionList() {
     hl: 'en_US',
   };
   
-  const url = generateURL(process.env.YOUTUBE_REGION_URL, params);
+  const url = generateYoutubeURL(process.env.YOUTUBE_REGION_URL, params);
   if (!url) {
     return;
   }
@@ -79,7 +84,50 @@ async function getRegionList() {
   return res.json();
 }
 
+async function getTrendList(regionCode: string | null | undefined) {
+  if (!process.env.GOOGLE_TREND_URL) {
+    return;
+  }
+
+  let params = {
+    geo: regionCode ? regionCode : process.env.YOUTUBE_DEFAULT_REGION
+  };
+
+  const url = generateURL(process.env.GOOGLE_TREND_URL, params);
+  if (!url) {
+    return;
+  }
+
+  const res = await fetch(url, {
+    // mode: 'no-cors',
+    // credentials: 'include',
+    // referrerPolicy: 'no-referrer',
+    // referrerPolicy: 'origin-when-cross-origin',
+    // referrer: 'https://trends.google.com/trends/api/dailytrends',
+    headers: {
+      'Content-type': 'application/json',
+      'Accept-Encoding': 'gzip',
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Encoding': 'gzip',
+      // 'Access-Control-Allow-Headers': 'Content-Type',
+      // 'Access-Control-Allow-Origin': '*',
+      // 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET,PATCH',
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch data.');
+  }
+
+  const ab = await res.arrayBuffer();
+  const bytes = new Uint8Array(ab);
+  const temp = bytes.slice(6); // TODO: so weird 
+  var bytesString = new TextDecoder().decode(temp);
+  return JSON.parse(bytesString);
+}
+
 export {
   getYoutubeList,
-  getRegionList
+  getRegionList,
+  getTrendList,
 }

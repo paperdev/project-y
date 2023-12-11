@@ -11,7 +11,9 @@ dotenv.config({ path: path.join(__dirname, 'env.local') });
 const nextConfig = {
   /* config options here */
   env: {
+    GOOGLE_TREND_URL: process.env.GOOGLE_TREND_URL,
     YOUTUBE_KEY: process.env.YOUTUBE_KEY,
+    YOUTUBE_DEFAULT_REGION: process.env.YOUTUBE_DEFAULT_REGION,
     YOUTUBE_BASE_URL: process.env.YOUTUBE_BASE_URL,
     YOUTUBE_REGION_URL: process.env.YOUTUBE_REGION_URL,
     YOUTUBE_URL_WATCH: process.env.YOUTUBE_URL_WATCH,

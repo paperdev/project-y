@@ -13,6 +13,7 @@ export default function ComponentPlayer({
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;'
           allowFullScreen
           sandbox='allow-scripts allow-same-origin allow-presentation'
+          // referrerPolicy='strict-origin-when-cross-origin'
         ></iframe>
       </div>
     </>

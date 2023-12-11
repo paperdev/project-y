@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'dev.paper',
+  appId: 'trend.dev.paper',
   appName: 'paper',
   webDir: 'build',
   server: {

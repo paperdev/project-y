@@ -9,10 +9,11 @@ export function RegionSelecter({
 }: {
   regionCode: Record<string, string>;
 }) {
+  const defaultRegion = process.env.YOUTUBE_DEFAULT_REGION ? process.env.YOUTUBE_DEFAULT_REGION : '';
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [selectedValue, setSelectedValue] = useState<string>('KR');
+  const [selectedValue, setSelectedValue] = useState<string>(defaultRegion);
 
   const onChangeRegion = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const params = new URLSearchParams(searchParams);
@@ -22,7 +23,7 @@ export function RegionSelecter({
 
   useEffect(() => {
     const recentCurrentCode = searchParams.get('regionCode');
-    setSelectedValue(recentCurrentCode ? recentCurrentCode : 'KR');
+    setSelectedValue(recentCurrentCode ? recentCurrentCode : defaultRegion);
   }, [searchParams])
 
   return (
