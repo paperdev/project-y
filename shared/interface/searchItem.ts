@@ -22,11 +22,14 @@ interface iArticle {
   title: string;
   timeAgo: string;
   source: string;
-  image: iImage[];
+  image: iImage;
   url: string;
   snippet: string;
 }
 
 export {
   type iSearchItem,
+  type iTitle,
+  type iImage,
+  type iArticle,
 }

@@ -10,7 +10,7 @@ export default function Page() {
   const searchParams = useSearchParams();
   const regionCode = searchParams.has('regionCode')
     ? searchParams.get('regionCode')
-    : process.env.YOUTUBE_DEFAULT_REGION;
+    : process.env.DEFAULT_REGION;
   const resData = useSWR(regionCode, getYoutubeList);
   const isLoading = resData.isLoading;
   const isError = resData.error;

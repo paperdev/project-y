@@ -18,7 +18,7 @@ function ComponentTag({
 
   return (
     <>
-    <div className={`${className}`}>
+      <div className={`${className}`}>
         {tags.map((tag, index) => {
           return (
             index < MAX_TAGS && (
@@ -31,7 +31,7 @@ function ComponentTag({
             )
           );
         })}
-        </div>
+      </div>
     </>
   );
 }

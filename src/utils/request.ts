@@ -22,7 +22,7 @@ async function getYoutubeList(regionCode: string | null | undefined, nextPageTok
   let params = {
     part: 'snippet,contentDetails,statistics',
     chart: 'mostPopular',
-    regionCode: regionCode ? regionCode : process.env.YOUTUBE_DEFAULT_REGION,
+    regionCode: regionCode ? regionCode : process.env.DEFAULT_REGION,
     maxResults: 5,
   };
 
@@ -85,15 +85,15 @@ async function getRegionList() {
 }
 
 async function getTrendList(regionCode: string | null | undefined) {
-  if (!process.env.GOOGLE_TREND_URL) {
+  if (!process.env.GOOGLE_TREND_DAILY_URL) {
     return;
   }
 
   let params = {
-    geo: regionCode ? regionCode : process.env.YOUTUBE_DEFAULT_REGION
+    geo: regionCode ? regionCode : process.env.DEFAULT_REGION
   };
 
-  const url = generateURL(process.env.GOOGLE_TREND_URL, params);
+  const url = generateURL(process.env.GOOGLE_TREND_DAILY_URL, params);
   if (!url) {
     return;
   }
