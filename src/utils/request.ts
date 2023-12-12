@@ -1,20 +1,34 @@
-const generateURL = (url: string, params: Record<string, any>): string | undefined => {
-  const newURL = new URL(url);
-  const seartchParams = new URLSearchParams({...params});
-  return newURL + '?' + seartchParams.toString();
-}
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const generateYoutubeURL = (url: string, params: Record<string, any>): string | undefined => {
+const generateURL = (
+  url: string,
+  params: Record<string, any>
+): string | undefined => {
+  const newURL = new URL(url);
+  const seartchParams = new URLSearchParams({ ...params });
+  return newURL + '?' + seartchParams.toString();
+};
+
+const generateYoutubeURL = (
+  url: string,
+  params: Record<string, any>
+): string | undefined => {
   if (!process.env.YOUTUBE_KEY || !params) {
     return;
   }
 
   const newURL = new URL(url);
-  const seartchParams = new URLSearchParams({key: process.env.YOUTUBE_KEY, ...params});
+  const seartchParams = new URLSearchParams({
+    key: process.env.YOUTUBE_KEY,
+    ...params,
+  });
   return newURL + '?' + seartchParams.toString();
-}
+};
 
-async function getYoutubeList(regionCode: string | null | undefined, nextPageToken?: string) {
+async function getYoutubeList(
+  regionCode: string | null | undefined,
+  nextPageToken?: string
+) {
   if (!process.env.YOUTUBE_BASE_URL) {
     return;
   }
@@ -28,7 +42,7 @@ async function getYoutubeList(regionCode: string | null | undefined, nextPageTok
 
   if (nextPageToken) {
     Object.assign(params, {
-      pageToken: nextPageToken
+      pageToken: nextPageToken,
     });
   }
 
@@ -37,14 +51,11 @@ async function getYoutubeList(regionCode: string | null | undefined, nextPageTok
     return;
   }
 
-  const res = await fetch(
-    url,
-    {
-      headers: {
-        'Content-type': 'application/json',
-      },
-    }
-  );
+  const res = await fetch(url, {
+    headers: {
+      'Content-type': 'application/json',
+    },
+  });
 
   if (!res.ok) {
     throw new Error('Failed to fetch data.');
@@ -62,20 +73,17 @@ async function getRegionList() {
     part: 'snippet',
     hl: 'en_US',
   };
-  
+
   const url = generateYoutubeURL(process.env.YOUTUBE_REGION_URL, params);
   if (!url) {
     return;
   }
 
-  const res = await fetch(
-    url,
-    {
-      headers: {
-        'Content-type': 'application/json',
-      },
-    }
-  );
+  const res = await fetch(url, {
+    headers: {
+      'Content-type': 'application/json',
+    },
+  });
 
   if (!res.ok) {
     throw new Error('Failed to fetch data.');
@@ -90,7 +98,7 @@ async function getTrendList(regionCode: string | null | undefined) {
   }
 
   let params = {
-    geo: regionCode ? regionCode : process.env.DEFAULT_REGION
+    geo: regionCode ? regionCode : process.env.DEFAULT_REGION,
   };
 
   const url = generateURL(process.env.GOOGLE_TREND_DAILY_URL, params);
@@ -99,19 +107,11 @@ async function getTrendList(regionCode: string | null | undefined) {
   }
 
   const res = await fetch(url, {
-    // mode: 'no-cors',
-    // credentials: 'include',
-    // referrerPolicy: 'no-referrer',
-    // referrerPolicy: 'origin-when-cross-origin',
-    // referrer: 'https://trends.google.com/trends/api/dailytrends',
     headers: {
       'Content-type': 'application/json',
       'Accept-Encoding': 'gzip',
       'Accept': 'application/json, text/plain, */*',
       'Content-Encoding': 'gzip',
-      // 'Access-Control-Allow-Headers': 'Content-Type',
-      // 'Access-Control-Allow-Origin': '*',
-      // 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET,PATCH',
     },
   });
 
@@ -121,13 +121,9 @@ async function getTrendList(regionCode: string | null | undefined) {
 
   const ab = await res.arrayBuffer();
   const bytes = new Uint8Array(ab);
-  const temp = bytes.slice(6); // TODO: so weird 
+  const temp = bytes.slice(6); // TODO: so weird
   var bytesString = new TextDecoder().decode(temp);
   return JSON.parse(bytesString);
 }
 
-export {
-  getYoutubeList,
-  getRegionList,
-  getTrendList,
-}
+export { fetcher, getYoutubeList, getRegionList, getTrendList };

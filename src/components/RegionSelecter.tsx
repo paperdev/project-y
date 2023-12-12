@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Select, SelectItem, Avatar } from '@nextui-org/react';
+import { Select, SelectItem, Avatar, Image } from '@nextui-org/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export function RegionSelecter({
@@ -30,28 +30,36 @@ export function RegionSelecter({
     <>
       <Select
         size='sm'
-        radius='full'
+        radius='sm'
         label='Region'
         placeholder='Select an region'
         color='primary'
+        selectionMode='single'
         onChange={onChangeRegion}
         selectedKeys={[selectedValue]}
+        startContent={
+          <Image
+            radius='none'
+            className='w-6 h-4'
+            src={`https://flagcdn.com/${selectedValue.toLocaleLowerCase()}.svg`}
+          />
+        }
       >
-        {Object.keys(regionCode).map((code, index) => {
-          return (
-            <SelectItem
-              key={code}
-              startContent={
-                <Avatar
-                  className='w-6 h-6'
-                  src={`https://flagcdn.com/${code.toLocaleLowerCase()}.svg`}
-                />
-              }
-            >
-              {regionCode[code]}
-            </SelectItem>
-          );
-        })}
+          {Object.keys(regionCode).map((code, index) => {
+            return (
+              <SelectItem
+                key={code}
+                startContent={
+                  <Avatar
+                    className='w-6 h-6'
+                    src={`https://flagcdn.com/${code.toLocaleLowerCase()}.svg`}
+                  />
+                }
+              >
+                {regionCode[code]}
+              </SelectItem>
+            );
+          })}
       </Select>
     </>
   );

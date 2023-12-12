@@ -15,21 +15,19 @@ export default function Header({
 }) {
   return (
     <>
-      <div className={`${className}`}>
-        <Navbar>
-          <NavbarContent justify='start' className='text-3xl'>
-            <MdDataThresholding />
-          </NavbarContent>
+      <Navbar className={`${className}`}>
+        <NavbarContent justify='start' className='text-3xl'>
+          <MdDataThresholding />
+        </NavbarContent>
 
-          <NavbarContent justify='center' className='sm:w-5/12 w-7/12 '>
-            <RegionSelecter regionCode={regionCode} />
-          </NavbarContent>
+        <NavbarContent justify='center' className='sm:w-5/12 w-7/12 '>
+          <RegionSelecter regionCode={regionCode} />
+        </NavbarContent>
 
-          <NavbarContent justify='end'>
-            <ThemeSwitcher />
-          </NavbarContent>
-        </Navbar>
-      </div>
+        <NavbarContent justify='end'>
+          <ThemeSwitcher />
+        </NavbarContent>
+      </Navbar>
     </>
   );
 }

@@ -5,7 +5,7 @@
 const path = require('path');
 const dotenv = require('dotenv');
 
-// TODO: 
+// TODO:
 dotenv.config({ path: path.join(__dirname, 'env.local') });
 
 const nextConfig = {
@@ -19,11 +19,11 @@ const nextConfig = {
     YOUTUBE_REGION_URL: process.env.YOUTUBE_REGION_URL,
     YOUTUBE_URL_WATCH: process.env.YOUTUBE_URL_WATCH,
     YOUTUBE_URL_EMBED: process.env.YOUTUBE_URL_EMBED,
-    YOUTUBE_URL_CHANNEL: process.env.YOUTUBE_URL_CHANNEL, 
+    YOUTUBE_URL_CHANNEL: process.env.YOUTUBE_URL_CHANNEL,
   },
 
   distDir: 'build',
   // output: 'export',
-}
- 
+};
+
 module.exports = nextConfig;
