@@ -11,7 +11,19 @@ export default async function TemplateHome({
 }) {
   const regionList = await getRegionList();
   const regionCode: Record<string, string> = {};
-  regionList.items.forEach((region: any) => {
+  const sortedRegionList = regionList.items.sort(function (a: any, b: any) {
+    const tempA = a.snippet.name;
+    const tempB = b.snippet.name;
+    if (tempA < tempB) {
+      return -1;
+    }
+    if (tempB > tempA) {
+      return 1;
+    }
+    return 0;
+  });
+
+  sortedRegionList.forEach((region: any) => {
     regionCode[region.snippet.gl] = region.snippet.name;
   });
   

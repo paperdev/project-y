@@ -3,7 +3,7 @@
 import React from 'react';
 import { ThemeSwitcher } from './ThemeSwitcher';
 import { RegionSelecter } from '@/components/RegionSelecter';
-import { Navbar, NavbarItem, NavbarContent } from '@nextui-org/react';
+import { Navbar, NavbarContent } from '@nextui-org/react';
 import { MdDataThresholding } from 'react-icons/md';
 
 export default function Header({

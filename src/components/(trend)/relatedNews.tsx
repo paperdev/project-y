@@ -21,30 +21,28 @@ export default function ComponentRelatedNews({
       <div className={`${className}`}>
         {relatedNews.map((article: iArticle, index: number) => {
           return (
-            <>
-              <Link
-                key={index}
-                isExternal
-                href={article.url}
-              >
-                <Card className='w-full'>
-                  <CardHeader className='gap-4'>
-                    <ComponentImage
-                      dataImage={article.image}
-                    />
+            <Link
+              key={index}
+              isExternal
+              href={article.url}
+            >
+              <Card className='w-full'>
+                <CardHeader className='gap-4'>
+                  <ComponentImage
+                    dataImage={article.image}
+                  />
 
+                  <div>
                     <div>
-                      <div>
-                        {article.title}
-                      </div>
-                      <div className='text-xs mt-2 text-default-500'>
-                        {article.source} - {article.timeAgo}
-                      </div>
+                      {article.title}
                     </div>
-                  </CardHeader>
-                </Card>
-              </Link>
-            </>
+                    <div className='text-xs mt-2 text-default-500'>
+                      {article.source} - {article.timeAgo}
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
+            </Link>
           );
         })}
       </div>

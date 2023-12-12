@@ -9,7 +9,7 @@ export function RegionSelecter({
 }: {
   regionCode: Record<string, string>;
 }) {
-  const defaultRegion = process.env.YOUTUBE_DEFAULT_REGION ? process.env.YOUTUBE_DEFAULT_REGION : '';
+  const defaultRegion = process.env.DEFAULT_REGION ? process.env.DEFAULT_REGION : '';
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
