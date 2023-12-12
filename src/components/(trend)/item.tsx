@@ -164,6 +164,7 @@ export default function ComponentItem({
                   </div>
                   <ComponentImage
                     dataImage={item.image}
+                    isShownLink={true}
                   />
                 </CardHeader>
 

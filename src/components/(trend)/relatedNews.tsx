@@ -30,6 +30,7 @@ export default function ComponentRelatedNews({
                 <CardHeader className='gap-4'>
                   <ComponentImage
                     dataImage={article.image}
+                    isShownLink={false}
                   />
 
                   <div>

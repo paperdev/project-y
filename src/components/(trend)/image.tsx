@@ -6,8 +6,10 @@ import { iImage } from '@/shared/interface/searchItem';
 
 export default function ComponentImage({
   dataImage,
+  isShownLink,
 }: {
   dataImage: iImage,
+  isShownLink: boolean,
 }) {
   if (!dataImage) {
     return <></>
@@ -16,13 +18,21 @@ export default function ComponentImage({
   return (
     <>
       <Card>
-        <Link isExternal href={dataImage.newsUrl}>
+        {isShownLink ? (
+          <Link isExternal href={dataImage.newsUrl}>
+            <Image
+              removeWrapper
+              className='z-0 object-cover'
+              src={dataImage.imageUrl}
+            />
+          </Link>
+        ) : (
           <Image
             removeWrapper
             className='z-0 object-cover'
             src={dataImage.imageUrl}
           />
-        </Link>
+        )}
 
         <CardFooter className='absolute bottom-0 rounded-lg'>
           <div className='flex mx-auto text-tiny text-default'>
@@ -31,5 +41,5 @@ export default function ComponentImage({
         </CardFooter>
       </Card>
     </>
-  )
+  );
 }
