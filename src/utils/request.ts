@@ -4,9 +4,8 @@ const generateURL = (
   url: string,
   params: Record<string, any>
 ): string | undefined => {
-  const newURL = new URL(url);
   const seartchParams = new URLSearchParams({ ...params });
-  return newURL + '?' + seartchParams.toString();
+  return url + '?' + seartchParams.toString();
 };
 
 const generateYoutubeURL = (
@@ -106,14 +105,17 @@ async function getTrendList(regionCode: string | null | undefined) {
     return;
   }
 
-  const res = await fetch(url, {
-    headers: {
-      'Content-type': 'application/json',
-      'Accept-Encoding': 'gzip',
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Encoding': 'gzip',
-    },
-  });
+  const res = await fetch(
+    url,
+    {
+      headers: {
+        'Content-type': 'application/json',
+        'Accept-Encoding': 'gzip',
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Encoding': 'gzip',
+      },
+    }
+  );
 
   if (!res.ok) {
     throw new Error('Failed to fetch data.');

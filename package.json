@@ -16,6 +16,7 @@
     "@capacitor/cli": "^5.5.1",
     "@capacitor/ios": "^5.5.1",
     "@nextui-org/react": "^2.2.9",
+    "@tanstack/react-query": "^5.13.4",
     "dotenv": "^16.3.1",
     "framer-motion": "^10.16.9",
     "next": "14.0.3",

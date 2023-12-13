@@ -1,35 +1,41 @@
 'use client';
 
-import useSWR from 'swr';
 import { useSearchParams } from 'next/navigation';
 import Loading from '@/components/template/loading';
-import { fetcher } from '@/utils/request';
+import { getTrendList } from '@/utils/request';
 import ComponentItem from '@/components/(trend)/item';
 import { useEffect, useState } from 'react';
+import { iSearchItem } from '@/shared/interface/searchItem';
+import { useQuery } from '@tanstack/react-query'
 
 export default function Page() {
-  const [searchesDays, setSearchesDays] = useState();
-  const [searches, setSearches] = useState();
+  const [searchItem, setSearchItem] = useState<iSearchItem[]>([]);
   const searchParams = useSearchParams();
   const regionCode = searchParams.has('regionCode')
     ? searchParams.get('regionCode')
     : process.env.DEFAULT_REGION;
 
-  const resData = useSWR(`/api/trend/${regionCode}`, fetcher);
-  const isLoading = resData.isLoading;
-  const isError = resData.error;
-  const dataTrend = resData.data;
+  const { isPending, error, data, isFetching } = useQuery({
+    queryKey: ['regionCode', regionCode],
+    queryFn: () => {
+      return getTrendList(regionCode);
+    },
+  })
 
   useEffect(() => {
-    if (!isLoading) {
-      const trendingSearchesDays = dataTrend.trendingSearchesDays;
-      const trendingSearches = trendingSearchesDays[0].trendingSearches;
-      setSearchesDays(trendingSearchesDays);
-      setSearches(trendingSearches);
+    if (data) {
+      let temp: any[] = [];
+      data.default.trendingSearchesDays.map((days: any) => {
+        temp = temp.concat(days.trendingSearches);
+      });
+      setSearchItem(temp);
     }
-  }, [dataTrend])
+    else {
+      setSearchItem([]);
+    }
+  }, [data, regionCode])
 
-  if (isError) {
+  if (error) {
     return (
       <div className='flex flex-col text-danger-500'>
         <div className='mx-auto'>The current region is not available.</div>
@@ -38,13 +44,15 @@ export default function Page() {
     );
   }
 
+  if (isPending || isFetching) {
+    return <Loading />
+  }
+
   return (
     <>
-      {isLoading || !searches ? (
-        <Loading />
-      ) : (
-        <ComponentItem dataItem={searches} />
-      )}
+      {
+        0 !== searchItem.length && <ComponentItem dataItem={searchItem} />
+      }
     </>
   );
 }

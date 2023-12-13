@@ -22,6 +22,16 @@ const nextConfig = {
     YOUTUBE_URL_CHANNEL: process.env.YOUTUBE_URL_CHANNEL,
   },
 
+  reactStrictMode: true,
+  async rewrites() {
+    return [
+      {
+        source: '/:path*',
+        destination: `${process.env.GOOGLE_TREND_URL}/:path*`,
+      },
+    ];
+  },
+
   distDir: 'build',
   // output: 'export',
 };
