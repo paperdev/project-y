@@ -37,6 +37,7 @@ export function RegionSelecter({
         onSelectionChange={onSelectionChange}
         selectedKey={selectedValue}
         isClearable={false}
+        autoFocus={false}
         startContent={
           <Image
             radius='none'
