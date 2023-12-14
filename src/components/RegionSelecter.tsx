@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Select, SelectItem, Avatar, Image } from '@nextui-org/react';
+import { Avatar, Image, Autocomplete, AutocompleteItem } from '@nextui-org/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export function RegionSelecter({
@@ -15,9 +15,9 @@ export function RegionSelecter({
   const searchParams = useSearchParams();
   const [selectedValue, setSelectedValue] = useState<string>(defaultRegion);
 
-  const onChangeRegion = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const onSelectionChange = (key: any) => {
     const params = new URLSearchParams(searchParams);
-    params.set('regionCode', event.target.value);
+    params.set('regionCode', key);
     router.push(pathname + '?' + params.toString());
   };
 
@@ -28,15 +28,15 @@ export function RegionSelecter({
 
   return (
     <>
-      <Select
+      <Autocomplete
         size='sm'
         radius='sm'
         label='Region'
         placeholder='Select an region'
         color='primary'
-        selectionMode='single'
-        onChange={onChangeRegion}
-        selectedKeys={[selectedValue]}
+        onSelectionChange={onSelectionChange}
+        selectedKey={selectedValue}
+        isClearable={false}
         startContent={
           <Image
             radius='none'
@@ -47,7 +47,7 @@ export function RegionSelecter({
       >
           {Object.keys(regionCode).map((code, index) => {
             return (
-              <SelectItem
+              <AutocompleteItem
                 key={code}
                 startContent={
                   <Avatar
@@ -57,10 +57,10 @@ export function RegionSelecter({
                 }
               >
                 {regionCode[code]}
-              </SelectItem>
+              </AutocompleteItem>
             );
           })}
-      </Select>
+      </Autocomplete>
     </>
   );
 }
