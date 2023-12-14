@@ -1,20 +1,20 @@
 'use client';
 
 import React from 'react';
-import { MdWhatshot, MdSmartDisplay, MdInfo } from 'react-icons/md';
+import { MdSearch, MdSmartDisplay, MdInfo } from 'react-icons/md';
 import { Tabs, Tab } from '@nextui-org/react';
 import { usePathname, useRouter } from 'next/navigation';
 
 const bottomMenu = [
   {
-    name: 'trend',
-    href: 'trend',
-    icon: <MdWhatshot />,
+    name: 'home',
+    href: 'home',
+    icon: <MdSmartDisplay />,
   },
   {
-    name: 'youtube',
-    href: 'youtube',
-    icon: <MdSmartDisplay />,
+    name: 'search',
+    href: 'search',
+    icon: <MdSearch />,
   },
   {
     name: 'about',

@@ -17,6 +17,7 @@
     "@capacitor/ios": "^5.5.1",
     "@nextui-org/react": "^2.2.9",
     "@tanstack/react-query": "^5.13.4",
+    "axios": "^1.6.2",
     "dotenv": "^16.3.1",
     "framer-motion": "^10.16.9",
     "next": "14.0.3",
@@ -24,8 +25,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.12.0",
-    "react-infinite-scroll-component": "^6.1.0",
-    "swr": "^2.2.4"
+    "react-infinite-scroll-component": "^6.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -1,14 +1,30 @@
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import axios from 'axios';
+
+const axiosInstance = axios.create(
+  {
+    baseURL: process.env.YOUTUBE_BASE_URL,
+    headers: {
+      // 'Authorization': 'Bearer ' + 'abcdefg',
+      'Accept': 'application/json',
+      'Content-type': 'application/json',
+    },
+    responseType: 'json',
+  },
+)
 
 const generateURL = (
   url: string,
   params: Record<string, any>
 ): string | undefined => {
-  const seartchParams = new URLSearchParams({ ...params });
-  return url + '?' + seartchParams.toString();
+  if (!params) {
+    return;
+  }
+
+  const searchParams = new URLSearchParams({ ...params });
+  return url + '?' + searchParams.toString();
 };
 
-const generateYoutubeURL = (
+const generateURLWithKey = (
   url: string,
   params: Record<string, any>
 ): string | undefined => {
@@ -16,24 +32,24 @@ const generateYoutubeURL = (
     return;
   }
 
-  const newURL = new URL(url);
-  const seartchParams = new URLSearchParams({
+  const searchParams = new URLSearchParams({
     key: process.env.YOUTUBE_KEY,
     ...params,
   });
-  return newURL + '?' + seartchParams.toString();
+  return url + '?' + searchParams.toString();
 };
 
 async function getYoutubeList(
   regionCode: string | null | undefined,
   nextPageToken?: string
 ) {
-  if (!process.env.YOUTUBE_BASE_URL) {
+  if (!process.env.YOUTUBE_VIDEO_URL) {
     return;
   }
 
   let params = {
-    part: 'snippet,contentDetails,statistics',
+    // part: 'snippet,contentDetails,statistics',
+    part: 'snippet,statistics',
     chart: 'mostPopular',
     regionCode: regionCode ? regionCode : process.env.DEFAULT_REGION,
     maxResults: 5,
@@ -45,22 +61,52 @@ async function getYoutubeList(
     });
   }
 
-  const url = generateYoutubeURL(process.env.YOUTUBE_BASE_URL, params);
+  const url = generateURLWithKey(process.env.YOUTUBE_VIDEO_URL, params);
   if (!url) {
     return;
   }
 
-  const res = await fetch(url, {
-    headers: {
-      'Content-type': 'application/json',
-    },
-  });
-
-  if (!res.ok) {
+  const res = await axiosInstance.get(url);
+  if (200 !== res.status) {
     throw new Error('Failed to fetch data.');
   }
 
-  return res.json();
+  return res.data;
+}
+
+async function getSearchList(
+  regionCode: string | null | undefined,
+  searchKey: string,
+  nextPageToken?: string
+) {
+  if (!process.env.YOUTUBE_SEARCH_URL) {
+    return;
+  }
+
+  let params = {
+    part: 'id,snippet',
+    regionCode: regionCode ? regionCode : process.env.DEFAULT_REGION,
+    q: searchKey,
+    maxResults: 5,
+  };
+
+  if (nextPageToken) {
+    Object.assign(params, {
+      pageToken: nextPageToken,
+    });
+  }
+
+  const url = generateURLWithKey(process.env.YOUTUBE_SEARCH_URL, params);
+  if (!url) {
+    return;
+  }
+
+  const res = await axiosInstance.get(url);
+  if (200 !== res.status) {
+    throw new Error('Failed to fetch data.');
+  }
+
+  return res.data;
 }
 
 async function getRegionList() {
@@ -73,59 +119,17 @@ async function getRegionList() {
     hl: 'en_US',
   };
 
-  const url = generateYoutubeURL(process.env.YOUTUBE_REGION_URL, params);
+  const url = generateURLWithKey(process.env.YOUTUBE_REGION_URL, params);
   if (!url) {
     return;
   }
 
-  const res = await fetch(url, {
-    headers: {
-      'Content-type': 'application/json',
-    },
-  });
-
-  if (!res.ok) {
+  const res = await axiosInstance.get(url);
+  if (200 !== res.status) {
     throw new Error('Failed to fetch data.');
   }
 
-  return res.json();
+  return res.data;
 }
 
-async function getTrendList(regionCode: string | null | undefined) {
-  if (!process.env.GOOGLE_TREND_DAILY_URL) {
-    return;
-  }
-
-  let params = {
-    geo: regionCode ? regionCode : process.env.DEFAULT_REGION,
-  };
-
-  const url = generateURL(process.env.GOOGLE_TREND_DAILY_URL, params);
-  if (!url) {
-    return;
-  }
-
-  const res = await fetch(
-    url,
-    {
-      headers: {
-        'Content-type': 'application/json',
-        'Accept-Encoding': 'gzip',
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Encoding': 'gzip',
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch data.');
-  }
-
-  const ab = await res.arrayBuffer();
-  const bytes = new Uint8Array(ab);
-  const temp = bytes.slice(6); // TODO: so weird
-  var bytesString = new TextDecoder().decode(temp);
-  return JSON.parse(bytesString);
-}
-
-export { fetcher, getYoutubeList, getRegionList, getTrendList };
+export { getYoutubeList, getSearchList, getRegionList };

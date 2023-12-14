@@ -15,11 +15,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
           queries: {
             // With SSR, we usually want to set some default staleTime
             // above 0 to avoid refetching immediately on the client
-            staleTime: 1 * 1000,
-            retry: 1
-          },
-        },
-      }),
+            staleTime: 6 * 1000,
+            retry: 1,
+            refetchOnWindowFocus: false,
+          }
+        }
+      })
   )
 
 

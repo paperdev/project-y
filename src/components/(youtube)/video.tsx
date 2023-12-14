@@ -26,13 +26,14 @@ import {
 } from 'react-icons/md';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getYoutubeList } from '@/utils/request';
+import { iItem } from '@/shared/interface/video';
 
 export default function ComponentVideo({
   dataVideo,
   nextPageToken,
   totalResults,
 }: {
-  dataVideo: any[],
+  dataVideo: iItem[],
   nextPageToken: string
   totalResults: number
 }) {
