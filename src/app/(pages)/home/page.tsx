@@ -6,7 +6,7 @@ import Loading from '@/components/template/loading';
 import { getYoutubeList } from '@/utils/request';
 import Error from '@/components/template/error';
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query';
 import { iVideo } from '@/shared/interface/video';
 
 export default function Page() {
@@ -21,39 +21,37 @@ export default function Page() {
     queryFn: () => {
       return getYoutubeList(regionCode);
     },
-  })
+  });
 
   useEffect(() => {
     setDataYoutube(data);
-  }, [data, regionCode])
+  }, [data, regionCode]);
 
   if (error) {
-    return <Error
-      messages={
-        [
+    return (
+      <Error
+        messages={[
           'The current region is not available.',
           'Try a different region.',
           'Message: ' + error.message,
-        ]
-      }
-    />
+        ]}
+      />
+    );
   }
 
   if (isPending || isFetching) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
     <>
-    {
-      dataYoutube && 
-      <ComponentVideo
+      {dataYoutube && (
+        <ComponentVideo
           dataVideo={dataYoutube.items}
           nextPageToken={dataYoutube.nextPageToken}
           totalResults={dataYoutube.pageInfo.totalResults}
         />
-    }
-      
+      )}
     </>
   );
 }

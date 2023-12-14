@@ -1,31 +1,32 @@
 'use client';
 
-import React, { Ref } from 'react';
-import { Listbox, ListboxItem, Link, Input, Button } from "@nextui-org/react";
+import React, { MutableRefObject } from 'react';
+import { Input, Button } from "@nextui-org/react";
 
 export default function ComponentSearchInput({
   className,
   inputRef,
+  onSearch,
 }: {
   className: string;
-  inputRef: Ref<HTMLInputElement>
+  inputRef: MutableRefObject<HTMLInputElement | null>
+  onSearch: Function
 }) {
-
-  const onPressSend = () => {
-    // if (!inputChatRef.current.value) {
-    //   return;
-    // }
-    // sendText(inputChatRef.current.value);
+  const onPressSearch = () => {
+    if (!inputRef?.current?.value) {
+      return;
+    }
+    onSearch(inputRef.current.value);
   }
 
   const checkKeyDown = (event: React.KeyboardEvent) => {
-    // if (event.key === 'Enter' || event.code === 'Enter') {
-    //   if (!inputRef.current.value) {
-    //     return;
-    //   }
-
-    //   sendText(inputRef.current.value);
-    // }
+    if (event.key === 'Enter' || event.code === 'Enter') {
+      if (!inputRef?.current?.value) {
+        return;
+      }
+      onSearch(inputRef.current.value);
+      inputRef.current.value = '';
+    }
   }
 
   return (
@@ -38,9 +39,9 @@ export default function ComponentSearchInput({
           placeholder='Search anything'
           endContent={
             <Button
-              onPress={() => { onPressSend(); }}
+              onPress={() => { onPressSearch(); }}
             >
-              Send
+              Search
             </Button>
           }
           ref={inputRef}

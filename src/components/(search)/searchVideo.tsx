@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
 import ComponentPlayer from '@/components/(youtube)/player';
-import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
 import {
   Button,
   Card,
@@ -15,30 +14,26 @@ import {
   Spinner,
 } from '@nextui-org/react';
 import {
-  MdThumbUp,
-  MdVisibility,
-  MdComment,
-  MdFavorite,
   MdExpandMore,
   MdExpandLess,
-  MdUnfoldMore,
-  MdUnfoldLess,
 } from 'react-icons/md';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { getYoutubeList } from '@/utils/request';
-import { iItem } from '@/shared/interface/video';
+import { getSearchList } from '@/utils/request';
+import { iSearchItem } from '@/shared/interface/searchVideo';
 
-export default function ComponentVideo({
+export default function ComponentSearchVideo({
   dataVideo,
   nextPageToken,
   totalResults,
+  searchKey,
 }: {
-  dataVideo: iItem[],
-  nextPageToken: string
-  totalResults: number
+  dataVideo: iSearchItem[],
+  nextPageToken: string,
+  totalResults: number,
+  searchKey: string,
 }) {
   const searchParams = useSearchParams();
-  const [recentVideo, setRecentVideo] = useState(dataVideo);
+  const [recentVideo, setRecentVideo] = useState<iSearchItem[]>(dataVideo);
   const [pageToken, setPageToken] = useState(nextPageToken);
   const [loadMore, setLoadMore] = useState(true);
 
@@ -49,14 +44,14 @@ export default function ComponentVideo({
     }
 
     const regionCode = searchParams.get('regionCode');
-    const resData = await getYoutubeList(regionCode, pageToken);
+    const resData = await getSearchList(regionCode, searchKey, pageToken);
+
     setRecentVideo((video) => [...video, ...resData.items]);
     setPageToken(resData.nextPageToken);
   };
 
   useEffect(() => {
     recentVideo.map((video) => {
-      video.tagExpanded = false;
       video.descExpanded = false;
     });
 
@@ -89,41 +84,8 @@ export default function ComponentVideo({
 
     const temp = Array.from(recentVideo);
     temp.map((video) => {
-      if (videoId === video.id) {
+      if (videoId === video.id.videoId) {
         video.descExpanded = !video.descExpanded;
-      }
-    });
-    setRecentVideo(temp);
-  };
-
-  const onClickTagExpand = (event: React.SyntheticEvent) => {
-    if (!event || !event.currentTarget) {
-      return;
-    }
-
-    const currentTagElement =
-      event.currentTarget.parentElement?.parentElement?.getElementsByClassName(
-        'hiddenTagClass'
-      )[0];
-    const isHidden = currentTagElement?.classList.contains('hidden');
-    if (isHidden) {
-      currentTagElement?.classList.remove('hidden');
-    } else {
-      currentTagElement?.classList.add('hidden');
-    }
-
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
-
-    const temp = Array.from(recentVideo);
-    temp.map((video) => {
-      if (videoId === video.id) {
-        video.tagExpanded = !video.tagExpanded;
       }
     });
     setRecentVideo(temp);
@@ -148,6 +110,10 @@ export default function ComponentVideo({
       >
 
         {recentVideo.map((video, index) => {
+          if(video.id.channelId) {
+            return (<div key={index}></div>)
+          }
+
           return (
             <div key={index}>
               <Card shadow='none' className='rounded-none'>
@@ -175,61 +141,13 @@ export default function ComponentVideo({
                   </div>
                 </CardHeader>
 
-                <CardBody className='flex '>
-                  <div className='flex justify-between'>
-                    <ComponentTag
-                      className='flex flex-wrap gap-1'
-                      tags={video.snippet.tags}
-                    />
-
-                    <Button
-                      isIconOnly
-                      variant='flat'
-                      className='w-7 h-7'
-                      onClick={onClickTagExpand}
-                      data-videoid={video.id}
-                    >
-                      {video.tagExpanded ? <MdUnfoldLess /> : <MdUnfoldMore />}
-                    </Button>
-                  </div>
-
-                  <div className='hiddenTagClass hidden pt-1'>
-                    <ComponentHiddenTag
-                      className='flex flex-wrap gap-1'
-                      tags={video.snippet.tags}
-                    />
-                  </div>
-                </CardBody>
-
                 <CardBody>
-                  <ComponentPlayer videoId={video.id} />
+                  <ComponentPlayer videoId={video.id.videoId} />
                 </CardBody>
 
                 <CardFooter className='justify-between'>
                   <div className='flex flex-row gap-4'>
-                    {video.statistics && (
-                      <>
-                        <div className='flex gap-1 items-center text-gray-600'>
-                          <MdThumbUp />
-                          <div>{video.statistics.likeCount}</div>
-                        </div>
-
-                        <div className='flex gap-1 items-center text-gray-600'>
-                          <MdVisibility />
-                          <div>{video.statistics.viewCount}</div>
-                        </div>
-
-                        <div className='flex gap-1 items-center text-gray-600'>
-                          <MdComment />
-                          <div>{video.statistics.commentCount}</div>
-                        </div>
-
-                        <div className='flex gap-1 items-center text-gray-600'>
-                          <MdFavorite />
-                          <div>{video.statistics.favoriteCount}</div>
-                        </div>
-                      </>
-                    )}
+                    
                   </div>
 
                   <Button

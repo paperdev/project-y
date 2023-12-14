@@ -44,7 +44,7 @@ async function getYoutubeList(
   nextPageToken?: string
 ) {
   if (!process.env.YOUTUBE_VIDEO_URL) {
-    return;
+    return null;
   }
 
   let params = {
@@ -63,7 +63,7 @@ async function getYoutubeList(
 
   const url = generateURLWithKey(process.env.YOUTUBE_VIDEO_URL, params);
   if (!url) {
-    return;
+    return null;
   }
 
   const res = await axiosInstance.get(url);
@@ -76,11 +76,11 @@ async function getYoutubeList(
 
 async function getSearchList(
   regionCode: string | null | undefined,
-  searchKey: string,
+  searchKey: string | null,
   nextPageToken?: string
 ) {
-  if (!process.env.YOUTUBE_SEARCH_URL) {
-    return;
+  if (!process.env.YOUTUBE_SEARCH_URL || !searchKey) {
+    return null;
   }
 
   let params = {
@@ -98,7 +98,7 @@ async function getSearchList(
 
   const url = generateURLWithKey(process.env.YOUTUBE_SEARCH_URL, params);
   if (!url) {
-    return;
+    return null;
   }
 
   const res = await axiosInstance.get(url);
@@ -111,7 +111,7 @@ async function getSearchList(
 
 async function getRegionList() {
   if (!process.env.YOUTUBE_REGION_URL) {
-    return;
+    return null;
   }
 
   let params = {
@@ -121,7 +121,7 @@ async function getRegionList() {
 
   const url = generateURLWithKey(process.env.YOUTUBE_REGION_URL, params);
   if (!url) {
-    return;
+    return null;
   }
 
   const res = await axiosInstance.get(url);
