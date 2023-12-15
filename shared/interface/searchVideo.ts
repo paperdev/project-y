@@ -1,12 +1,12 @@
 interface iSearchVideo {
   kind: string;
   etag: string;
-  items: iItem[];
+  items: iSearchItem[];
   nextPageToken: string;
   pageInfo: iPageInfo;
 }
 
-interface iItem {
+interface iSearchItem {
   kind: string;
   etag: string;
   id: iItemId;
@@ -38,5 +38,5 @@ interface iSnippet {
 
 export {
   type iSearchVideo,
-  type iItem as iSearchItem,
+  type iSearchItem,
 }

@@ -1,16 +1,16 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import ComponentVideo from '@/components/(youtube)/video';
+import ComponentTrendList from '@/components/(trend)/trendList';
 import Loading from '@/components/template/loading';
-import { getYoutubeList } from '@/utils/request';
+import { getTrendList } from '@/utils/request';
 import Error from '@/components/template/error';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { iVideo } from '@/shared/interface/video';
+import { iTrendVideo } from '@/shared/interface/trendVideo';
 
 export default function Page() {
-  const [dataYoutube, setDataYoutube] = useState<iVideo>();
+  const [trendVideo, setTrendVideo] = useState<iTrendVideo>();
   const searchParams = useSearchParams();
   const regionCode = searchParams.has('regionCode')
     ? searchParams.get('regionCode')
@@ -19,12 +19,12 @@ export default function Page() {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['regionCode', regionCode],
     queryFn: () => {
-      return getYoutubeList(regionCode);
+      return getTrendList(regionCode);
     },
   });
 
   useEffect(() => {
-    setDataYoutube(data);
+    setTrendVideo(data);
   }, [data, regionCode]);
 
   if (error) {
@@ -45,11 +45,11 @@ export default function Page() {
 
   return (
     <>
-      {dataYoutube && (
-        <ComponentVideo
-          dataVideo={dataYoutube.items}
-          nextPageToken={dataYoutube.nextPageToken}
-          totalResults={dataYoutube.pageInfo.totalResults}
+      {trendVideo && (
+        <ComponentTrendList
+          videoList={trendVideo.items}
+          nextPageToken={trendVideo.nextPageToken}
+          totalResults={trendVideo.pageInfo.totalResults}
         />
       )}
     </>

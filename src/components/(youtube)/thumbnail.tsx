@@ -3,15 +3,17 @@
 import React from 'react';
 import { Listbox, ListboxItem, Link } from "@nextui-org/react";
 
+interface iThumbnail {
+  url: string;
+  width: string;
+  height: string;
+}
+
 export default function ComponentThumbnail({
   dataThumbnail,
   videoId: videoId
 }: {
-  dataThumbnail: {
-    url: string,
-    width: string,
-    height: string
-  },
+  dataThumbnail: iThumbnail,
   videoId: string
 }) {
   const onPress = () => { }

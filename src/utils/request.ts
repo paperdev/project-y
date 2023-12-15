@@ -39,7 +39,7 @@ const generateURLWithKey = (
   return url + '?' + searchParams.toString();
 };
 
-async function getYoutubeList(
+async function getTrendList(
   regionCode: string | null | undefined,
   nextPageToken?: string
 ) {
@@ -132,4 +132,4 @@ async function getRegionList() {
   return res.data;
 }
 
-export { getYoutubeList, getSearchList, getRegionList };
+export { getTrendList, getSearchList, getRegionList };

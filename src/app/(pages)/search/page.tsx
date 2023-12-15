@@ -8,13 +8,13 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRef } from 'react';
 import ComponentSearchInput from '@/components/(search)/searchInput';
-import ComponentSearchVideo from '@/components/(search)/searchVideo';
+import ComponentSearchList from '@/components/(search)/searchList';
 import { iSearchVideo } from '@/shared/interface/searchVideo';
 
 export default function Page() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchKey, setSearchKey] = useState<string>('');
-  const [dataYoutube, setDataYoutube] = useState<iSearchVideo>();
+  const [searchVideo, setSearchVideo] = useState<iSearchVideo>();
   const searchParams = useSearchParams();
   const regionCode = searchParams.has('regionCode')
     ? searchParams.get('regionCode')
@@ -32,7 +32,7 @@ export default function Page() {
   });
 
   useEffect(() => {
-    setDataYoutube(data);
+    setSearchVideo(data);
   }, [data, regionCode, searchKey]);
 
   return (
@@ -57,11 +57,11 @@ export default function Page() {
               <Loading />
             ) : (
               <>
-                {dataYoutube && (
-                  <ComponentSearchVideo
-                    dataVideo={dataYoutube.items}
-                    nextPageToken={dataYoutube.nextPageToken}
-                    totalResults={dataYoutube.pageInfo.totalResults}
+                {searchVideo && (
+                  <ComponentSearchList
+                    videoList={searchVideo.items}
+                    nextPageToken={searchVideo.nextPageToken}
+                    totalResults={searchVideo.pageInfo.totalResults}
                     searchKey={searchKey}
                   />
                 )}

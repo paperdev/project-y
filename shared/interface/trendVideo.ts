@@ -1,19 +1,17 @@
-interface iVideo {
+interface iTrendVideo {
   kind: string;
   etag: string;
-  items: iItem[];
+  items: iTrendItem[];
   nextPageToken: string;
   pageInfo: iPageInfo;
 }
 
-interface iItem {
+interface iTrendItem {
   kind: string;
   etag: string;
   id: string;
   snippet: iSnippet;
   statistics: iStatistics;
-  tagExpanded?: boolean;
-  descExpanded?: boolean;
 }
 
 interface iPageInfo {
@@ -39,6 +37,6 @@ interface iStatistics {
 }
 
 export {
-  type iVideo,
-  type iItem,
+  type iTrendVideo,
+  type iTrendItem,
 }
