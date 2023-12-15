@@ -180,7 +180,7 @@ export default function ComponentTrendVideoCard({
           </Button>
         </CardFooter>
 
-        <CardBody className='hiddenDescClass hidden '>
+        <CardBody className='hiddenDescClass hidden whitespace-pre-wrap'>
           {video.snippet.description}
         </CardBody>
       </Card>

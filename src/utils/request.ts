@@ -132,4 +132,27 @@ async function getRegionList() {
   return res.data;
 }
 
-export { getTrendList, getSearchList, getRegionList };
+async function getVideoCategoryList(regionCode: string | null | undefined,) {
+  if (!process.env.YOUTUBE_VIDEO_CATEGORY_URL) {
+    return null;
+  }
+
+  let params = {
+    regionCode: regionCode ? regionCode : process.env.DEFAULT_REGION,
+    part: 'snippet'
+  };
+
+  const url = generateURLWithKey(process.env.YOUTUBE_VIDEO_CATEGORY_URL, params);
+  if (!url) {
+    return null;
+  }
+
+  const res = await axiosInstance.get(url);
+  if (200 !== res.status) {
+    throw new Error('Failed to fetch data.');
+  }
+
+  return res.data;
+}
+
+export { getTrendList, getSearchList, getRegionList, getVideoCategoryList };

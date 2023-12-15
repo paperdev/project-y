@@ -8,10 +8,8 @@ import { MdDataThresholding } from 'react-icons/md';
 
 export default function Header({
   className,
-  regionCode,
 }: {
   className?: string;
-  regionCode: Record<string, string>;
 }) {
   return (
     <>
@@ -21,7 +19,7 @@ export default function Header({
         </NavbarContent>
 
         <NavbarContent justify='center' className='sm:w-5/12 w-7/12 '>
-          <RegionSelecter regionCode={regionCode} />
+          <RegionSelecter />
         </NavbarContent>
 
         <NavbarContent justify='end'>

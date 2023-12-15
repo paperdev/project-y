@@ -16,7 +16,6 @@ export default function ComponentSearchVideoCard({
 }: {
   video: iSearchItem,
 }) {
-
   return (
     <>
       <Card shadow='none' className='rounded-none'>
@@ -49,7 +48,10 @@ export default function ComponentSearchVideoCard({
         </CardBody>
 
         <CardFooter>
-          {video.snippet.description}
+          <div className='whitespace-pre-wrap'>
+            {video.snippet.description}
+          </div>
+          
         </CardFooter>
       </Card>
     </>

@@ -17,7 +17,7 @@ export default function Page() {
     : process.env.DEFAULT_REGION;
 
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ['regionCode', regionCode],
+    queryKey: ['trend', regionCode],
     queryFn: () => {
       return getTrendList(regionCode);
     },
