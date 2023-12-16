@@ -33,7 +33,6 @@ export default function ComponentSearchInput({
     <>
       <div className={`${className}`}>
         <Input
-          autoFocus
           type='text'
           variant='bordered'
           placeholder='Search anything'

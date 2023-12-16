@@ -9,6 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' suppressHydrationWarning={true}>
+      <meta name='viewport' content='width=device-width, user-scalable=no' />
       <body>
         <Providers>
           <TemplateHome>

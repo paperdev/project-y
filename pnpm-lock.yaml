@@ -11,6 +11,9 @@ dependencies:
   '@capacitor/ios':
     specifier: ^5.5.1
     version: 5.5.1(@capacitor/core@5.5.1)
+  '@capacitor/status-bar':
+    specifier: ^5.0.6
+    version: 5.0.6(@capacitor/core@5.5.1)
   '@nextui-org/react':
     specifier: ^2.2.9
     version: 2.2.9(@types/react@18.2.38)(framer-motion@10.16.9)(react-dom@18.2.0)(react@18.2.0)(tailwind-variants@0.1.18)(tailwindcss@3.3.5)
@@ -127,6 +130,14 @@ packages:
     resolution: {integrity: sha512-h00qt8u32t8eEbIkuG4IjR0r34YZC0sIXglDH8fRDdA84xDkTybmz3WtdpRWDzh6ukE2RIY7rmD7p410WSJ2yA==}
     peerDependencies:
       '@capacitor/core': ^5.5.0
+    dependencies:
+      '@capacitor/core': 5.5.1
+    dev: false
+
+  /@capacitor/status-bar@5.0.6(@capacitor/core@5.5.1):
+    resolution: {integrity: sha512-7od8CxsBnot1XMK3IeOkproFL4hgoKoWAc3pwUvmDOkQsXoxwQm4SR9mLwQavv1XfxtHbFV9Ukd7FwMxOPSViw==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
     dependencies:
       '@capacitor/core': 5.5.1
     dev: false
