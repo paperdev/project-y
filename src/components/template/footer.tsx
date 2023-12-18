@@ -53,7 +53,7 @@ export default function Footer({ className }: { className?: string }) {
               key={menu.href}
               className='h-12'
               title={
-                <div className='flex items-center gap-2 font-bold text-base'>
+                <div className='flex items-center font-bold text-base'>
                   {menu.icon}
                   <div className='capitalize'>{menu.name}</div>
                 </div>
