@@ -21,12 +21,12 @@ import {
   MdUnfoldMore,
   MdUnfoldLess,
 } from 'react-icons/md';
-import { iTrendItem } from '@/shared/interface/trendVideo';
+import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 
 export default function ComponentTrendVideoCard({
   video
 }: {
-  video: iTrendItem
+  video: iTrendVideoItem
 }) {
   const [tagExpanded, setTagExpanded] = useState<boolean>(false);
   const [descExpanded, setDescExpanded] = useState<boolean>(false);

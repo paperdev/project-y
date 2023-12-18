@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import ComponentTrendList from '@/components/(trend)/trendList';
+import ComponentTrendList from '@/components/(youtube)/(trend)/trendList';
 import Loading from '@/components/template/loading';
 import { getTrendList } from '@/utils/request';
 import Error from '@/components/template/error';

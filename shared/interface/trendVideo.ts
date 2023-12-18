@@ -1,12 +1,12 @@
 interface iTrendVideo {
   kind: string;
   etag: string;
-  items: iTrendItem[];
+  items: iTrendVideoItem[];
   nextPageToken: string;
   pageInfo: iPageInfo;
 }
 
-interface iTrendItem {
+interface iTrendVideoItem {
   kind: string;
   etag: string;
   id: string;
@@ -38,5 +38,5 @@ interface iStatistics {
 
 export {
   type iTrendVideo,
-  type iTrendItem,
+  type iTrendVideoItem,
 }

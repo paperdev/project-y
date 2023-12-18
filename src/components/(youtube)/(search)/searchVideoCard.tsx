@@ -9,12 +9,12 @@ import {
   CardFooter,
   Link,
 } from '@nextui-org/react';
-import { iSearchItem } from '@/shared/interface/searchVideo';
+import { iSearchVideoItem } from '@/shared/interface/searchVideo';
 
 export default function ComponentSearchVideoCard({
   video,
 }: {
-  video: iSearchItem,
+  video: iSearchVideoItem,
 }) {
   return (
     <>

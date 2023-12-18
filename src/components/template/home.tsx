@@ -4,7 +4,8 @@ import React, { useEffect, useRef } from 'react';
 import Header from './header';
 import Body from './body';
 import Footer from './footer';
-import { StatusBar, Style } from '@capacitor/status-bar';
+import { Capacitor } from '@capacitor/core';
+// import { StatusBar, Style } from '@capacitor/status-bar';
 
 const ScoollHevavior: Record<string, ScrollBehavior> = {
   smooth: 'smooth',
@@ -20,11 +21,12 @@ export default function TemplateHome({
   const navTopRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    StatusBar.setStyle({ style: Style.Dark });
-    if (window) {
-      window.addEventListener('statusTap', function () {
-        scrollToTop(ScoollHevavior.smooth);
-      }); 
+    if (Capacitor.getPlatform() === 'ios') {
+      if (window) {
+        window.addEventListener('statusTap', function () {
+          scrollToTop(ScoollHevavior.smooth);
+        }); 
+      }
     }
   }, [])
    

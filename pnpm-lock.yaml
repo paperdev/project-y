@@ -5,15 +5,24 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@capacitor-community/http':
+    specifier: ^1.4.1
+    version: 1.4.1
   '@capacitor/cli':
     specifier: ^5.5.1
     version: 5.5.1
+  '@capacitor/core':
+    specifier: ^5.6.0
+    version: 5.6.0
+  '@capacitor/filesystem':
+    specifier: ^5.2.0
+    version: 5.2.0(@capacitor/core@5.6.0)
   '@capacitor/ios':
     specifier: ^5.5.1
-    version: 5.5.1(@capacitor/core@5.5.1)
+    version: 5.5.1(@capacitor/core@5.6.0)
   '@capacitor/status-bar':
     specifier: ^5.0.6
-    version: 5.0.6(@capacitor/core@5.5.1)
+    version: 5.0.6(@capacitor/core@5.6.0)
   '@nextui-org/react':
     specifier: ^2.2.9
     version: 2.2.9(@types/react@18.2.38)(framer-motion@10.16.9)(react-dom@18.2.0)(react@18.2.0)(tailwind-variants@0.1.18)(tailwindcss@3.3.5)
@@ -94,6 +103,23 @@ packages:
     dependencies:
       regenerator-runtime: 0.14.0
 
+  /@capacitor-community/http@1.4.1:
+    resolution: {integrity: sha512-+pCkBXrwfm97UfjOgjV950H/qZ8SE36Mrcb46BlL1ps3VIsGuIO+AulL8GqTC6LewheRVtGJpRspNtneXQotNA==}
+    dependencies:
+      '@capacitor/android': 3.9.0(@capacitor/core@3.9.0)
+      '@capacitor/core': 3.9.0
+      '@capacitor/filesystem': 1.1.0(@capacitor/core@3.9.0)
+      '@capacitor/ios': 3.9.0(@capacitor/core@3.9.0)
+    dev: false
+
+  /@capacitor/android@3.9.0(@capacitor/core@3.9.0):
+    resolution: {integrity: sha512-YTPyrh1NozEuYXWGtfqN27TLXUrLbZX9fggyd4JQ1yMaUZTmLPm5dCuznONhQ49aPkJnUJB02JfpHy/qGwa2Lw==}
+    peerDependencies:
+      '@capacitor/core': ^3.9.0
+    dependencies:
+      '@capacitor/core': 3.9.0
+    dev: false
+
   /@capacitor/cli@5.5.1:
     resolution: {integrity: sha512-/oGd2IIc+k1H/fc7tUzP7vqMtZi0gNcJ4/4wUE2kzAnETxxxHXMM/2V62KfjCby/OOAzJbtI7n5OPlnWE9un1A==}
     engines: {node: '>=16.0.0'}
@@ -120,26 +146,56 @@ packages:
       - supports-color
     dev: false
 
-  /@capacitor/core@5.5.1:
-    resolution: {integrity: sha512-VG6Iv8Q7ZAbvjodxpvjcSe0jfxUwZXnvjbi93ehuJ6eYP8U926qLSXyrT/DToZq+F6v/HyGyVgn3mrE/9jW2Tg==}
+  /@capacitor/core@3.9.0:
+    resolution: {integrity: sha512-j1lL0+/7stY8YhIq1Lm6xixvUqIn89vtyH5ZpJNNmcZ0kwz6K9eLkcG6fvq1UWMDgSVZg9JrRGSFhb4LLoYOsw==}
     dependencies:
       tslib: 2.6.2
     dev: false
 
-  /@capacitor/ios@5.5.1(@capacitor/core@5.5.1):
+  /@capacitor/core@5.6.0:
+    resolution: {integrity: sha512-xJhCOUGPHw0QYDA3YH+CmL6qiV9DH4Ij3yPxSenymjrtLuXI197u9ddCZwGEwgVIkh9kGZBBKzsNkn89SZ2gdQ==}
+    dependencies:
+      tslib: 2.6.2
+    dev: false
+
+  /@capacitor/filesystem@1.1.0(@capacitor/core@3.9.0):
+    resolution: {integrity: sha512-8O3UuvL8HNUEJvZnmn8yUmvgB1evtXfcF0oxIo3YbSlylqywJwS3JTiuhKmsvSxCdpbTy8IaTsutVh3gZgWbKg==}
+    peerDependencies:
+      '@capacitor/core': ^3.0.0
+    dependencies:
+      '@capacitor/core': 3.9.0
+    dev: false
+
+  /@capacitor/filesystem@5.2.0(@capacitor/core@5.6.0):
+    resolution: {integrity: sha512-fyv+yWVFfglobPPveIRm4+ryMGI8vW27vjX63HDwB7K5fscSYajid+ie3qfwl2wkbPhlX8KTPes7IPij0lCmQg==}
+    peerDependencies:
+      '@capacitor/core': ^5.1.1
+    dependencies:
+      '@capacitor/core': 5.6.0
+    dev: false
+
+  /@capacitor/ios@3.9.0(@capacitor/core@3.9.0):
+    resolution: {integrity: sha512-GezPCJIujRHnF4wbrKJx6Q/mgFz0f9rmh/steTTXQZI+nEl6mHk6NWh8235p7YbhonYi5WD0rFNirrjGg1EaGw==}
+    peerDependencies:
+      '@capacitor/core': ^3.9.0
+    dependencies:
+      '@capacitor/core': 3.9.0
+    dev: false
+
+  /@capacitor/ios@5.5.1(@capacitor/core@5.6.0):
     resolution: {integrity: sha512-h00qt8u32t8eEbIkuG4IjR0r34YZC0sIXglDH8fRDdA84xDkTybmz3WtdpRWDzh6ukE2RIY7rmD7p410WSJ2yA==}
     peerDependencies:
       '@capacitor/core': ^5.5.0
     dependencies:
-      '@capacitor/core': 5.5.1
+      '@capacitor/core': 5.6.0
     dev: false
 
-  /@capacitor/status-bar@5.0.6(@capacitor/core@5.5.1):
+  /@capacitor/status-bar@5.0.6(@capacitor/core@5.6.0):
     resolution: {integrity: sha512-7od8CxsBnot1XMK3IeOkproFL4hgoKoWAc3pwUvmDOkQsXoxwQm4SR9mLwQavv1XfxtHbFV9Ukd7FwMxOPSViw==}
     peerDependencies:
       '@capacitor/core': ^5.0.0
     dependencies:
-      '@capacitor/core': 5.5.1
+      '@capacitor/core': 5.6.0
     dev: false
 
   /@emotion/is-prop-valid@0.8.8:

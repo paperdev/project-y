@@ -1,29 +1,31 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation'
 import {
   Divider,
   Spinner,
 } from '@nextui-org/react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { getTrendList } from '@/utils/request';
-import { iTrendItem } from '@/shared/interface/trendVideo';
-import ComponentTrendVideoCard from './trendVideoCard';
+import { getSearchList } from '@/utils/request';
+import { iSearchVideoItem } from '@/shared/interface/searchVideo';
+import ComponentSearchVideoCard from './searchVideoCard';
 
-export default function ComponentTrendList({
+export default function ComponentSearchList({
   videoList,
   nextPageToken,
   totalResults,
+  searchKey,
 }: {
-  videoList: iTrendItem[],
-  nextPageToken: string
-  totalResults: number
+  videoList: iSearchVideoItem[],
+  nextPageToken: string,
+  totalResults: number,
+  searchKey: string,
 }) {
   const searchParams = useSearchParams();
-  const [recentVideo, setRecentVideo] = useState<iTrendItem[]>(videoList);
-  const [pageToken, setPageToken] = useState<string>(nextPageToken);
-  const [loadMore, setLoadMore] = useState<boolean>(true);
+  const [recentVideo, setRecentVideo] = useState<iSearchVideoItem[]>(videoList);
+  const [pageToken, setPageToken] = useState(nextPageToken);
+  const [loadMore, setLoadMore] = useState(true);
 
   const loadMoreVideo = async () => {
     if (recentVideo.length >= totalResults) {
@@ -32,10 +34,19 @@ export default function ComponentTrendList({
     }
 
     const regionCode = searchParams.get('regionCode');
-    const resData = await getTrendList(regionCode, pageToken);
+    const resData = await getSearchList(regionCode, searchKey, pageToken);
+
     setRecentVideo((video) => [...video, ...resData.items]);
     setPageToken(resData.nextPageToken);
   };
+
+  useEffect(() => {
+    recentVideo.map((video) => {
+      video.descExpanded = false;
+    });
+
+    setRecentVideo(recentVideo);
+  }, [videoList.length]);
 
   return (
     <>
@@ -55,10 +66,14 @@ export default function ComponentTrendList({
         scrollableTarget='scrollableElementDiv'
       >
 
-        {recentVideo.map((video, index) => {
+        {recentVideo.map((video: iSearchVideoItem, index) => {
+          if (video.id.channelId) {
+            return (<div key={index}></div>)
+          }
+
           return (
             <div key={index}>
-              <ComponentTrendVideoCard video={video} />
+              <ComponentSearchVideoCard video={video} />
               <Divider />
             </div>
           );

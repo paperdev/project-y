@@ -7,8 +7,8 @@ import Error from '@/components/template/error';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRef } from 'react';
-import ComponentSearchInput from '@/components/(search)/searchInput';
-import ComponentSearchList from '@/components/(search)/searchList';
+import ComponentSearchInput from '@/components/(youtube)/(search)/searchInput';
+import ComponentSearchList from '@/components/(youtube)/(search)/searchList';
 import { iSearchVideo } from '@/shared/interface/searchVideo';
 
 export default function Page() {

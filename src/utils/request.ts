@@ -1,4 +1,7 @@
 import axios from 'axios';
+import { Http, HttpDownloadFileOptions, HttpDownloadFileResult } from '@capacitor-community/http';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Capacitor } from '@capacitor/core';
 
 const axiosInstance = axios.create(
   {
@@ -155,4 +158,76 @@ async function getVideoCategoryList(regionCode: string | null | undefined,) {
   return res.data;
 }
 
-export { getTrendList, getSearchList, getRegionList, getVideoCategoryList };
+async function getGoogleTrendList(regionCode: string | null | undefined) {
+  if (!process.env.GOOGLE_TREND_URL || !process.env.GOOGLE_TREND_DAILY_URL) {
+    return null;
+  }
+
+  let params = {
+    geo: regionCode ? regionCode : process.env.DEFAULT_REGION,
+  };
+
+  
+  if (Capacitor.getPlatform() === 'ios') {
+    const url = generateURL(process.env.GOOGLE_TREND_URL + process.env.GOOGLE_TREND_DAILY_URL, params);
+    if (!url) {
+      return null;
+    }
+
+    const options: HttpDownloadFileOptions = {
+      url: url,
+      filePath: 'json.txt',
+      fileDirectory: Directory.Cache,
+      method: 'GET',
+    };
+
+    try {
+      await Filesystem.stat({
+        directory: options.fileDirectory,
+        path: options.filePath,
+      });
+      await Filesystem.deleteFile({
+        directory: options.fileDirectory,
+        path: options.filePath,
+      });
+    } catch {}
+
+    const res: HttpDownloadFileResult = await Http.downloadFile(options);
+    if (res.path) {
+      const read = await Filesystem.readFile({
+        path: options.filePath,
+        directory: options.fileDirectory,
+        encoding: Encoding.UTF8,
+      });
+
+      const temp = read.data.slice(6);
+      return JSON.parse(temp.toString());
+    }
+
+    return null;
+  }
+
+  const url = generateURL(process.env.GOOGLE_TREND_DAILY_URL, params);
+  if (!url) {
+    return null;
+  }
+
+  const res = await axios.get(
+    url,
+    {
+      headers: {
+        'Content-type': 'application/json',
+      },
+      withCredentials: true
+    }
+  );
+
+  if (200 !== res.status) {
+    throw new Error('Failed to fetch data.');
+  }
+
+  const temp = res.data.slice(6);
+  return JSON.parse(temp);
+}
+
+export { getTrendList, getSearchList, getRegionList, getVideoCategoryList, getGoogleTrendList };
