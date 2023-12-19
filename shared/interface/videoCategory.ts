@@ -17,7 +17,13 @@ interface iSnippet {
   channelId: string;
 }
 
+interface iVideoCategoryElement {
+  id: number;
+  name: string;
+}
+
 export {
   type iVideoCategory,
   type iVideoCategoryItem,
+  type iVideoCategoryElement,
 }

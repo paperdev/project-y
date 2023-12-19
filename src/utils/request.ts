@@ -43,7 +43,8 @@ const generateURLWithKey = (
 };
 
 async function getTrendList(
-  regionCode: string | null | undefined,
+  regionCode: string | null,
+  videoCategoryId: string | null,
   nextPageToken?: string
 ) {
   if (!process.env.YOUTUBE_VIDEO_URL) {
@@ -57,6 +58,12 @@ async function getTrendList(
     regionCode: regionCode ? regionCode : process.env.DEFAULT_REGION,
     maxResults: 5,
   };
+
+  if (videoCategoryId) {
+    Object.assign(params, {
+      videoCategoryId: videoCategoryId,
+    });
+  }
 
   if (nextPageToken) {
     Object.assign(params, {
@@ -78,7 +85,7 @@ async function getTrendList(
 }
 
 async function getSearchList(
-  regionCode: string | null | undefined,
+  regionCode: string | null,
   searchKey: string | null,
   nextPageToken?: string
 ) {

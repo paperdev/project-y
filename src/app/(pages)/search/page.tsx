@@ -16,9 +16,7 @@ export default function Page() {
   const [searchKey, setSearchKey] = useState<string>('');
   const [searchVideo, setSearchVideo] = useState<iSearchVideo>();
   const searchParams = useSearchParams();
-  const regionCode = searchParams.has('regionCode')
-    ? searchParams.get('regionCode')
-    : process.env.DEFAULT_REGION;
+  const regionCode = searchParams.get('regionCode');
 
   const onSearch = (key: string) => {
     setSearchKey(key);

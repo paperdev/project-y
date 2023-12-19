@@ -12,14 +12,13 @@ import { iTrendVideo } from '@/shared/interface/trendVideo';
 export default function Page() {
   const [trendVideo, setTrendVideo] = useState<iTrendVideo>();
   const searchParams = useSearchParams();
-  const regionCode = searchParams.has('regionCode')
-    ? searchParams.get('regionCode')
-    : process.env.DEFAULT_REGION;
+  const regionCode = searchParams.get('regionCode');
+  const videoCategoryId = searchParams.get('videoCategoryId');
 
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ['trend', regionCode],
+    queryKey: ['trend', regionCode, videoCategoryId],
     queryFn: () => {
-      return getTrendList(regionCode);
+      return getTrendList(regionCode, videoCategoryId);
     },
   });
 

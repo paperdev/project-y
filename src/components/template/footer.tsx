@@ -3,7 +3,7 @@
 import React from 'react';
 import { MdSearch, MdSmartDisplay, MdWhatshot, MdInfo } from 'react-icons/md';
 import { Tabs, Tab } from '@nextui-org/react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 const bottomMenu = [
   {
@@ -32,9 +32,11 @@ export default function Footer({ className }: { className?: string }) {
   const router = useRouter();
   const currentUrl = usePathname();
   const currentMenuHref = currentUrl.slice(1);
+  const searchParams = useSearchParams();
 
   const onSelectionChange = (key: React.Key) => {
-    router.push(key.toString());
+    const params = new URLSearchParams(searchParams);
+    router.push(key.toString() + '?' + params.toString());
   };
 
   return (

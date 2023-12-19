@@ -41,7 +41,7 @@ export default function TemplateHome({
     <>
       <div className='h-screen max-w-2xl mx-auto flex flex-col justify-between pt-16 sm:pt-0 pb-4 sm:pb-0'>
         <Header className='bg-primary-500 flex-none flex justify-between sticky top-0 z-50 h-14' />
-        <Body className='overflow-auto'>
+        <Body className='overflow-y-auto overflow-x-hidden'>
           <div ref={navTopRef}></div>
           {children}
         </Body>
