@@ -119,6 +119,31 @@ async function getSearchList(
   return res.data;
 }
 
+async function getChannel(
+  channelId: string | null
+) {
+  if (!process.env.YOUTUBE_CHANNEL_URL || !channelId) {
+    return null;
+  }
+
+  let params = {
+    part: 'snippet,contentDetails,statistics',
+    id: channelId,
+  };
+
+  const url = generateURLWithKey(process.env.YOUTUBE_CHANNEL_URL, params);
+  if (!url) {
+    return null;
+  }
+
+  const res = await axiosInstance.get(url);
+  if (200 !== res.status) {
+    throw new Error('Failed to fetch data.');
+  }
+
+  return res.data;
+}
+
 async function getRegionList() {
   if (!process.env.YOUTUBE_REGION_URL) {
     return null;
@@ -237,4 +262,4 @@ async function getGoogleTrendList(regionCode: string | null | undefined) {
   return JSON.parse(temp);
 }
 
-export { getTrendList, getSearchList, getRegionList, getVideoCategoryList, getGoogleTrendList };
+export { getTrendList, getSearchList, getChannel, getRegionList, getVideoCategoryList, getGoogleTrendList };

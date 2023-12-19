@@ -99,12 +99,7 @@ export default function ComponentTrendVideoCard({
             <div className='flex mt-2 gap-1'>
               <div className='text-primary-500'>Channel : </div>
               <Link
-                isExternal
-                showAnchorIcon
-                href={
-                  process.env.YOUTUBE_URL_CHANNEL +
-                  video.snippet.channelId
-                }
+                href={ '/channel?channelId=' + video.snippet.channelId}
               >
                 {video.snippet.channelTitle}
               </Link>

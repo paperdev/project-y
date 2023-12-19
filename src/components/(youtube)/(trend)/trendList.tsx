@@ -32,7 +32,8 @@ export default function ComponentTrendList({
     }
 
     const regionCode = searchParams.get('regionCode');
-    const resData = await getTrendList(regionCode, pageToken);
+    const videoCategoryId = searchParams.get('videoCategoryId');
+    const resData = await getTrendList(regionCode, videoCategoryId, pageToken);
     setRecentVideo((video) => [...video, ...resData.items]);
     setPageToken(resData.nextPageToken);
   };

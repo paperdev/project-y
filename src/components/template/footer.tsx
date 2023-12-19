@@ -30,8 +30,6 @@ const bottomMenu = [
 
 export default function Footer({ className }: { className?: string }) {
   const router = useRouter();
-  const currentUrl = usePathname();
-  const currentMenuHref = currentUrl.slice(1);
   const searchParams = useSearchParams();
 
   const onSelectionChange = (key: React.Key) => {
@@ -43,7 +41,6 @@ export default function Footer({ className }: { className?: string }) {
     <>
       <div className={`${className}`}>
         <Tabs
-          selectedKey={currentMenuHref}
           color='default'
           radius='md'
           variant='light'
