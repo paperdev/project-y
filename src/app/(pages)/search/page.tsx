@@ -33,6 +33,22 @@ export default function Page() {
     setSearchVideo(data);
   }, [data, regionCode, searchKey]);
 
+  if (error) {
+    return (
+      <Error
+        messages={[
+          'The current region is not available.',
+          'Try a different region.',
+          'Message: ' + error.message,
+        ]}
+      />
+    );
+  }
+
+  if (isPending || isFetching) {
+    return <Loading />;
+  }
+
   return (
     <>
       <ComponentSearchInput
@@ -40,32 +56,14 @@ export default function Page() {
         inputRef={inputRef}
         onSearch={onSearch}
       />
-      <div className='h-screen'>
-        {error ? (
-          <Error
-            messages={[
-              'The current region is not available.',
-              'Try a different region.',
-              'Message: ' + {error},
-            ]}
+      <div className='h-screen mx-auto'>
+        {searchVideo && (
+          <ComponentSearchList
+            videoList={searchVideo.items}
+            nextPageToken={searchVideo.nextPageToken}
+            totalResults={searchVideo.pageInfo.totalResults}
+            searchKey={searchKey}
           />
-        ) : (
-          <>
-            {isPending || isFetching ? (
-              <Loading />
-            ) : (
-              <>
-                {searchVideo && (
-                  <ComponentSearchList
-                    videoList={searchVideo.items}
-                    nextPageToken={searchVideo.nextPageToken}
-                    totalResults={searchVideo.pageInfo.totalResults}
-                    searchKey={searchKey}
-                  />
-                )}
-              </>
-            )}
-          </>
         )}
       </div>
     </>
