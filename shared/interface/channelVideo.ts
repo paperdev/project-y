@@ -1,17 +1,16 @@
-interface iTrendVideo {
+interface iChannelVideo {
   kind: string;
   etag: string;
-  items: iTrendVideoItem[];
+  items: iChannelVideoItem[];
   nextPageToken: string;
   pageInfo: iPageInfo;
 }
 
-interface iTrendVideoItem {
+interface iChannelVideoItem {
   kind: string;
   etag: string;
   id: string;
   snippet: iSnippet;
-  statistics: iStatistics;
 }
 
 interface iPageInfo {
@@ -28,14 +27,11 @@ interface iSnippet {
     [key: string] : iThumbnail;
   };
   channelTitle: string;
-  tags: string[];
-}
-
-interface iStatistics {
-  viewCount: number;
-  likeCount: number;
-  favoriteCount: number;
-  commentCount: number;
+  position: number;
+  resourceId: {
+    kind: string;
+    videoId: string;
+  };
 }
 
 interface iThumbnail {
@@ -45,6 +41,6 @@ interface iThumbnail {
 }
 
 export {
-  type iTrendVideo,
-  type iTrendVideoItem,
+  type iChannelVideo,
+  type iChannelVideoItem,
 }

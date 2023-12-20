@@ -11,6 +11,7 @@ interface iChannelItem {
   id: string;
   snippet: iSnippet;
   statistics: iStatistics;
+  contentDetails: iContentDetails;
 }
 
 interface iPageInfo {
@@ -23,7 +24,9 @@ interface iSnippet {
   description: string;
   customUrl: string;
   publishedAt: string;
-  thumbnails: any;
+  thumbnails: {
+    [key: string] : iThumbnail;
+  };
   defaultLanguage: string;
   country: string;
   localized: iLocalized;
@@ -36,9 +39,22 @@ interface iStatistics {
   videoCount: number;
 }
 
+interface iContentDetails {
+  relatedPlaylists: {
+    likes: string;
+    uploads: string;
+  };
+}
+
 interface iLocalized {
   title: string;
   description: string;
+}
+
+interface iThumbnail {
+  url: string;
+  width: string;
+  height: string;
 }
 
 export {

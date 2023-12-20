@@ -30,10 +30,18 @@ interface iSnippet {
   channelId: string;
   title: string;
   description: string;
-  thumbnails: {};
+  thumbnails: {
+    [key: string] : iThumbnail;
+  };
   channelTitle: string;
   liveBroadcastContent: string;
   publishTime: string;
+}
+
+interface iThumbnail {
+  url: string;
+  width: string;
+  height: string;
 }
 
 export {

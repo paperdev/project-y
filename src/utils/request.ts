@@ -144,6 +144,39 @@ async function getChannel(
   return res.data;
 }
 
+async function getPlayListItems(
+  playlistId: string | null,
+  nextPageToken?: string
+) {
+  if (!process.env.YOUTUBE_PLAYLISTITEMS_URL || !playlistId) {
+    return null;
+  }
+
+  let params = {
+    part: 'snippet',
+    playlistId: playlistId,
+    maxResults: 5,
+  };
+
+  if (nextPageToken) {
+    Object.assign(params, {
+      pageToken: nextPageToken,
+    });
+  }
+
+  const url = generateURLWithKey(process.env.YOUTUBE_PLAYLISTITEMS_URL, params);
+  if (!url) {
+    return null;
+  }
+
+  const res = await axiosInstance.get(url);
+  if (200 !== res.status) {
+    throw new Error('Failed to fetch data.');
+  }
+
+  return res.data;
+}
+
 async function getRegionList() {
   if (!process.env.YOUTUBE_REGION_URL) {
     return null;
@@ -262,4 +295,12 @@ async function getGoogleTrendList(regionCode: string | null | undefined) {
   return JSON.parse(temp);
 }
 
-export { getTrendList, getSearchList, getChannel, getRegionList, getVideoCategoryList, getGoogleTrendList };
+export { 
+  getTrendList, 
+  getSearchList, 
+  getChannel, 
+  getPlayListItems, 
+  getRegionList, 
+  getVideoCategoryList, 
+  getGoogleTrendList
+};

@@ -20,6 +20,7 @@ import {
   MdExpandLess,
   MdUnfoldMore,
   MdUnfoldLess,
+  MdZoomOutMap,
 } from 'react-icons/md';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 
@@ -96,10 +97,12 @@ export default function ComponentTrendVideoCard({
             <span className='text-xs ml-2 text-default-500'>
               {video.snippet.publishedAt}
             </span>
-            <div className='flex mt-2 gap-1'>
-              <div className='text-primary-500'>Channel : </div>
+            <div className='flex mt-2 gap-2 items-center'>
+              <div className='text-default-500'>Channel : </div>
               <Link
-                href={ '/channel?channelId=' + video.snippet.channelId}
+                showAnchorIcon
+                anchorIcon={<MdZoomOutMap />}
+                href={'/channel?channelId=' + video.snippet.channelId}
               >
                 {video.snippet.channelTitle}
               </Link>
