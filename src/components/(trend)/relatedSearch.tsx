@@ -27,6 +27,7 @@ export default function ComponentRelatedSearch({
               href={
                 process.env.GOOGLE_TREND_URL + title.exploreLink
               }
+              className='flex-none'
             >
               {title.query}
             </Link>

@@ -5,12 +5,16 @@ import {
   Image,
 } from '@nextui-org/react';
 import { iChannelItem } from '@/shared/interface/channel';
+import { MdCalendarMonth, MdLibraryAdd, MdSubscriptions, MdVisibility } from 'react-icons/md';
 
 export default function ComponentChannel({
   dataChannel,
 }: {
   dataChannel: iChannelItem;
 }) {
+  const date = new Date(dataChannel.snippet.publishedAt);
+  const formatDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+
   return (
     <>
       <Card
@@ -26,35 +30,22 @@ export default function ComponentChannel({
               </div>
             </div>
 
-            <div className='flex flex-row gap-2 items-center'>
-              <div className='flex flex-col'>
-                <div>
-                  subscriber Count:
-                </div>
-                <div>
-                  view Count:
-                </div>
-                <div>
-                  video Count:
-                </div>
-                <div>
-                  register Date:
-                </div>
+            <div className='flex flex-col text-foreground-500'>
+              <div className='flex gap-2 items-center'>
+                <MdLibraryAdd />
+                <div>{dataChannel.statistics.subscriberCount}</div>
               </div>
-
-              <div className='text-primary-500'>
-                <div>
-                  {dataChannel.statistics.subscriberCount}
-                </div>
-                <div>
-                  {dataChannel.statistics.viewCount}
-                </div>
-                <div>
-                  {dataChannel.statistics.videoCount}
-                </div>
-                <div>
-                  {dataChannel.snippet.publishedAt}
-                </div>
+              <div className='flex gap-2 items-center'>
+                <MdVisibility />
+                <div>{dataChannel.statistics.viewCount}</div>
+              </div>
+              <div className='flex gap-2 items-center'>
+                <MdSubscriptions />
+                <div>{dataChannel.statistics.videoCount}</div>
+              </div>
+              <div className='flex gap-2 items-center'>
+                <MdCalendarMonth />
+                <div>{formatDate}</div>
               </div>
             </div>
           </div>

@@ -1,16 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { iTrendItem } from '@/shared/interface/trendItem';
 import {
-  Button,
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
   Link,
 } from '@nextui-org/react';
-import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import ComponentImage from '@/components/(trend)/image';
 import ComponentRelatedSearch from '@/components/(trend)/relatedSearch';
 import ComponentRelatedNews from '@/components/(trend)/relatedNews';
@@ -20,51 +17,25 @@ export default function ComponentItemCard({
 }: {
   item: iTrendItem;
 }) {
-  const [searchExpanded, setSearchExpanded] = useState<boolean>(false);
-  const [newsExpanded, setNewsExpanded] = useState<boolean>(false);
+  const hiddenRef = useRef<HTMLDivElement>(null);
 
-  const onClickSearchExpand = (event: React.SyntheticEvent) => {
-    if (!event || !event.currentTarget) {
+  const onClickExpand = () => {
+    if (!hiddenRef || !hiddenRef.current) {
       return;
     }
 
-    const currentSearchElement =
-      event.currentTarget.parentElement?.parentElement?.parentElement?.getElementsByClassName(
-        'hiddenSearchClass'
-      )[0];
-    const isHidden = currentSearchElement?.classList.contains('hidden');
+    const isHidden = hiddenRef.current.classList.contains('hidden');
     if (isHidden) {
-      currentSearchElement?.classList.remove('hidden');
+      hiddenRef.current.classList.remove('hidden');
     } else {
-      currentSearchElement?.classList.add('hidden');
+      hiddenRef.current.classList.add('hidden');
     }
-
-    setSearchExpanded(!searchExpanded);
-  };
-
-  const onClickNewsExpand = (event: React.SyntheticEvent) => {
-    if (!event || !event.currentTarget) {
-      return;
-    }
-
-    const currentNewsElement =
-      event.currentTarget.parentElement?.parentElement?.parentElement?.getElementsByClassName(
-        'hiddenNewsClass'
-      )[0];
-    const isHidden = currentNewsElement?.classList.contains('hidden');
-    if (isHidden) {
-      currentNewsElement?.classList.remove('hidden');
-    } else {
-      currentNewsElement?.classList.add('hidden');
-    }
-
-    setNewsExpanded(!newsExpanded);
   };
 
   return (
     <>
       <Card shadow='none' className='rounded-none'>
-        <CardHeader className='flex justify-between'>
+        <CardHeader className='flex justify-between' onClick={onClickExpand}>
           <div>
             <div className='text-2xl font-bold text-primary-500 whitespace-pre-wrap'>
               {item.title.query}
@@ -85,47 +56,22 @@ export default function ComponentItemCard({
           <ComponentImage dataImage={item.image} isShownLink={true} />
         </CardHeader>
 
-        <CardFooter className='justify-between'>
-          <div className='flex gap-2'>
-            <div>Related Searches</div>
+        <div ref={hiddenRef} className='hidden'>
+          <CardBody>
+            <ComponentRelatedSearch
+              className='flex flex-row gap-1'
+              relatedSearches={item.relatedQueries}
+            />
+          </CardBody>
+          
+          <CardBody>
+            <ComponentRelatedNews
+              className='flex flex-row gap-1'
+              relatedNews={item.articles}
+            />
+          </CardBody>
 
-            <Button
-              isIconOnly
-              variant='flat'
-              className='w-7 h-7'
-              onClick={onClickSearchExpand}
-            >
-              {searchExpanded ? <MdExpandLess /> : <MdExpandMore />}
-            </Button>
-          </div>
-
-          <div className='flex gap-2'>
-            <div>Related News</div>
-
-            <Button
-              isIconOnly
-              variant='flat'
-              className='w-7 h-7'
-              onClick={onClickNewsExpand}
-            >
-              {newsExpanded ? <MdExpandLess /> : <MdExpandMore />}
-            </Button>
-          </div>
-        </CardFooter>
-
-        <CardBody className='hiddenSearchClass hidden'>
-          <ComponentRelatedSearch
-            className='flex flex-wrap gap-1'
-            relatedSearches={item.relatedQueries}
-          />
-        </CardBody>
-
-        <CardBody className='hiddenNewsClass hidden'>
-          <ComponentRelatedNews
-            className='flex flex-col gap-1'
-            relatedNews={item.articles}
-          />
-        </CardBody>
+        </div>
       </Card>
     </>
   );

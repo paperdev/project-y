@@ -26,7 +26,7 @@ export default function ComponentRelatedNews({
               isExternal
               href={article.url}
             >
-              <Card className='w-full'>
+              <Card className='w-screen'>
                 <CardHeader className='gap-4'>
                   <ComponentImage
                     dataImage={article.image}
@@ -34,7 +34,7 @@ export default function ComponentRelatedNews({
                   />
 
                   <div>
-                    <div className='whitespace-pre-wrap'>
+                    <div className='whitespace-pre-wrap line-clamp-2'>
                       {article.title}
                     </div>
                     <div className='text-xs mt-2 text-default-500'>
