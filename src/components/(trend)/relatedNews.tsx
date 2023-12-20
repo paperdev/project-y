@@ -4,6 +4,8 @@ import React from 'react';
 import { Link, Card, CardHeader } from '@nextui-org/react';
 import { iArticle } from '@/shared/interface/trendItem';
 import ComponentImage from '@/components/(trend)/image';
+import { Browser } from '@capacitor/browser';
+import DecodedText from '../template/decodedText';
 
 export default function ComponentRelatedNews({
   className,
@@ -23,8 +25,11 @@ export default function ComponentRelatedNews({
           return (
             <Link
               key={index}
-              isExternal
-              href={article.url}
+              onPress={() => {
+                Browser.open({
+                  url: article.url
+                })
+              }}
             >
               <Card className='w-screen'>
                 <CardHeader className='gap-4'>
@@ -34,9 +39,7 @@ export default function ComponentRelatedNews({
                   />
 
                   <div>
-                    <div className='whitespace-pre-wrap line-clamp-2'>
-                      {article.title}
-                    </div>
+                    <DecodedText text={article.title} className='whitespace-pre-wrap line-clamp-2'/>
                     <div className='text-xs mt-2 text-default-500'>
                       {article.source} - {article.timeAgo}
                     </div>

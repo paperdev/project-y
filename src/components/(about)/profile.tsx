@@ -1,9 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Avatar, Link } from '@nextui-org/react';
+import { Avatar, Button } from '@nextui-org/react';
 import { LuGithub, LuMail, LuLinkedin } from 'react-icons/lu';
 import { iProfile } from '@/shared/interface/profile';
+import { Browser } from '@capacitor/browser';
 
 export default function ComponentProfile({
   className,
@@ -30,29 +31,45 @@ export default function ComponentProfile({
             </div>
 
             <div className='flex gap-2 mt-2 justify-center'>
-              <Link
-                showAnchorIcon
-                href={dataProfile.github}
-                isExternal
+              <Button
                 color='secondary'
-                anchorIcon={<LuGithub className='w-6 h-6' />}
-              ></Link>
+                isIconOnly
+                variant='light'
+                onPress={() => {
+                  Browser.open({
+                    url: dataProfile.github
+                  })
+                }}
+              >
+                <LuGithub className='w-6 h-6' />
+              </Button>
 
-              <Link
-                showAnchorIcon
-                href={dataProfile.linkedin}
-                isExternal
+              <Button
                 color='secondary'
-                anchorIcon={<LuLinkedin className='w-6 h-6' />}
-              ></Link>
+                isIconOnly
+                variant='light'
+                onPress={() => {
+                  Browser.open({
+                    url: dataProfile.linkedin
+                  })
+                }}
+              >
+                <LuLinkedin className='w-6 h-6' />
+              </Button>
 
-              <Link
-                showAnchorIcon
-                href={`mailto:${dataProfile.email}`}
-                isExternal
+              <Button
                 color='secondary'
-                anchorIcon={<LuMail className='w-6 h-6' />}
-              ></Link>
+                isIconOnly
+                variant='light'
+                onPress={() => {
+                  Browser.open({
+                    url: `mailto:${dataProfile.email}`
+                  })
+                }}
+              >
+                <LuMail className='w-6 h-6' />
+              </Button>
+
             </div>
           </div>
         </div>

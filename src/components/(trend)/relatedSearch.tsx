@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link } from '@nextui-org/react';
 import { iTitle } from '@/shared/interface/trendItem';
+import { Browser } from '@capacitor/browser';
 
 export default function ComponentRelatedSearch({
   className,
@@ -22,11 +23,12 @@ export default function ComponentRelatedSearch({
           return (
             <Link
               key={index}
-              isExternal
               showAnchorIcon
-              href={
-                process.env.GOOGLE_TREND_URL + title.exploreLink
-              }
+              onPress={() => {
+                Browser.open({
+                  url: process.env.GOOGLE_TREND_URL + title.exploreLink
+                })
+              }}
               className='flex-none'
             >
               {title.query}

@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link, Card, CardFooter, Image } from '@nextui-org/react';
 import { iImage } from '@/shared/interface/trendItem';
+import { Browser } from '@capacitor/browser';
 
 export default function ComponentImage({
   dataImage,
@@ -19,7 +20,13 @@ export default function ComponentImage({
     <>
       <Card>
         {isShownLink ? (
-          <Link isExternal href={dataImage.newsUrl}>
+          <Link 
+            onPress={() => {
+              Browser.open({
+                url: dataImage.newsUrl
+              })
+            }}
+           >
             <Image
               removeWrapper
               className='z-0 object-cover'

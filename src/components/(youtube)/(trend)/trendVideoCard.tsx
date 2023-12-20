@@ -23,6 +23,7 @@ import {
   MdZoomOutMap,
 } from 'react-icons/md';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
+import DecodedText from '@/components/template/decodedText';
 
 export default function ComponentTrendVideoCard({
   video
@@ -91,9 +92,7 @@ export default function ComponentTrendVideoCard({
       <Card shadow='none' className='rounded-none'>
         <CardHeader>
           <div>
-            <div className='text-2xl font-bold text-primary-500'>
-              {video.snippet.title}
-            </div>
+            <DecodedText text={video.snippet.title} className='text-2xl font-bold text-primary-500' />
             <span className='text-xs ml-2 text-default-500'>
               {video.snippet.publishedAt}
             </span>

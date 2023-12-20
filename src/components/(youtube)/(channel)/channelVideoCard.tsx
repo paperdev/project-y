@@ -14,6 +14,7 @@ import {
   MdExpandLess,
 } from 'react-icons/md';
 import { iChannelVideoItem } from '@/shared/interface/channelVideo';
+import DecodedText from '@/components/template/decodedText';
 
 export default function ComponentChannelVideoCard({
   video
@@ -54,9 +55,7 @@ export default function ComponentChannelVideoCard({
       <Card shadow='none' className='rounded-none'>
         <CardHeader>
           <div>
-            <div className='text-2xl font-bold text-primary-500'>
-              {video.snippet.title}
-            </div>
+            <DecodedText text={video.snippet.title} className='text-2xl font-bold text-primary-500' />
             <span className='text-xs ml-2 text-default-500'>
               {video.snippet.publishedAt}
             </span>
