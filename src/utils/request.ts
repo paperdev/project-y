@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Http, HttpDownloadFileOptions, HttpDownloadFileResult } from '@capacitor-community/http';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, CapacitorCookies } from '@capacitor/core';
 
 const axiosInstance = axios.create(
   {
@@ -257,6 +257,19 @@ async function getGoogleTrendList(regionCode: string | null | undefined) {
       });
     } catch {}
 
+    const currentCookies = await CapacitorCookies.getCookies();
+    if (0 === Object.keys(currentCookies).length) {
+      const resCookies = await Http.getCookies({url: url});
+      resCookies.cookies.map(async (cookie) => {
+        console.log(`${cookie.key} : ${cookie.value}`)
+        await CapacitorCookies.setCookie({
+          url: url,
+          key: cookie.key,
+          value: cookie.value,
+        });
+      })
+    }
+    
     const res: HttpDownloadFileResult = await Http.downloadFile(options);
     if (res.path) {
       const read = await Filesystem.readFile({

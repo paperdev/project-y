@@ -1,8 +1,6 @@
 import '@/css/globals.css';
 import TemplateHome from '@/components/template/home';
 import { Providers } from './providers';
-import { Suspense } from 'react';
-import { NavigationEvent } from '@/components/NavigationEvent';
 
 export default function RootLayout({
   children,
@@ -16,9 +14,6 @@ export default function RootLayout({
         <Providers>
           <TemplateHome>
             {children}
-            <Suspense fallback={null}>
-              <NavigationEvent />
-            </Suspense>
           </TemplateHome>
         </Providers>
       </body>
