@@ -58,7 +58,7 @@ export function RegionSelecter() {
     }
     const params = new URLSearchParams(searchParams);
     params.set('regionCode', key.toString());
-    router.push(pathname + '?' + params.toString());
+    router.replace(pathname + '?' + params.toString());
   };
 
   return (

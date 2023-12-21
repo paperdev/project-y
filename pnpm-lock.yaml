@@ -35,6 +35,9 @@ dependencies:
   axios:
     specifier: ^1.6.2
     version: 1.6.2
+  capacitor-plugin-ios-webview-configurator:
+    specifier: ^0.4.0
+    version: 0.4.0
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
@@ -124,6 +127,14 @@ packages:
       '@capacitor/ios': 3.9.0(@capacitor/core@3.9.0)
     dev: false
 
+  /@capacitor/android@2.5.0(@capacitor/core@2.5.0):
+    resolution: {integrity: sha512-W25F9GRuqNAN9D6Sd5Lj21ibGqzd8006Tf3mfai6MJj8DB3a1TMp+hueRwt+WhDJAS+T2pnljuR3FD/jd4u2Rw==}
+    peerDependencies:
+      '@capacitor/core': ~2.5.0
+    dependencies:
+      '@capacitor/core': 2.5.0
+    dev: false
+
   /@capacitor/android@3.9.0(@capacitor/core@3.9.0):
     resolution: {integrity: sha512-YTPyrh1NozEuYXWGtfqN27TLXUrLbZX9fggyd4JQ1yMaUZTmLPm5dCuznONhQ49aPkJnUJB02JfpHy/qGwa2Lw==}
     peerDependencies:
@@ -166,6 +177,12 @@ packages:
       - supports-color
     dev: false
 
+  /@capacitor/core@2.5.0:
+    resolution: {integrity: sha512-WUkUnqqLtlEYn6tly8t6VR0ABlSVbXdlD/gBbYxx0P+gEqMF9b46uYb2YqyH+8HBDANzTweEySpLfhiSUvYS7w==}
+    dependencies:
+      tslib: 1.14.1
+    dev: false
+
   /@capacitor/core@3.9.0:
     resolution: {integrity: sha512-j1lL0+/7stY8YhIq1Lm6xixvUqIn89vtyH5ZpJNNmcZ0kwz6K9eLkcG6fvq1UWMDgSVZg9JrRGSFhb4LLoYOsw==}
     dependencies:
@@ -192,6 +209,14 @@ packages:
       '@capacitor/core': ^5.1.1
     dependencies:
       '@capacitor/core': 5.6.0
+    dev: false
+
+  /@capacitor/ios@2.5.0(@capacitor/core@2.5.0):
+    resolution: {integrity: sha512-KVgSxKCUllbDJg+hJxZrZy81Xy1rv9T/d0sXcdP0a6uLOf+QceAqxmSnuRIw7dqehC0WLChWvOKrgzIevMarRA==}
+    peerDependencies:
+      '@capacitor/core': ~2.5.0
+    dependencies:
+      '@capacitor/core': 2.5.0
     dev: false
 
   /@capacitor/ios@3.9.0(@capacitor/core@3.9.0):
@@ -3200,6 +3225,14 @@ packages:
   /caniuse-lite@1.0.30001565:
     resolution: {integrity: sha512-xrE//a3O7TP0vaJ8ikzkD2c2NgcVUvsEe2IvFTntV4Yd1Z9FVzh+gW+enX96L0psrbaFMcVcH2l90xNuGDWc8w==}
 
+  /capacitor-plugin-ios-webview-configurator@0.4.0:
+    resolution: {integrity: sha512-uyDdT59Z5wl/rsAF7E71G5z19rnzXH17ZRnfTqJdw8LGMDjeroFvykc7d9M78m0bZfa9kewpzct8fIPS0H06+A==}
+    dependencies:
+      '@capacitor/android': 2.5.0(@capacitor/core@2.5.0)
+      '@capacitor/core': 2.5.0
+      '@capacitor/ios': 2.5.0(@capacitor/core@2.5.0)
+    dev: false
+
   /chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
@@ -5559,6 +5592,10 @@ packages:
       minimist: 1.2.8
       strip-bom: 3.0.0
     dev: true
+
+  /tslib@1.14.1:
+    resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
+    dev: false
 
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}

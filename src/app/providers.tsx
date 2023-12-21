@@ -5,6 +5,7 @@ import { NextUIProvider } from '@nextui-org/react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { setBackForwardNavigationGestures } from "capacitor-plugin-ios-webview-configurator";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -22,6 +23,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
         }
       })
   )
+
+  setBackForwardNavigationGestures(true);
 
   return (
     <QueryClientProvider client={queryClient}>

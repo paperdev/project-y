@@ -1,7 +1,3 @@
-'use client';
-
-import Swiper from '@/components/template/swiper';
-
 export default function Layout({
   children,
 }: {
@@ -9,9 +5,7 @@ export default function Layout({
 }) {
   return (
     <>
-      <Swiper>
-        {children}
-      </Swiper>
+      {children}
     </>
   );
 }

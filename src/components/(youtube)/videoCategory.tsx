@@ -42,7 +42,7 @@ export default function ComponentVideoCategory() {
   const onSelectionChange = (key: React.Key) => {
     const params = new URLSearchParams(searchParams);
     params.set('videoCategoryId', key.toString());
-    router.push(pathname + '?' + params.toString());
+    router.replace(pathname + '?' + params.toString());
   };
 
   return (
