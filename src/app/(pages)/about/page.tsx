@@ -6,7 +6,7 @@ import { Card, CardBody, CardHeader, Spacer } from '@nextui-org/react';
 export default function Page() {
   return (
     <>
-      <Card isFooterBlurred radius='lg' className='border-none'>
+      <Card isBlurred radius='lg' className='border-none'>
         <CardHeader>
          <div className='flex justify-center mx-auto font-extrabold text-secondary-500'>
             Developer
