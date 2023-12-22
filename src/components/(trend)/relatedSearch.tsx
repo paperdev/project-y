@@ -30,6 +30,7 @@ export default function ComponentRelatedSearch({
                 })
               }}
               className='flex-none'
+              isBlock
             >
               {title.query}
             </Link>

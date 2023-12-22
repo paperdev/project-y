@@ -20,7 +20,7 @@ export default function ComponentRelatedNews({
 
   return (
     <>
-      <div className={`${className}`}>
+      <div className={`${className} `}>
         {relatedNews.map((article: iArticle, index: number) => {
           return (
             <Link
@@ -30,8 +30,9 @@ export default function ComponentRelatedNews({
                   url: article.url
                 })
               }}
+              className='min-w-full'
             >
-              <Card className='w-screen'>
+              <Card className='w-full'>
                 <CardHeader className='gap-4'>
                   <ComponentImage
                     dataImage={article.image}
@@ -39,7 +40,7 @@ export default function ComponentRelatedNews({
                   />
 
                   <div>
-                    <DecodedText text={article.title} className='whitespace-pre-wrap line-clamp-2'/>
+                    <DecodedText text={article.title} className='whitespace-pre-wrap line-clamp-2' />
                     <div className='text-xs mt-2 text-default-500'>
                       {article.source} - {article.timeAgo}
                     </div>

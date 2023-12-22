@@ -42,6 +42,7 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
                     url: process.env.GOOGLE_TREND_URL + item.title.exploreLink,
                   });
                 }}
+                isBlock
               >
                 Statistics
               </Link>
