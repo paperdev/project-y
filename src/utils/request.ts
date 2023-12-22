@@ -1,9 +1,15 @@
 import axios from 'axios';
-import { Http, HttpDownloadFileOptions, HttpDownloadFileResult } from '@capacitor-community/http';
+import { Http, HttpDownloadFileOptions, HttpDownloadFileResult, HttpOptions } from '@capacitor-community/http';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Capacitor, CapacitorCookies } from '@capacitor/core';
 
-const axiosInstance = axios.create(
+const PLATFORM = {
+  ANDROID: 'android',
+  IOS: 'ios',
+  WEB: 'web',
+}
+
+const axiosInstanceYotube = axios.create(
   {
     baseURL: process.env.YOUTUBE_BASE_URL,
     headers: {
@@ -13,7 +19,20 @@ const axiosInstance = axios.create(
     },
     responseType: 'json',
   },
-)
+);
+
+const axiosInstanceGoogle = axios.create(
+  {
+    // baseURL: process.env.GOOGLE_TREND_URL,
+    headers: {
+      // 'Authorization': 'Bearer ' + 'abcdefg',
+      'Accept': 'application/json',
+      'Content-type': 'application/json',
+    },
+    responseType: 'json',
+    withCredentials: true,
+  },
+);
 
 const generateURL = (
   url: string,
@@ -76,7 +95,7 @@ async function getTrendList(
     return null;
   }
 
-  const res = await axiosInstance.get(url);
+  const res = await axiosInstanceYotube.get(url);
   if (200 !== res.status) {
     throw new Error('Failed to fetch data.');
   }
@@ -111,7 +130,7 @@ async function getSearchList(
     return null;
   }
 
-  const res = await axiosInstance.get(url);
+  const res = await axiosInstanceYotube.get(url);
   if (200 !== res.status) {
     throw new Error('Failed to fetch data.');
   }
@@ -136,7 +155,7 @@ async function getChannel(
     return null;
   }
 
-  const res = await axiosInstance.get(url);
+  const res = await axiosInstanceYotube.get(url);
   if (200 !== res.status) {
     throw new Error('Failed to fetch data.');
   }
@@ -169,7 +188,7 @@ async function getPlayListItems(
     return null;
   }
 
-  const res = await axiosInstance.get(url);
+  const res = await axiosInstanceYotube.get(url);
   if (200 !== res.status) {
     throw new Error('Failed to fetch data.');
   }
@@ -192,7 +211,7 @@ async function getRegionList() {
     return null;
   }
 
-  const res = await axiosInstance.get(url);
+  const res = await axiosInstanceYotube.get(url);
   if (200 !== res.status) {
     throw new Error('Failed to fetch data.');
   }
@@ -215,7 +234,7 @@ async function getVideoCategoryList(regionCode: string | null | undefined,) {
     return null;
   }
 
-  const res = await axiosInstance.get(url);
+  const res = await axiosInstanceYotube.get(url);
   if (200 !== res.status) {
     throw new Error('Failed to fetch data.');
   }
@@ -232,36 +251,22 @@ async function getGoogleTrendList(regionCode: string | null | undefined) {
     geo: regionCode ? regionCode : process.env.DEFAULT_REGION,
   };
 
-  
-  if (Capacitor.getPlatform() === 'ios') {
-    const url = generateURL(process.env.GOOGLE_TREND_URL + process.env.GOOGLE_TREND_DAILY_URL, params);
+  let url = generateURL(process.env.GOOGLE_TREND_DAILY_URL, params);
+  if (!url) {
+    return null;
+  }
+
+  if (PLATFORM.IOS === Capacitor.getPlatform()) {
+    url = generateURL(process.env.GOOGLE_TREND_URL + process.env.GOOGLE_TREND_DAILY_URL, params);
     if (!url) {
       return null;
     }
 
-    const options: HttpDownloadFileOptions = {
-      url: url,
-      filePath: 'json.txt',
-      fileDirectory: Directory.Cache,
-      method: 'GET',
-    };
-
-    try {
-      await Filesystem.stat({
-        directory: options.fileDirectory,
-        path: options.filePath,
-      });
-      await Filesystem.deleteFile({
-        directory: options.fileDirectory,
-        path: options.filePath,
-      });
-    } catch {}
-
     const currentCookies = await CapacitorCookies.getCookies();
+
     if (0 === Object.keys(currentCookies).length) {
-      const resCookies = await Http.getCookies({url: url});
+      const resCookies = await Http.getCookies({ url: url });
       resCookies.cookies.map(async (cookie) => {
-        console.log(`${cookie.key} : ${cookie.value}`)
         await CapacitorCookies.setCookie({
           url: url,
           key: cookie.key,
@@ -269,43 +274,53 @@ async function getGoogleTrendList(regionCode: string | null | undefined) {
         });
       })
     }
-    
-    const res: HttpDownloadFileResult = await Http.downloadFile(options);
-    if (res.path) {
-      const read = await Filesystem.readFile({
-        path: options.filePath,
-        directory: options.fileDirectory,
-        encoding: Encoding.UTF8,
-      });
 
-      const temp = read.data.slice(6);
-      return JSON.parse(temp.toString());
-    }
-
-    return null;
+    return _requestDownloadFile(url, 'json.txt', Directory.Cache);
   }
 
-  const url = generateURL(process.env.GOOGLE_TREND_DAILY_URL, params);
-  if (!url) {
-    return null;
-  }
 
-  const res = await axios.get(
-    url,
-    {
-      headers: {
-        'Content-type': 'application/json',
-      },
-      withCredentials: true
-    }
-  );
-
+  const res = await axiosInstanceGoogle.get(url);
   if (200 !== res.status) {
     throw new Error('Failed to fetch data.');
   }
 
   const temp = res.data.slice(6);
   return JSON.parse(temp);
+}
+
+const _requestDownloadFile = async (url: string, filePath: string, fileDirectory: Directory) => {
+  const options: HttpDownloadFileOptions = {
+    url: url,
+    filePath: filePath,
+    fileDirectory: fileDirectory,
+    method: 'GET',
+  };
+
+  try {
+    await Filesystem.stat({
+      directory: options.fileDirectory,
+      path: options.filePath,
+    });
+    await Filesystem.deleteFile({
+      directory: options.fileDirectory,
+      path: options.filePath,
+    });
+  } catch {}
+  
+  const res: HttpDownloadFileResult = await Http.downloadFile(options);
+
+  if (res.path) {
+    const read = await Filesystem.readFile({
+      path: options.filePath,
+      directory: options.fileDirectory,
+      encoding: Encoding.UTF8,
+    });
+
+    const temp = read.data.slice(6);
+    return JSON.parse(temp.toString());
+  }
+
+  return null;
 }
 
 export { 
