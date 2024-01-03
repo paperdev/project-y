@@ -7,9 +7,24 @@ const config: CapacitorConfig = {
   server: {
     androidScheme: 'https'
   },
+
+  ios: {
+    allowsLinkPreview: true,
+  },
+
   plugins: {
     CapacitorCookies: {
       enabled: true,
+    },
+    SplashScreen: {
+      launchShowDuration: 1000,
+      launchAutoHide: true,
+      launchFadeOutDuration: 1000,
+      backgroundColor: '#FFFFFF',
+      splashFullScreen: true,
+      splashImmersive: true,
+      // layoutName: 'launch_screen',
+      useDialog: false,
     },
   },
 };
