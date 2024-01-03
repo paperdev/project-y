@@ -13,7 +13,7 @@ export default function ComponentChannel({
   dataChannel: iChannelItem;
 }) {
   const date = new Date(dataChannel.snippet.publishedAt);
-  const formatDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+  const formatDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
   return (
     <>
