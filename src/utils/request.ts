@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Http, HttpDownloadFileOptions, HttpDownloadFileResult, HttpOptions } from '@capacitor-community/http';
+import { Http, HttpDownloadFileOptions, HttpDownloadFileResult } from '@capacitor-community/http';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Capacitor, CapacitorCookies } from '@capacitor/core';
 
@@ -323,6 +323,11 @@ const _requestDownloadFile = async (url: string, filePath: string, fileDirectory
   return null;
 }
 
+const getCurrentLocation = async () => {
+  const res = await axios.get('https://geolocation-db.com/json/');
+  return res?.data?.country_code;
+};
+
 export { 
   getTrendList, 
   getSearchList, 
@@ -330,5 +335,6 @@ export {
   getPlayListItems, 
   getRegionList, 
   getVideoCategoryList, 
-  getGoogleTrendList
+  getGoogleTrendList,
+  getCurrentLocation,
 };

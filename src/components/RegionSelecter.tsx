@@ -3,7 +3,7 @@
 import React, { Key, useEffect, useState } from 'react';
 import { Avatar, Image, Autocomplete, AutocompleteItem } from '@nextui-org/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { getRegionList } from '@/utils/request';
+import { getCurrentLocation, getRegionList } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
 import { iRegionElement, iRegionItem } from '@/shared/interface/region';
 
@@ -11,11 +11,21 @@ export function RegionSelecter() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [selectedValue, setSelectedValue] = useState<string>(process.env.DEFAULT_REGION!);
+  const [selectedValue, setSelectedValue] = useState<string>('');
 
   useEffect(() => {
     const recentCurrentCode = searchParams.get('regionCode');
-    setSelectedValue(recentCurrentCode ? recentCurrentCode : process.env.DEFAULT_REGION!);
+    if (!recentCurrentCode) {
+      getCurrentLocation().then((currentRegion) => {
+        setSelectedValue(currentRegion);
+        const params = new URLSearchParams(searchParams);
+        params.set('regionCode', currentRegion);
+        router.replace(pathname + '?' + params.toString());
+      });
+    }
+    else {
+      setSelectedValue(recentCurrentCode);
+    }
   }, [searchParams])
 
   const [regionList, setRegionList] = useState<iRegionElement[]>([]);
@@ -78,7 +88,7 @@ export function RegionSelecter() {
               <Image
                 radius='none'
                 className='w-6 h-4'
-                src={`https://flagcdn.com/${selectedValue.toLocaleLowerCase()}.svg`}
+                src={selectedValue ? `https://flagcdn.com/${selectedValue.toLocaleLowerCase()}.svg` : ''}
               />
             }
             selectedKey={selectedValue}

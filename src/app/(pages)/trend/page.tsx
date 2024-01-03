@@ -12,9 +12,7 @@ import Error from '@/components/template/error';
 export default function Page() {
   const [searchItem, setSearchItem] = useState<iTrendItem[]>([]);
   const searchParams = useSearchParams();
-  const regionCode = searchParams.has('regionCode')
-    ? searchParams.get('regionCode')
-    : process.env.DEFAULT_REGION;
+  const regionCode = searchParams.get('regionCode');
 
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['googleTrend', regionCode],
