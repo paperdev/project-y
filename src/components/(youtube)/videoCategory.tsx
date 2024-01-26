@@ -1,19 +1,18 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import React, { useContext, useEffect, useState } from 'react';
 import { Tabs, Tab } from '@nextui-org/react';
 import { getVideoCategoryList } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
-import { useSearchParams } from 'next/navigation';
 import { iVideoCategoryElement, iVideoCategoryItem } from '@/shared/interface/videoCategory';
+import { QueryContext, SetQueryContext } from '@/app/providers';
 
 export default function ComponentVideoCategory() {
   const [videoCategoryList, setVideoCategoryList] = useState<iVideoCategoryElement[]>([]);
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const regionCode = searchParams.get('regionCode');
+  const query = useContext(QueryContext);
+  const setQuery = useContext(SetQueryContext);
+  const regionCode = query.regionCode;
+  const videoCategoryId = query.videoCategoryId;
 
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['videoCategoryList', regionCode],
@@ -40,9 +39,16 @@ export default function ComponentVideoCategory() {
   }, [data, regionCode]);
 
   const onSelectionChange = (key: React.Key) => {
-    const params = new URLSearchParams(searchParams);
-    params.set('videoCategoryId', key.toString());
-    router.replace(pathname + '?' + params.toString());
+    if (!key) {
+      return;
+    }
+
+    setQuery(
+      {
+        regionCode: regionCode,
+        videoCategoryId: key.toString()
+      }
+    )
   };
 
   return (

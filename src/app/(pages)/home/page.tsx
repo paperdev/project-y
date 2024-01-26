@@ -1,19 +1,19 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import ComponentTrendList from '@/components/(youtube)/(trend)/trendList';
 import Loading from '@/components/template/loading';
 import { getTrendVideoList } from '@/utils/request';
 import Error from '@/components/template/error';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { iTrendVideo } from '@/shared/interface/trendVideo';
+import { QueryContext } from '@/app/providers';
 
 export default function Page() {
   const [trendVideo, setTrendVideo] = useState<iTrendVideo>();
-  const searchParams = useSearchParams();
-  const regionCode = searchParams.get('regionCode');
-  const videoCategoryId = searchParams.get('videoCategoryId');
+  const query = useContext(QueryContext);
+  const regionCode = query.regionCode;
+  const videoCategoryId = query.videoCategoryId;
 
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['trend', regionCode, videoCategoryId],

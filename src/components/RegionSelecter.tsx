@@ -1,22 +1,22 @@
 'use client';
 
-import React, { Key, useEffect, useState } from 'react';
+import React, { Key, useContext, useEffect, useState } from 'react';
 import { Avatar, Image, Autocomplete, AutocompleteItem } from '@nextui-org/react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { getRegionList } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
 import { iRegionElement, iRegionItem } from '@/shared/interface/region';
+import { QueryContext, SetQueryContext } from '@/app/providers';
 
 export function RegionSelecter() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [selectedValue, setSelectedValue] = useState<string>('');
+  const query = useContext(QueryContext);
+  const setQuery = useContext(SetQueryContext);
+  const regionCode = query.regionCode;
+  const videoCategoryId = query.videoCategoryId;
 
   useEffect(() => {
-    const recentCurrentCode = searchParams.get('regionCode');
-    setSelectedValue(recentCurrentCode!);
-  }, [searchParams])
+    setSelectedValue(regionCode);
+  }, [regionCode])
 
   const [regionList, setRegionList] = useState<iRegionElement[]>([]);
 
@@ -57,9 +57,12 @@ export function RegionSelecter() {
       return;
     }
 
-    const params = new URLSearchParams(searchParams);
-    params.set('regionCode', key.toString());
-    router.replace(pathname + '?' + params.toString());
+    setQuery(
+      {
+        regionCode: key.toString(),
+        videoCategoryId: videoCategoryId
+      }
+    )
   };
 
   return (
