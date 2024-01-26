@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation'
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Divider,
   Spinner,
@@ -10,6 +9,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { getSearchVideoList } from '@/utils/request';
 import { iSearchVideoItem } from '@/shared/interface/searchVideo';
 import ComponentSearchVideoCard from './searchVideoCard';
+import { QueryContext } from '@/app/providers';
 
 export default function ComponentSearchList({
   videoList,
@@ -22,10 +22,11 @@ export default function ComponentSearchList({
   totalResults: number,
   searchKey: string,
 }) {
-  const searchParams = useSearchParams();
   const [recentVideo, setRecentVideo] = useState<iSearchVideoItem[]>(videoList);
   const [pageToken, setPageToken] = useState(nextPageToken);
   const [loadMore, setLoadMore] = useState(true);
+  const query = useContext(QueryContext);
+  const regionCode = query.regionCode;
 
   const loadMoreVideo = async () => {
     if (recentVideo.length >= totalResults) {
@@ -33,7 +34,6 @@ export default function ComponentSearchList({
       return;
     }
 
-    const regionCode = searchParams.get('regionCode');
     const resData = await getSearchVideoList(regionCode, searchKey, pageToken);
 
     setRecentVideo((video) => [...video, ...resData.items]);

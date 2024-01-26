@@ -1,22 +1,22 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import Loading from '@/components/template/loading';
 import { getSearchVideoList } from '@/utils/request';
 import Error from '@/components/template/error';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRef } from 'react';
 import ComponentSearchInput from '@/components/(youtube)/(search)/searchInput';
 import ComponentSearchList from '@/components/(youtube)/(search)/searchList';
 import { iSearchVideo } from '@/shared/interface/searchVideo';
+import { QueryContext } from '@/app/providers';
 
 export default function Page() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchKey, setSearchKey] = useState<string>('');
   const [searchVideo, setSearchVideo] = useState<iSearchVideo>();
-  const searchParams = useSearchParams();
-  const regionCode = searchParams.get('regionCode');
+  const query = useContext(QueryContext);
+  const regionCode = query.regionCode;
 
   const onSearch = (key: string) => {
     setSearchKey(key);

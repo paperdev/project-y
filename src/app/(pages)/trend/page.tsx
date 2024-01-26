@@ -1,18 +1,18 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import Loading from '@/components/template/loading';
 import { getGoogleTrendList } from '@/utils/request';
 import ComponentItemList from '@/components/(trend)/itemList';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { iTrendItem } from '@/shared/interface/trendItem';
 import { useQuery } from '@tanstack/react-query'
 import Error from '@/components/template/error';
+import { QueryContext } from '@/app/providers';
 
 export default function Page() {
   const [searchItem, setSearchItem] = useState<iTrendItem[]>([]);
-  const searchParams = useSearchParams();
-  const regionCode = searchParams.get('regionCode');
+  const query = useContext(QueryContext);
+  const regionCode = query.regionCode;
 
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['googleTrend', regionCode],
