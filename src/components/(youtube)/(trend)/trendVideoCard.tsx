@@ -25,6 +25,9 @@ import {
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 import DecodedText from '@/components/template/decodedText';
 
+// https://www.youtube.com/watch?app=desktop&v=m76PnRxrcQM&embeds_referring_euri=https://lonelycpp.github.io/&embeds_referring_origin=https://lonelycpp.github.io&source_ve_path=Mjg2NjY&feature=emb_logo&ab_channel=NewHeights
+// https://www.youtube.com/watch?app=desktop&v=RgKAFK5djSk&embeds_referring_euri=https://lonelycpp.github.io/&embeds_referring_origin=https://lonelycpp.github.io&source_ve_path=Mjg2NjY&feature=emb_logo&ab_channel=NewHeights
+
 export default function ComponentTrendVideoCard({
   video
 }: {

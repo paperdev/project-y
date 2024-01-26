@@ -21,7 +21,7 @@ export default function TemplateHome({
   const navTopRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    if (Capacitor.getPlatform() === 'ios') {
+    if ('ios' === Capacitor.getPlatform()) {
       if (window) {
         window.addEventListener('statusTap', function () {
           scrollToTop(ScoollHevavior.smooth);
@@ -37,9 +37,14 @@ export default function TemplateHome({
     navTopRef.current.scrollIntoView({ behavior: behavior, block: 'start', inline: 'nearest' });
   }
 
+  let divClass = 'h-screen mx-auto flex flex-col justify-between pt-16 sm:pt-0 pb-4 sm:pb-0';
+  if ('web' === Capacitor.getPlatform()) {
+    divClass +=' max-w-2xl';
+  }
+
   return (
     <>
-      <div className='h-screen max-w-2xl mx-auto flex flex-col justify-between pt-16 sm:pt-0 pb-4 sm:pb-0'>
+      <div className={`${divClass}`}>
         <Header className='bg-primary-500 flex-none flex justify-between sticky top-0 z-50 h-14' />
         <Body className='overflow-y-auto overflow-x-hidden'>
           <div ref={navTopRef}></div>

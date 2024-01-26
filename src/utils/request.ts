@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Http, HttpDownloadFileOptions, HttpDownloadFileResult } from '@capacitor-community/http';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Capacitor, CapacitorCookies } from '@capacitor/core';
+import { iTrendVideo, iTrendVideoItem } from '@/shared/interface/trendVideo';
 
 const PLATFORM = {
   ANDROID: 'android',
@@ -61,7 +62,7 @@ const generateURLWithKey = (
   return url + '?' + searchParams.toString();
 };
 
-async function getTrendList(
+async function getTrendVideoList(
   regionCode: string | null,
   videoCategoryId: string | null,
   nextPageToken?: string
@@ -72,7 +73,7 @@ async function getTrendList(
 
   let params = {
     // part: 'snippet,contentDetails,statistics',
-    part: 'snippet,statistics',
+    part: 'snippet,statistics,status,contentDetails',
     chart: 'mostPopular',
     regionCode: regionCode ? regionCode : process.env.DEFAULT_REGION,
     maxResults: 5,
@@ -100,10 +101,15 @@ async function getTrendList(
     throw new Error('Failed to fetch data.');
   }
 
-  return res.data;
+  const result: iTrendVideo = Object.assign({}, res.data);
+  result.items = result.items.filter((item: iTrendVideoItem) => {
+    return item.status.embeddable;
+  });
+  
+  return result;
 }
 
-async function getSearchList(
+async function getSearchVideoList(
   regionCode: string | null,
   searchKey: string | null,
   nextPageToken?: string
@@ -329,8 +335,8 @@ const getCurrentLocation = async () => {
 };
 
 export { 
-  getTrendList, 
-  getSearchList, 
+  getTrendVideoList, 
+  getSearchVideoList, 
   getChannel, 
   getPlayListItems, 
   getRegionList, 

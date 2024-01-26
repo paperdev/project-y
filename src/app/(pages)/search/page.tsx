@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import Loading from '@/components/template/loading';
-import { getSearchList } from '@/utils/request';
+import { getSearchVideoList } from '@/utils/request';
 import Error from '@/components/template/error';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -25,7 +25,7 @@ export default function Page() {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['search', { regionCode, searchKey }],
     queryFn: () => {
-      return getSearchList(regionCode, searchKey);
+      return getSearchVideoList(regionCode, searchKey);
     },
   });
 

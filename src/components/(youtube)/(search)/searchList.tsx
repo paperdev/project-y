@@ -7,7 +7,7 @@ import {
   Spinner,
 } from '@nextui-org/react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { getSearchList } from '@/utils/request';
+import { getSearchVideoList } from '@/utils/request';
 import { iSearchVideoItem } from '@/shared/interface/searchVideo';
 import ComponentSearchVideoCard from './searchVideoCard';
 
@@ -34,7 +34,7 @@ export default function ComponentSearchList({
     }
 
     const regionCode = searchParams.get('regionCode');
-    const resData = await getSearchList(regionCode, searchKey, pageToken);
+    const resData = await getSearchVideoList(regionCode, searchKey, pageToken);
 
     setRecentVideo((video) => [...video, ...resData.items]);
     setPageToken(resData.nextPageToken);

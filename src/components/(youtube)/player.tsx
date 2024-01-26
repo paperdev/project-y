@@ -9,7 +9,7 @@ export default function ComponentPlayer({
         {videoId && (
           <iframe
             className='h-full w-full rounded-lg'
-            src={process.env.YOUTUBE_URL_EMBED + videoId}
+            src={`${process.env.YOUTUBE_URL_PLAYER}{"videoId_s":"${videoId}"}`}
             loading='lazy'
             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;'
             allowFullScreen

@@ -12,6 +12,8 @@ interface iTrendVideoItem {
   id: string;
   snippet: iSnippet;
   statistics: iStatistics;
+  status: iStatus;
+  contentDetails: iContentDetails;
 }
 
 interface iPageInfo {
@@ -36,6 +38,21 @@ interface iStatistics {
   likeCount: number;
   favoriteCount: number;
   commentCount: number;
+}
+
+interface iStatus {
+  uploadStatus: string;
+  privacyStatus: string;
+  license: string;
+  embeddable: boolean;
+  publicStatsViewable: boolean;
+  madeForKids: boolean;
+}
+
+interface iContentDetails {
+  regionRestriction: {
+    allowed: string[];
+  }
 }
 
 interface iThumbnail {

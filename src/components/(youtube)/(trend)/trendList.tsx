@@ -7,7 +7,7 @@ import {
   Spinner,
 } from '@nextui-org/react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { getTrendList } from '@/utils/request';
+import { getTrendVideoList } from '@/utils/request';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 import ComponentTrendVideoCard from './trendVideoCard';
 
@@ -33,7 +33,12 @@ export default function ComponentTrendList({
 
     const regionCode = searchParams.get('regionCode');
     const videoCategoryId = searchParams.get('videoCategoryId');
-    const resData = await getTrendList(regionCode, videoCategoryId, pageToken);
+    const resData = await getTrendVideoList(regionCode, videoCategoryId, pageToken);
+    
+    if (!resData) {
+      return;
+    }
+    
     setRecentVideo((video) => [...video, ...resData.items]);
     setPageToken(resData.nextPageToken);
   };

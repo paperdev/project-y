@@ -2,10 +2,11 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'trend.dev.paper',
-  appName: 'paper',
+  appName: 'TrendInsight',
   webDir: 'build',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
+    // hostname: 'localhost'
   },
 
   ios: {

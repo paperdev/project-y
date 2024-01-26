@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import ComponentTrendList from '@/components/(youtube)/(trend)/trendList';
 import Loading from '@/components/template/loading';
-import { getTrendList } from '@/utils/request';
+import { getTrendVideoList } from '@/utils/request';
 import Error from '@/components/template/error';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -18,11 +18,14 @@ export default function Page() {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['trend', regionCode, videoCategoryId],
     queryFn: () => {
-      return getTrendList(regionCode, videoCategoryId);
+      return getTrendVideoList(regionCode, videoCategoryId);
     },
   });
 
   useEffect(() => {
+    if (!data) {
+      return
+    }
     setTrendVideo(data);
   }, [data, regionCode]);
 

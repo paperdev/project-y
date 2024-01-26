@@ -25,12 +25,12 @@ const nextConfig = {
     YOUTUBE_URL_WATCH: process.env.YOUTUBE_URL_WATCH,
     YOUTUBE_URL_EMBED: process.env.YOUTUBE_URL_EMBED,
     YOUTUBE_URL_CHANNEL: process.env.YOUTUBE_URL_CHANNEL,
+    YOUTUBE_URL_PLAYER: process.env.YOUTUBE_URL_PLAYER,
 
     GOOGLE_TREND_URL: process.env.GOOGLE_TREND_URL,
     GOOGLE_TREND_DAILY_URL: process.env.GOOGLE_TREND_DAILY_URL,
   },
   
-  reactStrictMode: true,
   async rewrites() {
     return [
       {
