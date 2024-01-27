@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'trend.dev.paper',
+  appId: 'td.dev.paper',
   appName: 'TrendInsight',
   webDir: 'build',
   server: {
@@ -10,7 +10,9 @@ const config: CapacitorConfig = {
   },
 
   ios: {
+    scheme: 'TrendInsight',
     allowsLinkPreview: true,
+    contentInset: 'automatic',
   },
 
   plugins: {

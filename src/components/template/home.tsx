@@ -5,7 +5,6 @@ import Header from './header';
 import Body from './body';
 import Footer from './footer';
 import { Capacitor } from '@capacitor/core';
-// import { StatusBar, Style } from '@capacitor/status-bar';
 
 const ScoollHevavior: Record<string, ScrollBehavior> = {
   smooth: 'smooth',
@@ -37,7 +36,7 @@ export default function TemplateHome({
     navTopRef.current.scrollIntoView({ behavior: behavior, block: 'start', inline: 'nearest' });
   }
 
-  let divClass = 'h-screen mx-auto flex flex-col justify-between pt-16 sm:pt-0 pb-4 sm:pb-0';
+  let divClass = 'h-screen mx-auto flex flex-col justify-between';
   if ('web' === Capacitor.getPlatform()) {
     divClass +=' max-w-2xl';
   }

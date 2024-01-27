@@ -1,6 +1,16 @@
 import '@/css/globals.css';
 import TemplateHome from '@/components/template/home';
 import { Providers } from './providers';
+import type { Viewport } from 'next'
+ 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  // Also supported by less commonly used
+  // interactiveWidget: 'resizes-visual',
+}
 
 export default function RootLayout({
   children,
@@ -9,7 +19,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' suppressHydrationWarning={true}>
-      <meta name='viewport' content='width=device-width, user-scalable=no' />
       <body>
         <Providers>
           <TemplateHome>
