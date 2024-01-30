@@ -9,34 +9,30 @@ import {
   CardFooter,
   Link,
 } from '@nextui-org/react';
-import { iSearchItem } from '@/shared/interface/searchVideo';
+import { iSearchVideoItem } from '@/shared/interface/searchVideo';
+import DecodedText from '@/components/template/decodedText';
+import { MdZoomOutMap } from 'react-icons/md';
 
 export default function ComponentSearchVideoCard({
   video,
 }: {
-  video: iSearchItem,
+  video: iSearchVideoItem,
 }) {
-
   return (
     <>
       <Card shadow='none' className='rounded-none'>
         <CardHeader>
           <div>
-            <div className='text-2xl font-bold text-primary-500'>
-              {video.snippet.title}
-            </div>
+            <DecodedText text={video.snippet.title} className='text-2xl font-bold text-primary-500' />
             <span className='text-xs ml-2 text-default-500'>
               {video.snippet.publishedAt}
             </span>
             <div className='flex mt-2 gap-1'>
               <div className='text-primary-500'>Channel : </div>
               <Link
-                isExternal
                 showAnchorIcon
-                href={
-                  process.env.YOUTUBE_URL_CHANNEL +
-                  video.snippet.channelId
-                }
+                anchorIcon={<MdZoomOutMap />}
+                href={'/channel?channelId=' + video.snippet.channelId}
               >
                 {video.snippet.channelTitle}
               </Link>
@@ -49,7 +45,10 @@ export default function ComponentSearchVideoCard({
         </CardBody>
 
         <CardFooter>
-          {video.snippet.description}
+          <div className='whitespace-pre-wrap'>
+            {video.snippet.description}
+          </div>
+          
         </CardFooter>
       </Card>
     </>

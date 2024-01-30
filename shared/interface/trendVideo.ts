@@ -1,17 +1,19 @@
 interface iTrendVideo {
   kind: string;
   etag: string;
-  items: iTrendItem[];
+  items: iTrendVideoItem[];
   nextPageToken: string;
   pageInfo: iPageInfo;
 }
 
-interface iTrendItem {
+interface iTrendVideoItem {
   kind: string;
   etag: string;
   id: string;
   snippet: iSnippet;
   statistics: iStatistics;
+  status: iStatus;
+  contentDetails: iContentDetails;
 }
 
 interface iPageInfo {
@@ -24,7 +26,9 @@ interface iSnippet {
   channelId: string;
   title: string;
   description: string;
-  thumbnails: {};
+  thumbnails: {
+    [key: string] : iThumbnail;
+  };
   channelTitle: string;
   tags: string[];
 }
@@ -36,7 +40,28 @@ interface iStatistics {
   commentCount: number;
 }
 
+interface iStatus {
+  uploadStatus: string;
+  privacyStatus: string;
+  license: string;
+  embeddable: boolean;
+  publicStatsViewable: boolean;
+  madeForKids: boolean;
+}
+
+interface iContentDetails {
+  regionRestriction: {
+    allowed: string[];
+  }
+}
+
+interface iThumbnail {
+  url: string;
+  width: string;
+  height: string;
+}
+
 export {
   type iTrendVideo,
-  type iTrendItem,
+  type iTrendVideoItem,
 }

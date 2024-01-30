@@ -20,13 +20,18 @@ import {
   MdExpandLess,
   MdUnfoldMore,
   MdUnfoldLess,
+  MdZoomOutMap,
 } from 'react-icons/md';
-import { iTrendItem } from '@/shared/interface/trendVideo';
+import { iTrendVideoItem } from '@/shared/interface/trendVideo';
+import DecodedText from '@/components/template/decodedText';
+
+// https://www.youtube.com/watch?app=desktop&v=m76PnRxrcQM&embeds_referring_euri=https://lonelycpp.github.io/&embeds_referring_origin=https://lonelycpp.github.io&source_ve_path=Mjg2NjY&feature=emb_logo&ab_channel=NewHeights
+// https://www.youtube.com/watch?app=desktop&v=RgKAFK5djSk&embeds_referring_euri=https://lonelycpp.github.io/&embeds_referring_origin=https://lonelycpp.github.io&source_ve_path=Mjg2NjY&feature=emb_logo&ab_channel=NewHeights
 
 export default function ComponentTrendVideoCard({
   video
 }: {
-  video: iTrendItem
+  video: iTrendVideoItem
 }) {
   const [tagExpanded, setTagExpanded] = useState<boolean>(false);
   const [descExpanded, setDescExpanded] = useState<boolean>(false);
@@ -90,21 +95,16 @@ export default function ComponentTrendVideoCard({
       <Card shadow='none' className='rounded-none'>
         <CardHeader>
           <div>
-            <div className='text-2xl font-bold text-primary-500'>
-              {video.snippet.title}
-            </div>
+            <DecodedText text={video.snippet.title} className='text-2xl font-bold text-primary-500' />
             <span className='text-xs ml-2 text-default-500'>
               {video.snippet.publishedAt}
             </span>
-            <div className='flex mt-2 gap-1'>
-              <div className='text-primary-500'>Channel : </div>
+            <div className='flex mt-2 gap-2 items-center'>
+              <div className='text-default-500'>Channel : </div>
               <Link
-                isExternal
                 showAnchorIcon
-                href={
-                  process.env.YOUTUBE_URL_CHANNEL +
-                  video.snippet.channelId
-                }
+                anchorIcon={<MdZoomOutMap />}
+                href={'/channel?channelId=' + video.snippet.channelId}
               >
                 {video.snippet.channelTitle}
               </Link>
@@ -180,7 +180,7 @@ export default function ComponentTrendVideoCard({
           </Button>
         </CardFooter>
 
-        <CardBody className='hiddenDescClass hidden '>
+        <CardBody className='hiddenDescClass hidden whitespace-pre-wrap'>
           {video.snippet.description}
         </CardBody>
       </Card>

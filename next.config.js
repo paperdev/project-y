@@ -14,12 +14,30 @@ const nextConfig = {
     DEFAULT_REGION: process.env.DEFAULT_REGION,
     YOUTUBE_KEY: process.env.YOUTUBE_KEY,
     YOUTUBE_BASE_URL: process.env.YOUTUBE_BASE_URL,
+
     YOUTUBE_VIDEO_URL: process.env.YOUTUBE_VIDEO_URL,
-    YOUTUBE_REGION_URL: process.env.YOUTUBE_REGION_URL,
     YOUTUBE_SEARCH_URL: process.env.YOUTUBE_SEARCH_URL,
+    YOUTUBE_CHANNEL_URL: process.env.YOUTUBE_CHANNEL_URL,
+    YOUTUBE_PLAYLISTITEMS_URL: process.env.YOUTUBE_PLAYLISTITEMS_URL,
+    YOUTUBE_REGION_URL: process.env.YOUTUBE_REGION_URL,
+    YOUTUBE_VIDEO_CATEGORY_URL: process.env.YOUTUBE_VIDEO_CATEGORY_URL,
+
     YOUTUBE_URL_WATCH: process.env.YOUTUBE_URL_WATCH,
     YOUTUBE_URL_EMBED: process.env.YOUTUBE_URL_EMBED,
     YOUTUBE_URL_CHANNEL: process.env.YOUTUBE_URL_CHANNEL,
+    YOUTUBE_URL_PLAYER: process.env.YOUTUBE_URL_PLAYER,
+
+    GOOGLE_TREND_URL: process.env.GOOGLE_TREND_URL,
+    GOOGLE_TREND_DAILY_URL: process.env.GOOGLE_TREND_DAILY_URL,
+  },
+  
+  async rewrites() {
+    return [
+      {
+        source: '/:path*',
+        destination: `${process.env.GOOGLE_TREND_URL}/:path*`,
+      },
+    ];
   },
 
   distDir: 'build',

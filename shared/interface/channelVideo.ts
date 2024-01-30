@@ -1,23 +1,16 @@
-interface iSearchVideo {
+interface iChannelVideo {
   kind: string;
   etag: string;
-  items: iSearchVideoItem[];
+  items: iChannelVideoItem[];
   nextPageToken: string;
   pageInfo: iPageInfo;
 }
 
-interface iSearchVideoItem {
+interface iChannelVideoItem {
   kind: string;
   etag: string;
-  id: iItemId;
+  id: string;
   snippet: iSnippet;
-  descExpanded?: boolean;
-}
-
-interface iItemId {
-  kind: string;
-  channelId?: string;
-  videoId?: string;
 }
 
 interface iPageInfo {
@@ -34,8 +27,11 @@ interface iSnippet {
     [key: string] : iThumbnail;
   };
   channelTitle: string;
-  liveBroadcastContent: string;
-  publishTime: string;
+  position: number;
+  resourceId: {
+    kind: string;
+    videoId: string;
+  };
 }
 
 interface iThumbnail {
@@ -45,6 +41,6 @@ interface iThumbnail {
 }
 
 export {
-  type iSearchVideo,
-  type iSearchVideoItem,
+  type iChannelVideo,
+  type iChannelVideoItem,
 }
