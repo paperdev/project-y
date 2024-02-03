@@ -1,64 +1,75 @@
 'use client';
 
-import React from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import { MdSearch, MdSmartDisplay, MdWhatshot, MdInfo } from 'react-icons/md';
-import { Tabs, Tab } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
+import { Tabbar, TabbarLink } from 'konsta/react';
+import { iTab } from '@/shared/interface/tab';
 
-const bottomMenu = [
-  {
-    name: 'home',
+const iconSize = 'w-7 h-7';
+const bottomMenu: Record<string, iTab> = {
+  home: {
     href: 'home',
-    icon: <MdSmartDisplay />,
+    isActive: true,
+    icon: <MdSmartDisplay className={iconSize} />,
   },
-  {
-    name: 'search',
+  search: {
     href: 'search',
-    icon: <MdSearch />,
+    isActive: false,
+    icon: <MdSearch className={iconSize} />,
   },
-  {
-    name: 'trend',
+  trend: {
     href: 'trend',
-    icon: <MdWhatshot />,
+    isActive: false,
+    icon: <MdWhatshot className={iconSize} />,
   },
-  {
-    name: 'about',
+  about: {
     href: 'about',
-    icon: <MdInfo />,
+    isActive: false,
+    icon: <MdInfo className={iconSize} />,
   },
-];
+};
 
 export default function Footer({ className }: { className?: string }) {
   const router = useRouter();
+  const [tabList, setTabList] = useState(bottomMenu);
+  const [previousTab, setPreviousTab] = useState('home');
 
-  const onSelectionChange = (key: React.Key) => {
-    router.replace(key.toString(), {scroll: false});
+  const onClickTab = (event: SyntheticEvent) => {
+    const currentTabName = event.currentTarget.getAttribute('id');
+    if (!currentTabName || tabList[currentTabName].isActive) {
+      return;
+    }
+
+    if (previousTab) {
+      tabList[previousTab].isActive = false;
+    }
+
+    tabList[currentTabName].isActive = true;
+    setTabList(Object.assign({}, tabList));
+    setPreviousTab(currentTabName);
+
+    // router.replace(currentTabName, { scroll: false });
   };
 
   return (
     <>
-      <div className={`${className}`}>
-        <Tabs
-          color='default'
-          radius='md'
-          variant='light'
-          fullWidth={true}
-          onSelectionChange={onSelectionChange}
-        >
-          {bottomMenu.map((menu) => (
-            <Tab
-              key={menu.href}
-              className='h-12'
-              title={
-                <div className='flex items-center font-bold text-base text-default-300 group-data-[selected=true]:text-primary-500'>
-                  {menu.icon}
-                  <div className='capitalize'>{menu.name}</div>
-                </div>
-              }
-            />
-          ))}
-        </Tabs>
-      </div>
+      <Tabbar
+        labels={true}
+        icons={true}
+        className={`${className}`}
+      >
+        {Object.keys(tabList).map((key, index) => (
+          <TabbarLink
+            id={key}
+            key={index}
+            active={tabList[key].isActive}
+            onClick={onClickTab}
+            icon={tabList[key].icon}
+            label={key}
+          />
+        ))}
+      </Tabbar>
     </>
   );
 }

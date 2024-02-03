@@ -31,14 +31,14 @@ const nextConfig = {
     GOOGLE_TREND_DAILY_URL: process.env.GOOGLE_TREND_DAILY_URL,
   },
   
-  async rewrites() {
-    return [
-      {
-        source: '/:path*',
-        destination: `${process.env.GOOGLE_TREND_URL}/:path*`,
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/:path*',
+  //       destination: `${process.env.GOOGLE_TREND_URL}/:path*`,
+  //     },
+  //   ];
+  // },
 
   distDir: 'build',
   // output: 'export',

@@ -5,6 +5,7 @@ import Header from './header';
 import Body from './body';
 import Footer from './footer';
 import { Capacitor } from '@capacitor/core';
+import { Page } from 'konsta/react';
 
 const ScoollHevavior: Record<string, ScrollBehavior> = {
   smooth: 'smooth',
@@ -36,21 +37,16 @@ export default function TemplateHome({
     navTopRef.current.scrollIntoView({ behavior: behavior, block: 'start', inline: 'nearest' });
   }
 
-  let divClass = 'h-screen mx-auto flex flex-col justify-between';
-  if ('web' === Capacitor.getPlatform()) {
-    divClass +=' max-w-2xl';
-  }
-
   return (
-    <>
-      <div className={`${divClass}`}>
-        <Header className='bg-primary-500 flex-none flex justify-between sticky top-0 z-50 h-14' />
-        <Body className='overflow-y-auto overflow-x-hidden'>
-          <div ref={navTopRef}></div>
-          {children}
-        </Body>
-        <Footer className='bg-primary-500 flex-none flex justify-center sticky bottom-0 h-14' />
-      </div>
-    </>
+    <Page>
+      <Header className='sticky top-0'/>
+
+      <Body className='overflow-y-auto overflow-x-hidden'>
+        <div ref={navTopRef}></div>
+        {children}
+      </Body>
+
+      <Footer className='bottom-0 fixed capitalize' /> 
+    </Page>
   );
 }

@@ -1,18 +1,21 @@
 'use client';
 
-import { useTheme } from 'next-themes';
+import { Toggle } from 'konsta/react';
 import React, { useEffect, useState } from 'react';
-import { Switch } from '@nextui-org/react';
 import { MdLightMode, MdDarkMode } from 'react-icons/md';
 
-export function ThemeSwitcher() {
+export function ThemeSwitcher({ className }: { className?: string }) {
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const [isSelected, setIsSelected] = useState(theme === 'dark' ? true : false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.target.checked ? setTheme('dark') : setTheme('light');
-    setIsSelected(event.target.checked);
+    setIsChecked(event.target.checked);
+    if (!document) {
+      return;
+    }
+    document
+      .getElementsByTagName('html')[0]
+      .setAttribute('class', event.target.checked ? 'dark theme-dark' : '');
   };
 
   useEffect(() => {
@@ -23,17 +26,10 @@ export function ThemeSwitcher() {
 
   return (
     <>
-      <Switch
-        isSelected={isSelected}
-        onValueChange={setIsSelected}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          onChange(event);
-        }}
-        size='md'
-        color='primary'
-        startContent={<MdLightMode />}
-        endContent={<MdDarkMode />}
-      />
+      <Toggle checked={isChecked} onChange={onChange} component='label' className={`${className}`}>
+        <MdLightMode className='w-6 h-6 relative -top-6.5 left-0.5 fill-primary dark:fill-none ' />
+        <MdDarkMode className='w-7 h-7 relative -top-13 -right-5 fill-none dark:fill-black dark:opacity-65 ' />
+      </Toggle>
     </>
   );
 }
