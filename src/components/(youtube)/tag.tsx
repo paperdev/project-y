@@ -1,7 +1,7 @@
 'use client';
 
+import { Chip } from 'konsta/react';
 import React from 'react';
-import { Chip } from '@nextui-org/react';
 
 const MAX_TAGS = 5;
 
@@ -22,12 +22,9 @@ function ComponentTag({
         {tags.map((tag, index) => {
           return (
             index < MAX_TAGS && (
-              <Chip
-                key={index}
-                variant='flat'
-                radius='sm'
-                className='cursor-pointer'
-              >{`#${tag}`}</Chip>
+              <Chip key={index} className='cursor-pointer'>
+                {`#${tag}`}
+              </Chip>
             )
           );
         })}
@@ -55,12 +52,7 @@ function ComponentHiddenTag({
             return;
           }
           return (
-            <Chip
-              key={index}
-              variant='flat'
-              radius='sm'
-              className='cursor-pointer'
-            >{`#${tag}`}</Chip>
+            <Chip key={index} className='cursor-pointer'>{`#${tag}`}</Chip>
           );
         })}
       </div>

@@ -1,15 +1,12 @@
 'use client';
 
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Divider,
-  Spinner,
-} from '@nextui-org/react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getTrendVideoList } from '@/utils/request';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 import ComponentTrendVideoCard from './trendVideoCard';
 import { QueryContext } from '@/app/providers';
+import { Preloader } from 'konsta/react';
 
 export default function ComponentTrendList({
   videoList,
@@ -67,7 +64,7 @@ export default function ComponentTrendList({
         hasMore={loadMore}
         loader={
           <div className='flex justify-center'>
-            <Spinner label='Loading...' color='primary' />
+            <Preloader />
           </div>
         }
         endMessage={
@@ -80,7 +77,6 @@ export default function ComponentTrendList({
           return (
             <div key={index}>
               <ComponentTrendVideoCard video={video} />
-              <Divider />
             </div>
           );
         })}

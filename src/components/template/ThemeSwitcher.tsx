@@ -28,7 +28,7 @@ export function ThemeSwitcher({ className }: { className?: string }) {
     <>
       <Toggle checked={isChecked} onChange={onChange} component='label' className={`${className}`}>
         <MdLightMode className='w-6 h-6 relative -top-6.5 left-0.5 fill-primary dark:fill-none ' />
-        <MdDarkMode className='w-7 h-7 relative -top-13 -right-5 fill-none dark:fill-black dark:opacity-65 ' />
+        <MdDarkMode className='w-7 h-7 relative -top-13 -right-5 fill-none dark:fill-black ' />
       </Toggle>
     </>
   );

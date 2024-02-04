@@ -1,10 +1,11 @@
 import React from 'react';
-import { Card, Skeleton } from '@nextui-org/react';
+import { Preloader } from 'konsta/react';
 
 export default function Loading() {
   return (
     <>
-      <Card className='space-y-5 p-4 w-3/5 mx-auto' radius='lg'>
+      <Preloader size="w-16 h-16" />
+      {/* <Card className='space-y-5 p-4 w-3/5 mx-auto' radius='lg'>
         <Skeleton className='rounded-lg'>
           <div className='h-24 rounded-lg bg-default-300'></div>
         </Skeleton>
@@ -19,7 +20,7 @@ export default function Loading() {
             <div className='h-3 w-2/5 rounded-lg bg-default-300'></div>
           </Skeleton>
         </div>
-      </Card>
+      </Card> */}
     </>
   );
 }

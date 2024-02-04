@@ -13,13 +13,13 @@ export default function Header({ className }: { className?: string }) {
     <Navbar
       title='TrendInsight'
       subtitle='Trend Insight'
-      titleClassName=''
-      subtitleClassName='dark:opacity-90'
-      className={`${className} text-primary dark:text-primary dark:text-opacity-65`}
+      titleClassName='text-primary'
+      subtitleClassName=''
+      className={`${className} `}
       left={
-        <MdDataThresholding className='w-9 h-9 ' />
+        <MdDataThresholding className='w-9 h-9 text-primary' />
       }
-      right={<ThemeSwitcher className='bg-primary bg-opacity-65'/>}
+      right={<ThemeSwitcher className='bg-primary'/>}
     />
   );
 }

@@ -4,14 +4,6 @@ import React, { useState } from 'react';
 import ComponentPlayer from '@/components/(youtube)/player';
 import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Link,
-} from '@nextui-org/react';
-import {
   MdThumbUp,
   MdVisibility,
   MdComment,
@@ -24,14 +16,12 @@ import {
 } from 'react-icons/md';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 import DecodedText from '@/components/template/decodedText';
-
-// https://www.youtube.com/watch?app=desktop&v=m76PnRxrcQM&embeds_referring_euri=https://lonelycpp.github.io/&embeds_referring_origin=https://lonelycpp.github.io&source_ve_path=Mjg2NjY&feature=emb_logo&ab_channel=NewHeights
-// https://www.youtube.com/watch?app=desktop&v=RgKAFK5djSk&embeds_referring_euri=https://lonelycpp.github.io/&embeds_referring_origin=https://lonelycpp.github.io&source_ve_path=Mjg2NjY&feature=emb_logo&ab_channel=NewHeights
+import { Button, Card } from 'konsta/react';
 
 export default function ComponentTrendVideoCard({
-  video
+  video,
 }: {
-  video: iTrendVideoItem
+  video: iTrendVideoItem;
 }) {
   const [tagExpanded, setTagExpanded] = useState<boolean>(false);
   const [descExpanded, setDescExpanded] = useState<boolean>(false);
@@ -92,27 +82,72 @@ export default function ComponentTrendVideoCard({
 
   return (
     <>
-      <Card shadow='none' className='rounded-none'>
-        <CardHeader>
+      <Card
+        header={
           <div>
-            <DecodedText text={video.snippet.title} className='text-2xl font-bold text-primary-500' />
+            <DecodedText
+              text={video.snippet.title}
+              className='text-2xl font-bold text-primary'
+            />
             <span className='text-xs ml-2 text-default-500'>
               {video.snippet.publishedAt}
             </span>
             <div className='flex mt-2 gap-2 items-center'>
               <div className='text-default-500'>Channel : </div>
-              <Link
-                showAnchorIcon
-                anchorIcon={<MdZoomOutMap />}
+              <Button
+                clear
                 href={'/channel?channelId=' + video.snippet.channelId}
               >
                 {video.snippet.channelTitle}
-              </Link>
+              </Button>
             </div>
           </div>
-        </CardHeader>
+        }
+        footer={
+          <>
+            <div className='justify-between'>
+              <div className='flex flex-row gap-4'>
+                {video.statistics && (
+                  <>
+                    <div className='flex gap-1 items-center text-gray-600'>
+                      <MdThumbUp />
+                      <div>{video.statistics.likeCount}</div>
+                    </div>
 
-        <CardBody className='flex '>
+                    <div className='flex gap-1 items-center text-gray-600'>
+                      <MdVisibility />
+                      <div>{video.statistics.viewCount}</div>
+                    </div>
+
+                    <div className='flex gap-1 items-center text-gray-600'>
+                      <MdComment />
+                      <div>{video.statistics.commentCount}</div>
+                    </div>
+
+                    <div className='flex gap-1 items-center text-gray-600'>
+                      <MdFavorite />
+                      <div>{video.statistics.favoriteCount}</div>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <Button
+                className='w-7 h-7'
+                onClick={onClickDescExpand}
+                data-videoid={video.id}
+              >
+                {descExpanded ? <MdExpandLess /> : <MdExpandMore />}
+              </Button>
+            </div>
+
+            <div className='hiddenDescClass hidden whitespace-pre-wrap'>
+              {video.snippet.description}
+            </div>
+          </>
+        }
+      >
+        <div className=''>
           <div className='flex justify-between'>
             <ComponentTag
               className='flex flex-wrap gap-1'
@@ -120,8 +155,6 @@ export default function ComponentTrendVideoCard({
             />
 
             <Button
-              isIconOnly
-              variant='flat'
               className='w-7 h-7'
               onClick={onClickTagExpand}
               data-videoid={video.id}
@@ -136,53 +169,11 @@ export default function ComponentTrendVideoCard({
               tags={video.snippet.tags}
             />
           </div>
-        </CardBody>
+        </div>
 
-        <CardBody>
+        <div className='mt-2'>
           <ComponentPlayer videoId={video.id} />
-        </CardBody>
-
-        <CardFooter className='justify-between'>
-          <div className='flex flex-row gap-4'>
-            {video.statistics && (
-              <>
-                <div className='flex gap-1 items-center text-gray-600'>
-                  <MdThumbUp />
-                  <div>{video.statistics.likeCount}</div>
-                </div>
-
-                <div className='flex gap-1 items-center text-gray-600'>
-                  <MdVisibility />
-                  <div>{video.statistics.viewCount}</div>
-                </div>
-
-                <div className='flex gap-1 items-center text-gray-600'>
-                  <MdComment />
-                  <div>{video.statistics.commentCount}</div>
-                </div>
-
-                <div className='flex gap-1 items-center text-gray-600'>
-                  <MdFavorite />
-                  <div>{video.statistics.favoriteCount}</div>
-                </div>
-              </>
-            )}
-          </div>
-
-          <Button
-            isIconOnly
-            variant='flat'
-            className='w-7 h-7'
-            onClick={onClickDescExpand}
-            data-videoid={video.id}
-          >
-            {descExpanded ? <MdExpandLess /> : <MdExpandMore />}
-          </Button>
-        </CardFooter>
-
-        <CardBody className='hiddenDescClass hidden whitespace-pre-wrap'>
-          {video.snippet.description}
-        </CardBody>
+        </div>
       </Card>
     </>
   );

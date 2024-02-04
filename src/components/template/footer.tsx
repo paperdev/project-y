@@ -49,7 +49,7 @@ export default function Footer({ className }: { className?: string }) {
     setTabList(Object.assign({}, tabList));
     setPreviousTab(currentTabName);
 
-    // router.replace(currentTabName, { scroll: false });
+    router.replace(currentTabName, { scroll: false });
   };
 
   return (

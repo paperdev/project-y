@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Tabs, Tab } from '@nextui-org/react';
 import { getVideoCategoryList } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
 import { iVideoCategoryElement, iVideoCategoryItem } from '@/shared/interface/videoCategory';
@@ -56,7 +55,7 @@ export default function ComponentVideoCategory() {
       {
         (!isPending && !isFetching && !error) &&
         <div className='flex flex-col sticky top-0 bg-background backdrop-blur-0 z-30'>
-          <Tabs 
+          {/* <Tabs 
               items={videoCategoryList}
               onSelectionChange={onSelectionChange}
               color={'primary'}
@@ -65,7 +64,7 @@ export default function ComponentVideoCategory() {
               <Tab key={item.id} title={item.name}>
               </Tab>
             )}
-          </Tabs>
+          </Tabs> */}
         </div>
       }
     </>
