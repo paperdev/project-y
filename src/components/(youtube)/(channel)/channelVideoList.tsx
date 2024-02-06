@@ -1,15 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import {
-  Divider,
-  Spinner,
-} from '@nextui-org/react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getPlayListItems } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
 import ComponentChannelVideoCard from '@/components/(youtube)/(channel)/channelVideoCard';
 import { iChannelVideoItem } from '@/shared/interface/channelVideo';
+import { Preloader } from 'konsta/react';
 
 export default function ComponentChannelVideoList({
   playlistId,
@@ -57,7 +54,7 @@ export default function ComponentChannelVideoList({
         hasMore={loadMore}
         loader={
           <div className='flex justify-center'>
-            <Spinner label='Loading...' color='primary' />
+            <Preloader />
           </div>
         }
         endMessage={
@@ -70,7 +67,6 @@ export default function ComponentChannelVideoList({
           return (
             <div key={index}>
               <ComponentChannelVideoCard video={video} />
-              <Divider />
             </div>
           );
         })}
