@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Link, Card, CardHeader } from '@nextui-org/react';
 import { iArticle } from '@/shared/interface/trendItem';
 import ComponentImage from '@/components/(trend)/image';
 import { Browser } from '@capacitor/browser';
 import DecodedText from '../template/decodedText';
+import { Card, Link } from 'konsta/react';
 
 export default function ComponentRelatedNews({
   className,
@@ -25,7 +25,7 @@ export default function ComponentRelatedNews({
           return (
             <Link
               key={index}
-              onPress={() => {
+              onClick={() => {
                 Browser.open({
                   url: article.url
                 })
@@ -33,7 +33,7 @@ export default function ComponentRelatedNews({
               className='min-w-full'
             >
               <Card className='w-full'>
-                <CardHeader className='gap-4'>
+                <div className='gap-4'>
                   <ComponentImage
                     dataImage={article.image}
                     isShownLink={false}
@@ -45,7 +45,7 @@ export default function ComponentRelatedNews({
                       {article.source} - {article.timeAgo}
                     </div>
                   </div>
-                </CardHeader>
+                </div>
               </Card>
             </Link>
           );

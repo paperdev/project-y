@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Link } from '@nextui-org/react';
 import { iTitle } from '@/shared/interface/trendItem';
 import { Browser } from '@capacitor/browser';
+import { Link } from 'konsta/react';
 
 export default function ComponentRelatedSearch({
   className,
@@ -23,14 +23,12 @@ export default function ComponentRelatedSearch({
           return (
             <Link
               key={index}
-              showAnchorIcon
-              onPress={() => {
+              onClick={() => {
                 Browser.open({
                   url: process.env.GOOGLE_TREND_URL + title.exploreLink
                 })
               }}
               className='flex-none'
-              isBlock
             >
               {title.query}
             </Link>

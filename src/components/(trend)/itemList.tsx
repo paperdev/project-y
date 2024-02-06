@@ -2,12 +2,9 @@
 
 import React, { useState } from 'react';
 import { iTrendItem } from '@/shared/interface/trendItem';
-import {
-  Divider,
-  Spinner,
-} from '@nextui-org/react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ComponentItemCard from './itemCard';
+import { Preloader } from 'konsta/react';
 
 export default function ComponentItemList({
   dataItem: dataItem,
@@ -29,7 +26,7 @@ export default function ComponentItemList({
         hasMore={false}
         loader={
           <div className='flex justify-center'>
-            <Spinner label='Loading...' color='primary' />
+            <Preloader />
           </div>
         }
         endMessage={
@@ -42,7 +39,6 @@ export default function ComponentItemList({
           return (
             <div key={index}>
               <ComponentItemCard item={item} />
-              <Divider />
             </div>
           );
         })}

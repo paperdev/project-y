@@ -1,3 +1,4 @@
+import { Block } from 'konsta/react';
 import React from 'react';
 
 export default function Error({
@@ -7,14 +8,13 @@ export default function Error({
 }) {
   return (
     <>
-      <div className='flex flex-col text-danger-500'>
+      <Block className='flex flex-col justify-center inset-x-0 inset-y-0 fixed text-red-500'>
         {
           messages.map((message: string, index: number) => {
             return <div key={index} className='mx-auto'>{message}</div>
           })
         }
-        
-      </div>
+      </Block>
     </>
   );
 }
