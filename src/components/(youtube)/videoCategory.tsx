@@ -5,13 +5,14 @@ import { getVideoCategoryList } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
 import { iVideoCategoryElement, iVideoCategoryItem } from '@/shared/interface/videoCategory';
 import { QueryContext, SetQueryContext } from '@/app/providers';
+import { Chip } from 'konsta/react';
 
 export default function ComponentVideoCategory() {
   const [videoCategoryList, setVideoCategoryList] = useState<iVideoCategoryElement[]>([]);
   const query = useContext(QueryContext);
   const setQuery = useContext(SetQueryContext);
   const regionCode = query.regionCode;
-  const videoCategoryId = query.videoCategoryId;
+  const videoCategoryId = query.videoCategoryId ? query.videoCategoryId : '0';
 
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['videoCategoryList', regionCode],
@@ -37,36 +38,44 @@ export default function ComponentVideoCategory() {
     }
   }, [data, regionCode]);
 
-  const onSelectionChange = (key: React.Key) => {
-    if (!key) {
-      return;
-    }
-
+  const onClick = (currentId: number) => {
     setQuery(
       {
         regionCode: regionCode,
-        videoCategoryId: key.toString()
+        videoCategoryId: currentId.toString()
       }
     )
-  };
+  }
 
   return (
     <>
-      {
-        (!isPending && !isFetching && !error) &&
-        <div className='flex flex-col sticky top-0 bg-background backdrop-blur-0 z-30'>
-          {/* <Tabs 
-              items={videoCategoryList}
-              onSelectionChange={onSelectionChange}
-              color={'primary'}
-            >
-            {(item) => (
-              <Tab key={item.id} title={item.name}>
-              </Tab>
-            )}
-          </Tabs> */}
+      {!isPending && !isFetching && !error && (
+        <div
+          data-id={videoCategoryId}
+          className='ios:top-0-safe flex flex-nowrap sticky top-0 w-full p-1 gap-1 bg-ios-light-surface-2 dark:bg-ios-dark-surface-2 hairline-b translucent overflow-x-scroll z-30 cursor-pointer'
+        >
+          {
+            videoCategoryList.map((item) => {
+              const colors = {
+                fillBg: videoCategoryId === item.id.toString() ? 'bg-primary' : '', 
+                fillText: videoCategoryId === item.id.toString() ? 'text-white dark:text-black': '' 
+              }
+              return (
+                <Chip 
+                  key={item.id}
+                  className={`flex-none`}
+                  colors={colors}
+                  onClick={() => {
+                    onClick(item.id);
+                  }}
+                >
+                  {item.name}
+                </Chip>
+              )
+            })
+          }
         </div>
-      }
+      )}
     </>
   );
 }
