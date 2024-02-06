@@ -16,7 +16,7 @@ import {
 } from 'react-icons/md';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 import DecodedText from '@/components/template/decodedText';
-import { Button, Card } from 'konsta/react';
+import { Button, Card, Chip } from 'konsta/react';
 
 export default function ComponentTrendVideoCard({
   video,
@@ -89,42 +89,44 @@ export default function ComponentTrendVideoCard({
               text={video.snippet.title}
               className='text-2xl font-bold text-primary'
             />
-            <span className='text-xs ml-2 text-default-500'>
+            <span className='text-xs ml-2'>
               {video.snippet.publishedAt}
             </span>
             <div className='flex mt-2 gap-2 items-center'>
-              <div className='text-default-500'>Channel : </div>
+              <div className=''>Channel : </div>
               <Button
-                clear
+                inline={true}
+                raised={true}
                 href={'/channel?channelId=' + video.snippet.channelId}
               >
                 {video.snippet.channelTitle}
+                <MdZoomOutMap className='pl-2 w-7 h-7'/>
               </Button>
             </div>
           </div>
         }
         footer={
           <>
-            <div className='justify-between'>
+            <div className='flex flex-row justify-between'>
               <div className='flex flex-row gap-4'>
                 {video.statistics && (
                   <>
-                    <div className='flex gap-1 items-center text-gray-600'>
+                    <div className='flex gap-1 items-center'>
                       <MdThumbUp />
                       <div>{video.statistics.likeCount}</div>
                     </div>
 
-                    <div className='flex gap-1 items-center text-gray-600'>
+                    <div className='flex gap-1 items-center'>
                       <MdVisibility />
                       <div>{video.statistics.viewCount}</div>
                     </div>
 
-                    <div className='flex gap-1 items-center text-gray-600'>
+                    <div className='flex gap-1 items-center'>
                       <MdComment />
                       <div>{video.statistics.commentCount}</div>
                     </div>
 
-                    <div className='flex gap-1 items-center text-gray-600'>
+                    <div className='flex gap-1 items-center'>
                       <MdFavorite />
                       <div>{video.statistics.favoriteCount}</div>
                     </div>
@@ -132,16 +134,21 @@ export default function ComponentTrendVideoCard({
                 )}
               </div>
 
-              <Button
-                className='w-7 h-7'
+              <Chip
+                className='cursor-pointer'
                 onClick={onClickDescExpand}
                 data-videoid={video.id}
+                colors={
+                  {
+                    fillBg: 'bg-primary'
+                  }
+                }
               >
-                {descExpanded ? <MdExpandLess /> : <MdExpandMore />}
-              </Button>
+                {descExpanded ? <MdExpandLess className='w-5 h-5' /> : <MdExpandMore className='w-5 h-5' />}
+              </Chip>
             </div>
 
-            <div className='hiddenDescClass hidden whitespace-pre-wrap'>
+            <div className='hiddenDescClass hidden whitespace-pre-wrap text-black dark:text-white'>
               {video.snippet.description}
             </div>
           </>
@@ -154,13 +161,18 @@ export default function ComponentTrendVideoCard({
               tags={video.snippet.tags}
             />
 
-            <Button
-              className='w-7 h-7'
+            <Chip
+              className='cursor-pointer'
               onClick={onClickTagExpand}
               data-videoid={video.id}
+              colors={
+                {
+                  fillBg: 'bg-primary'
+                }
+              }
             >
-              {tagExpanded ? <MdUnfoldLess /> : <MdUnfoldMore />}
-            </Button>
+              {tagExpanded ? <MdUnfoldLess className='w-5 h-5' /> : <MdUnfoldMore className='w-5 h-5' />}
+            </Chip>
           </div>
 
           <div className='hiddenTagClass hidden pt-1'>
