@@ -1,21 +1,19 @@
+'use client';
+
 import ComponentProfile from '@/components/(about)/profile';
 import React from 'react';
 import { profile } from '@/shared/data/profile';
-import { Card, CardBody, CardHeader, Spacer } from '@nextui-org/react';
+import { Block } from 'konsta/react';
 
 export default function Page() {
   return (
     <>
-      <Card isBlurred radius='lg' className='border-none'>
-        <CardHeader>
-         <div className='flex justify-center mx-auto font-extrabold text-secondary-500'>
-            Developer
-          </div>
-        </CardHeader>
-        <CardBody>
-          <ComponentProfile className='' dataProfile={profile} />
-        </CardBody>
-      </Card>
+      <Block className='h-screen flex flex-col justify-center inset-x-0 inset-y-0 fixed' nested={true} >
+        <div className='flex justify-center mx-auto font-extrabold text-purple-500 '>
+          Developer
+        </div>
+        <ComponentProfile className='mt-2' dataProfile={profile} />
+      </Block>
     </>
   );
 }

@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Avatar, Button } from '@nextui-org/react';
 import { LuGithub, LuMail, LuLinkedin } from 'react-icons/lu';
 import { iProfile } from '@/shared/interface/profile';
 import { Browser } from '@capacitor/browser';
+import { Button } from 'konsta/react';
 
 export default function ComponentProfile({
   className,
@@ -18,24 +18,23 @@ export default function ComponentProfile({
       <div
         className={`${className} flex flex-col justify-center items-center text-center mx-auto`}
       >
-        <Avatar src={dataProfile.avatar} className='w-24 h-24'></Avatar>
+        <img src={dataProfile.avatar} className='w-24 h-24'></img>
 
         <div className='sm:pl-4'>
           <div className='py-2'>
-            <div className='text-primary-500 text-lg font-semibold'>
+            <div className='text-primary text-lg font-semibold'>
               {dataProfile.name}
             </div>
 
-            <div className='font-medium text-default-500'>
+            <div className='font-medium'>
               {dataProfile.jobTitle}
             </div>
 
             <div className='flex gap-2 mt-2 justify-center'>
               <Button
-                color='secondary'
-                isIconOnly
-                variant='light'
-                onPress={() => {
+                className='text-purple-500'
+                clear
+                onClick={() => {
                   Browser.open({
                     url: dataProfile.github
                   })
@@ -45,10 +44,9 @@ export default function ComponentProfile({
               </Button>
 
               <Button
-                color='secondary'
-                isIconOnly
-                variant='light'
-                onPress={() => {
+                className='text-purple-500'
+                clear
+                onClick={() => {
                   Browser.open({
                     url: dataProfile.linkedin
                   })
@@ -58,10 +56,9 @@ export default function ComponentProfile({
               </Button>
 
               <Button
-                color='secondary'
-                isIconOnly
-                variant='light'
-                onPress={() => {
+                className='text-purple-500'
+                clear
+                onClick={() => {
                   Browser.open({
                     url: `mailto:${dataProfile.email}`
                   })

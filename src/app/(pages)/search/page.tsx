@@ -9,6 +9,7 @@ import ComponentSearchInput from '@/components/(youtube)/(search)/searchInput';
 import ComponentSearchList from '@/components/(youtube)/(search)/searchList';
 import { iSearchVideo } from '@/shared/interface/searchVideo';
 import { QueryContext } from '@/app/providers';
+import { Block } from 'konsta/react';
 
 export default function Page() {
   const [searchKey, setSearchKey] = useState<string>('');
@@ -48,9 +49,9 @@ export default function Page() {
   }
 
   return (
-    <>
+    <Block className='h-screen' nested={true} >
       <ComponentSearchInput
-        className='sticky top-0 bg-background backdrop-blur-0 z-30'
+        className='sticky top-0 z-30 py-1'
         onSearch={onSearch}
       />
       <div className='h-screen mx-auto'>
@@ -63,6 +64,6 @@ export default function Page() {
           />
         )}
       </div>
-    </>
+    </Block>
   );
 }
