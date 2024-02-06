@@ -5,14 +5,12 @@ import { getSearchVideoList } from '@/utils/request';
 import Error from '@/components/template/error';
 import { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useRef } from 'react';
 import ComponentSearchInput from '@/components/(youtube)/(search)/searchInput';
 import ComponentSearchList from '@/components/(youtube)/(search)/searchList';
 import { iSearchVideo } from '@/shared/interface/searchVideo';
 import { QueryContext } from '@/app/providers';
 
 export default function Page() {
-  const inputRef = useRef<HTMLInputElement>(null);
   const [searchKey, setSearchKey] = useState<string>('');
   const [searchVideo, setSearchVideo] = useState<iSearchVideo>();
   const query = useContext(QueryContext);
@@ -53,7 +51,6 @@ export default function Page() {
     <>
       <ComponentSearchInput
         className='sticky top-0 bg-background backdrop-blur-0 z-30'
-        inputRef={inputRef}
         onSearch={onSearch}
       />
       <div className='h-screen mx-auto'>

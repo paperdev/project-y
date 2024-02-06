@@ -1,15 +1,12 @@
 'use client';
 
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Divider,
-  Spinner,
-} from '@nextui-org/react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getSearchVideoList } from '@/utils/request';
 import { iSearchVideoItem } from '@/shared/interface/searchVideo';
 import ComponentSearchVideoCard from './searchVideoCard';
 import { QueryContext } from '@/app/providers';
+import { Preloader } from 'konsta/react';
 
 export default function ComponentSearchList({
   videoList,
@@ -57,7 +54,7 @@ export default function ComponentSearchList({
         hasMore={loadMore}
         loader={
           <div className='flex justify-center'>
-            <Spinner label='Loading...' color='primary' />
+            <Preloader />
           </div>
         }
         endMessage={
@@ -74,7 +71,6 @@ export default function ComponentSearchList({
           return (
             <div key={index}>
               <ComponentSearchVideoCard video={video} />
-              <Divider />
             </div>
           );
         })}

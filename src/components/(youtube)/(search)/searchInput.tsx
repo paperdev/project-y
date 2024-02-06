@@ -1,52 +1,57 @@
 'use client';
 
-import React, { MutableRefObject } from 'react';
-import { Input, Button } from "@nextui-org/react";
+import { Searchbar } from 'konsta/react';
+import React, { useState } from 'react';
 
 export default function ComponentSearchInput({
   className,
-  inputRef,
   onSearch,
 }: {
   className: string;
-  inputRef: MutableRefObject<HTMLInputElement | null>
   onSearch: Function
 }) {
-  const onPressSearch = () => {
-    if (!inputRef?.current?.value) {
-      return;
-    }
-    onSearch(inputRef.current.value);
-  }
+  const [searchQuery, setSearchQuery] = useState('');
 
   const checkKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.code === 'Enter') {
-      if (!inputRef?.current?.value) {
+      if (!searchQuery) {
         return;
       }
-      onSearch(inputRef.current.value);
-      inputRef.current.value = '';
+      onSearch(searchQuery);
     }
   }
+  
+  const handleSearch = (event: React.BaseSyntheticEvent) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleClear = () => {
+    setSearchQuery('');
+  };
+
+  const handleDisable = () => {
+    if (!searchQuery) {
+      return;
+    }
+    onSearch(searchQuery);
+  };
 
   return (
     <>
       <div className={`${className}`}>
-        <Input
-          type='text'
-          variant='bordered'
+        <Searchbar
           placeholder='Search anything'
-          endContent={
-            <Button
-              onPress={() => { onPressSearch(); }}
-            >
-              Search
-            </Button>
-          }
-          ref={inputRef}
-          onKeyDown={(event: React.KeyboardEvent) => { checkKeyDown(event); }}
+          onInput={(event) => {handleSearch(event)}}
+          value={searchQuery}
+          onClear={handleClear}
+          disableButton
+          disableButtonText='Search'
+          onDisable={handleDisable}
+          onKeyDown={(event: React.KeyboardEvent) => {
+            checkKeyDown(event);
+          }}
         />
       </div>
     </>
-  )
+  );
 }
