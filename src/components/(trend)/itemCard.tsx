@@ -7,7 +7,7 @@ import ComponentRelatedSearch from '@/components/(trend)/relatedSearch';
 import ComponentRelatedNews from '@/components/(trend)/relatedNews';
 import { Browser } from '@capacitor/browser';
 import DecodedText from '../template/decodedText';
-import { Link, ListItem } from 'konsta/react';
+import { Card, Link } from 'konsta/react';
 import { MdOutlineOpenInNew } from 'react-icons/md';
 
 export default function ComponentItemCard({ item }: { item: iTrendItem }) {
@@ -28,41 +28,40 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
 
   return (
     <>
-      {/* <List strongIos outlineIos dividers={false}> */}
-        <ListItem
-          onClick={onClickExpand}
-          title={
+      <Card
+        onClick={onClickExpand}
+      >
+        <div className='flex justify-between'>
+          <div className='flex flex-col justify-start'>
             <DecodedText
               text={item.title.query}
               className='text-2xl font-bold text-primary whitespace-pre-wrap'
             />
-          }
-          subtitle={
             <span className='text-xs ml-2'>
               Searches : {item.formattedTraffic}
             </span>
-          }
-          text={
-            <Link
-              className='flex mt-2 gap-1'
-              onClick={() => {
-                Browser.open({
-                  url: process.env.GOOGLE_TREND_URL + item.title.exploreLink,
-                });
-              }}
-            >
-              Statistics
-              <MdOutlineOpenInNew className='pl-2 w-7 h-7' />
-            </Link>
-          }
-          contentChildren={
+            <div className='flex mt-2 items-center'>
+              <Link
+                onClick={() => {
+                  Browser.open({
+                    url: process.env.GOOGLE_TREND_URL + item.title.exploreLink,
+                  });
+                }}
+              >
+                Statistics
+                <MdOutlineOpenInNew className='pl-2 w-7 h-7' />
+              </Link>
+            </div>
+          </div>
+
+          <div className='flex justify-end'>
             <ComponentImage
               className=''
               dataImage={item.image}
               isShownLink={true}
             />
-          }
-        />
+          </div>
+        </div>
 
         <div ref={hiddenRef} className='hidden'>
           <ComponentRelatedSearch
@@ -75,7 +74,7 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
             relatedNews={item.articles}
           />
         </div>
-      {/* </List> */}
+      </Card>
     </>
   );
 }
