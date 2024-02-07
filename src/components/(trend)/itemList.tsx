@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { iTrendItem } from '@/shared/interface/trendItem';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ComponentItemCard from './itemCard';
-import { Preloader } from 'konsta/react';
+import { List, Preloader } from 'konsta/react';
 
 export default function ComponentItemList({
   dataItem: dataItem,
@@ -35,13 +35,19 @@ export default function ComponentItemList({
         scrollableTarget='scrollableElementDiv'
       >
 
-        {recentItem.map((item: iTrendItem, index: number) => {
-          return (
-            <div key={index}>
-              <ComponentItemCard item={item} />
-            </div>
-          );
-        })}
+        <List strongIos outlineIos nested dividers={false}>
+          {recentItem.map((item: iTrendItem, index: number) => {
+            if (0 === Object.keys(item.image).length) {
+              return <></>
+            }
+
+            return (
+              <div key={index} className={`border mx-2 rounded-lg ${1 === index ? '' : 'my-1'}`}>
+                <ComponentItemCard item={item} />
+              </div>
+            );
+          })}
+        </List>
 
       </InfiniteScroll>
     </>

@@ -7,7 +7,8 @@ import ComponentRelatedSearch from '@/components/(trend)/relatedSearch';
 import ComponentRelatedNews from '@/components/(trend)/relatedNews';
 import { Browser } from '@capacitor/browser';
 import DecodedText from '../template/decodedText';
-import { Card, Link } from 'konsta/react';
+import { Link, ListItem } from 'konsta/react';
+import { MdOutlineOpenInNew } from 'react-icons/md';
 
 export default function ComponentItemCard({ item }: { item: iTrendItem }) {
   const hiddenRef = useRef<HTMLDivElement>(null);
@@ -27,17 +28,23 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
 
   return (
     <>
-      <Card>
-        <div className='flex justify-between' onClick={onClickExpand}>
-          <DecodedText
-            text={item.title.query}
-            className='text-2xl font-bold text-primary-500 whitespace-pre-wrap'
-          />
-          <span className='text-xs ml-2 text-default-500'>
-            Searches : {item.formattedTraffic}
-          </span>
-          <div className='flex mt-2 gap-1'>
+      {/* <List strongIos outlineIos dividers={false}> */}
+        <ListItem
+          onClick={onClickExpand}
+          title={
+            <DecodedText
+              text={item.title.query}
+              className='text-2xl font-bold text-primary whitespace-pre-wrap'
+            />
+          }
+          subtitle={
+            <span className='text-xs ml-2'>
+              Searches : {item.formattedTraffic}
+            </span>
+          }
+          text={
             <Link
+              className='flex mt-2 gap-1'
               onClick={() => {
                 Browser.open({
                   url: process.env.GOOGLE_TREND_URL + item.title.exploreLink,
@@ -45,10 +52,17 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
               }}
             >
               Statistics
+              <MdOutlineOpenInNew className='pl-2 w-7 h-7' />
             </Link>
-          </div>
-        </div>
-        <ComponentImage dataImage={item.image} isShownLink={true} />
+          }
+          contentChildren={
+            <ComponentImage
+              className=''
+              dataImage={item.image}
+              isShownLink={true}
+            />
+          }
+        />
 
         <div ref={hiddenRef} className='hidden'>
           <ComponentRelatedSearch
@@ -61,7 +75,7 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
             relatedNews={item.articles}
           />
         </div>
-      </Card>
+      {/* </List> */}
     </>
   );
 }

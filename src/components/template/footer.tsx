@@ -1,8 +1,8 @@
 'use client';
 
-import React, { SyntheticEvent, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { MdSearch, MdSmartDisplay, MdWhatshot, MdInfo } from 'react-icons/md';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Tabbar, TabbarLink } from 'konsta/react';
 import { iTab } from '@/shared/interface/tab';
 
@@ -32,25 +32,38 @@ const bottomMenu: Record<string, iTab> = {
 
 export default function Footer({ className }: { className?: string }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [tabList, setTabList] = useState(bottomMenu);
   const [previousTab, setPreviousTab] = useState('home');
 
+  useEffect(() => {
+    const currentTab = pathname.slice(1);
+    if (-1 === Object.keys(bottomMenu).indexOf(currentTab)) {
+      return;
+    }
+    
+    setCurrentTab(previousTab, currentTab);
+  }, [pathname])
+
   const onClickTab = (event: SyntheticEvent) => {
-    const currentTabName = event.currentTarget.getAttribute('id');
-    if (!currentTabName || tabList[currentTabName].isActive) {
+    const currentTab = event.currentTarget.getAttribute('id');
+    if (!currentTab || tabList[currentTab].isActive) {
       return;
     }
 
+    setCurrentTab(previousTab, currentTab);
+    router.replace(currentTab, { scroll: false });
+  };
+
+  const setCurrentTab = (previousTab: string, currentTab: string) => {
     if (previousTab) {
       tabList[previousTab].isActive = false;
     }
 
-    tabList[currentTabName].isActive = true;
+    tabList[currentTab].isActive = true;
     setTabList(Object.assign({}, tabList));
-    setPreviousTab(currentTabName);
-
-    router.replace(currentTabName, { scroll: false });
-  };
+    setPreviousTab(currentTab);
+  }
 
   return (
     <>
