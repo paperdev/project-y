@@ -9,12 +9,6 @@ import {
   IonPage,
 } from '@ionic/react';
 
-const ScoollHevavior: Record<string, ScrollBehavior> = {
-  smooth: 'smooth',
-  instant: 'instant',
-  auto: 'auto',
-};
-
 export default function TemplateHome({
   children,
 }: {
@@ -26,13 +20,13 @@ export default function TemplateHome({
     if ('ios' === Capacitor.getPlatform()) {
       if (window) {
         window.addEventListener('statusTap', function () {
-          scrollToTop(ScoollHevavior.smooth);
+          scrollToTop();
         });
       }
     }
   }, []);
 
-  const scrollToTop = (behavior: ScrollBehavior) => {
+  const scrollToTop = () => {
     if (!navTopRef.current) {
       return;
     }
@@ -41,16 +35,14 @@ export default function TemplateHome({
   };
 
   return (
-    <>
-      <IonPage>
-        <Header />
+    <IonPage id='rootPage'>
+      <Header />
 
-        <IonContent ref={navTopRef} className='ion-padding'>
-          {children}
-        </IonContent>
+      <IonContent ref={navTopRef} className='ion-padding'>
+        {children}
+      </IonContent>
 
-        <Footer />
-      </IonPage>
-    </>
+      <Footer />
+    </IonPage>
   );
 }

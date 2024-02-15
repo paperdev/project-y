@@ -1,6 +1,5 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import ComponentChannel from '@/components/(youtube)/(channel)/channel';
 import Loading from '@/components/template/loading';
 import Error from '@/components/template/error';
@@ -10,9 +9,7 @@ import { getChannel } from '@/utils/request';
 import { iChannelItem } from '@/shared/interface/channel';
 import ComponentChannelVideoList from '@/components/(youtube)/(channel)/channelVideoList';
 
-export default function Page() {
-  const searchParams = useSearchParams();
-  const channelId = searchParams.get('channelId');
+export default function Page({channelId} : {channelId: string}) {
   const [dataChannel, setDataChannel] = useState<iChannelItem>();
 
   const { isPending, error, data, isFetching } = useQuery({
@@ -57,8 +54,6 @@ export default function Page() {
           </div>
         </>
       }
-
-
     </>
   );
 }

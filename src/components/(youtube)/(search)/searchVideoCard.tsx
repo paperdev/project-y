@@ -4,8 +4,8 @@ import React from 'react';
 import ComponentPlayer from '@/components/(youtube)/player';
 import { iSearchVideoItem } from '@/shared/interface/searchVideo';
 import DecodedText from '@/components/template/decodedText';
-import { MdZoomOutMap } from 'react-icons/md';
-import { Button, Card } from 'konsta/react';
+import { Card } from 'konsta/react';
+import ComponentChannelButton from '@/components/(youtube)/channelButton';
 
 export default function ComponentSearchVideoCard({
   video,
@@ -29,14 +29,7 @@ export default function ComponentSearchVideoCard({
           <span className='text-xs ml-2'>{video.snippet.publishedAt}</span>
           <div className='flex mt-2 gap-2 items-center'>
             <div className=''>Channel : </div>
-            <Button
-              inline={true}
-              raised={true}
-              href={'/channel?channelId=' + video.snippet.channelId}
-            >
-              {video.snippet.channelTitle}
-              <MdZoomOutMap className='pl-2 w-7 h-7' />
-            </Button>
+            <ComponentChannelButton channelId={video.snippet.channelId} channelTitle={video.snippet.channelTitle} />
           </div>
         </div>
 

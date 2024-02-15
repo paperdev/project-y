@@ -12,11 +12,11 @@ import {
   MdExpandLess,
   MdUnfoldMore,
   MdUnfoldLess,
-  MdZoomOutMap,
 } from 'react-icons/md';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 import DecodedText from '@/components/template/decodedText';
-import { Button, Card, Chip } from 'konsta/react';
+import { Card, Chip } from 'konsta/react';
+import ComponentChannelButton from '@/components/(youtube)/channelButton';
 
 export default function ComponentTrendVideoCard({
   video,
@@ -94,14 +94,7 @@ export default function ComponentTrendVideoCard({
             </span>
             <div className='flex mt-2 gap-2 items-center'>
               <div className=''>Channel : </div>
-              <Button
-                inline={true}
-                raised={true}
-                href={'/channel?channelId=' + video.snippet.channelId}
-              >
-                {video.snippet.channelTitle}
-                <MdZoomOutMap className='pl-2 w-7 h-7'/>
-              </Button>
+              <ComponentChannelButton channelId={video.snippet.channelId} channelTitle={video.snippet.channelTitle} />
             </div>
           </div>
         }
