@@ -138,11 +138,11 @@ export default function ComponentTrendVideoCard({
                 className='cursor-pointer'
                 onClick={onClickDescExpand}
                 data-videoid={video.id}
-                colors={
-                  {
-                    fillBg: 'bg-primary'
-                  }
-                }
+                // colors={
+                //   {
+                //     fillBg: 'bg-primary'
+                //   }
+                // }
               >
                 {descExpanded ? <MdExpandLess className='w-5 h-5' /> : <MdExpandMore className='w-5 h-5' />}
               </Chip>
@@ -165,11 +165,11 @@ export default function ComponentTrendVideoCard({
               className='cursor-pointer'
               onClick={onClickTagExpand}
               data-videoid={video.id}
-              colors={
-                {
-                  fillBg: 'bg-primary'
-                }
-              }
+              // colors={
+              //   {
+              //     fillBg: 'bg-primary'
+              //   }
+              // }
             >
               {tagExpanded ? <MdUnfoldLess className='w-5 h-5' /> : <MdUnfoldMore className='w-5 h-5' />}
             </Chip>

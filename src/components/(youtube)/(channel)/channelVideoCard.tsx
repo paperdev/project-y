@@ -51,9 +51,9 @@ export default function ComponentChannelVideoCard({
                 className='cursor-pointer'
                 onClick={onClickDescExpand}
                 data-videoid={video.id}
-                colors={{
-                  fillBg: 'bg-primary',
-                }}
+                // colors={{
+                //   fillBg: 'bg-primary',
+                // }}
               >
                 {descExpanded ? (
                   <MdExpandLess className='w-5 h-5' />

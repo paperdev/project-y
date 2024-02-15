@@ -1,12 +1,16 @@
 'use client';
 
 import React, { useContext, useEffect, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { getSearchVideoList } from '@/utils/request';
 import { iSearchVideoItem } from '@/shared/interface/searchVideo';
 import ComponentSearchVideoCard from './searchVideoCard';
 import { QueryContext } from '@/app/providers';
-import { Preloader } from 'konsta/react';
+import {
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonItem,
+  IonList,
+} from '@ionic/react';
 
 export default function ComponentSearchList({
   videoList,
@@ -47,35 +51,28 @@ export default function ComponentSearchList({
 
   return (
     <>
-      <InfiniteScroll
-        dataLength={recentVideo.length}
-        next={loadMoreVideo}
-        scrollThreshold={'200px'}
-        hasMore={loadMore}
-        loader={
-          <div className='flex justify-center'>
-            <Preloader />
-          </div>
-        }
-        endMessage={
-          <div className='flex justify-center font-bold'>No more videos!</div>
-        }
-        scrollableTarget='scrollableElementDiv'
-      >
-
-        {recentVideo.map((video: iSearchVideoItem, index) => {
+    <IonList>
+      {recentVideo.map((video: iSearchVideoItem, index) => {
           if (video.id.channelId) {
-            return (<div key={index}></div>)
+            return <></>;
           }
 
           return (
-            <div key={index}>
+            <IonItem key={index}>
               <ComponentSearchVideoCard video={video} />
-            </div>
+            </IonItem>
           );
         })}
+    </IonList>
 
-      </InfiniteScroll>
+      <IonInfiniteScroll
+        onIonInfinite={(event) => {
+          loadMoreVideo();
+          setTimeout(() => event.target.complete(), 500);
+        }}
+      >
+        <IonInfiniteScrollContent loadingSpinner='circular' />
+      </IonInfiniteScroll>
     </>
   );
 }

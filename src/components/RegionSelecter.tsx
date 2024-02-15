@@ -1,7 +1,7 @@
 'use client';
 
 import React, { Key, useContext, useEffect, useState } from 'react';
-import { Avatar, Image, Autocomplete, AutocompleteItem } from '@nextui-org/react';
+// import { Avatar, Image, Autocomplete, AutocompleteItem } from '@nextui-org/react';
 import { getRegionList } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
 import { iRegionElement, iRegionItem } from '@/shared/interface/region';
@@ -67,7 +67,7 @@ export function RegionSelecter() {
 
   return (
     <>
-      {
+      {/* {
         (!isPending && !isFetching && !error ) &&
           <Autocomplete
             defaultItems={regionList}
@@ -104,7 +104,7 @@ export function RegionSelecter() {
               );
             })}
           </Autocomplete>
-      }
+      } */}
     </>
   );
 }

@@ -1,57 +1,44 @@
 'use client';
 
-import { Searchbar } from 'konsta/react';
-import React, { useState } from 'react';
+import { IonSearchbar, SearchbarInputEventDetail } from '@ionic/react';
+import React, { useRef } from 'react';
 
 export default function ComponentSearchInput({
-  className,
-  onSearch,
+  onSearch
 }: {
-  className: string;
   onSearch: Function
 }) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const inputRef = useRef<HTMLIonSearchbarElement>(null);
 
-  const checkKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' || event.code === 'Enter') {
-      if (!searchQuery) {
-        return;
-      }
-      onSearch(searchQuery);
-    }
-  }
-  
-  const handleSearch = (event: React.BaseSyntheticEvent) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const handleClear = () => {
-    setSearchQuery('');
-  };
-
-  const handleDisable = () => {
-    if (!searchQuery) {
+  const onIonCancel = () => {
+    if (!inputRef.current || !inputRef.current.value) {
       return;
     }
-    onSearch(searchQuery);
+
+    onSearch(inputRef.current.value);
+  };
+
+  const onIonInput = (event: CustomEvent<SearchbarInputEventDetail>) => {
+  };
+
+  const onIonChange = (event: CustomEvent<SearchbarInputEventDetail>) => {
   };
 
   return (
     <>
-      <div className={`${className}`}>
-        <Searchbar
-          placeholder='Search anything'
-          onInput={(event) => {handleSearch(event)}}
-          value={searchQuery}
-          onClear={handleClear}
-          disableButton
-          disableButtonText='Search'
-          onDisable={handleDisable}
-          onKeyDown={(event: React.KeyboardEvent) => {
-            checkKeyDown(event);
-          }}
-        />
-      </div>
+      <IonSearchbar
+        ref={inputRef}
+        placeholder='Search anything'
+        animated={true}
+        slot='fixed'
+        inputmode={'search'}
+        showCancelButton="focus"
+        cancelButtonText='Search'
+        onIonCancel={onIonCancel}
+        onIonInput={onIonInput}
+        onIonChange={onIonChange}
+        enterkeyhint={'search'}
+      />
     </>
   );
 }

@@ -2,9 +2,8 @@
 
 import React, { useState } from 'react';
 import { iTrendItem } from '@/shared/interface/trendItem';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import ComponentItemCard from './itemCard';
-import { Preloader } from 'konsta/react';
+import { IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonList } from '@ionic/react';
 
 export default function ComponentItemList({
   dataItem: dataItem,
@@ -17,33 +16,28 @@ export default function ComponentItemList({
 
   return (
     <>
-      <InfiniteScroll
-        dataLength={recentItem.length}
-        next={loadMoreItem}
-        scrollThreshold={'200px'}
-        hasMore={false}
-        loader={
-          <div className='flex justify-center'>
-            <Preloader />
-          </div>
-        }
-        endMessage={
-          <div className='flex justify-center font-bold'>No more items!</div>
-        }
-        scrollableTarget='scrollableElementDiv'
-      >
+      <IonList>
         {recentItem.map((item: iTrendItem, index: number) => {
           if (0 === Object.keys(item.image).length) {
             return <></>;
           }
 
           return (
-            <div key={index} className=''>
+            <IonItem key={index}>
               <ComponentItemCard item={item} />
-            </div>
+            </IonItem>
           );
         })}
-      </InfiniteScroll>
+      </IonList>
+
+      <IonInfiniteScroll
+        onIonInfinite={(event) => {
+          loadMoreItem();
+          setTimeout(() => event.target.complete(), 500);
+        }}
+      >
+        <IonInfiniteScrollContent loadingSpinner='circular' />
+      </IonInfiniteScroll>
     </>
   );
 }

@@ -7,15 +7,11 @@ import {
   type Dispatch,
   useEffect,
 } from 'react';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setBackForwardNavigationGestures } from 'capacitor-plugin-ios-webview-configurator';
 import { Capacitor } from '@capacitor/core';
 import { Query } from '@/shared/interface/query';
 import { getCurrentLocation } from '@/utils/request';
-import { App, KonstaProvider } from 'konsta/react';
 
 const defaultQuery: Query = {
   regionCode: process.env.DEFAULT_REGION ? process.env.DEFAULT_REGION : 'US',
@@ -50,9 +46,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
     setBackForwardNavigationGestures(true);
   }
 
-  const appTheme = 'android' === Capacitor.getPlatform() ? 'material' : 'ios';
-  const appClassname = 'android' === Capacitor.getPlatform() ? 'k-material' : 'k-ios';
-
   useEffect(() => {
     queryClient
       .fetchQuery({ queryKey: ['regionCode'], queryFn: getCurrentLocation })
@@ -71,11 +64,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <QueryContext.Provider value={query}>
           <SetQueryContext.Provider value={setQuery}>
             <QueryClientProvider client={queryClient}>
-              <KonstaProvider theme={appTheme}>
-                <App safeAreas theme={appTheme} className={appClassname}>
-                  {children}
-                </App>
-              </KonstaProvider>
+              {children}
             </QueryClientProvider>
           </SetQueryContext.Provider>
         </QueryContext.Provider>

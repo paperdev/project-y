@@ -3,23 +3,17 @@
 import React from 'react';
 import { ThemeSwitcher } from './ThemeSwitcher';
 import { RegionSelecter } from '@/components/RegionSelecter';
-import { MdDataThresholding } from 'react-icons/md';
-import {
-  Navbar,
-} from 'konsta/react';
+import { IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/react';
+import { barChart } from 'ionicons/icons';
 
-export default function Header({ className }: { className?: string }) {
+export default function Header() {
   return (
-    <Navbar
-      title='TrendInsight'
-      subtitle='Trend Insight'
-      titleClassName='text-primary'
-      subtitleClassName=''
-      className={`${className} `}
-      left={
-        <MdDataThresholding className='w-9 h-9 text-primary' />
-      }
-      right={<ThemeSwitcher className='bg-primary'/>}
-    />
+    <IonHeader collapse='fade'>
+      <IonToolbar>
+        <IonIcon color='primary' size='large' icon={barChart}></IonIcon>
+        <IonTitle color='primary'>TrendInsight</IonTitle>
+        <ThemeSwitcher />
+      </IonToolbar>
+    </IonHeader>
   );
 }

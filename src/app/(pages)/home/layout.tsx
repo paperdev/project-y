@@ -8,9 +8,7 @@ export default function Layout({
   return (
     <>
       <ComponentVideoCategory />
-      <div className='h-screen mx-auto'>
-        {children}
-      </div>
+      {children}
     </>
   );
 }

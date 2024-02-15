@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Listbox, ListboxItem, Link } from "@nextui-org/react";
+// import { Listbox, ListboxItem, Link } from "@nextui-org/react";
 
 interface iThumbnail {
   url: string;
@@ -21,7 +21,7 @@ export default function ComponentThumbnail({
 
   return (
     <>
-      <Link isExternal href={process.env.YOUTUBE_URL_WATCH + videoId}>
+      {/* <Link isExternal href={process.env.YOUTUBE_URL_WATCH + videoId}>
         <Listbox aria-label='thumbnail'>
 
           <ListboxItem key={videoId} textValue={videoId}>
@@ -29,7 +29,7 @@ export default function ComponentThumbnail({
           </ListboxItem>
 
         </Listbox>
-      </Link>
+      </Link> */}
     </>
   )
 }

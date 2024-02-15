@@ -1,35 +1,51 @@
 'use client';
 
-import { Toggle } from 'konsta/react';
 import React, { useEffect, useState } from 'react';
-import { MdLightMode, MdDarkMode } from 'react-icons/md';
+import { IonGrid, IonIcon, IonToggle, ToggleCustomEvent } from '@ionic/react';
+import { moon, sunny } from 'ionicons/icons';
 
-export function ThemeSwitcher({ className }: { className?: string }) {
-  const [mounted, setMounted] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+export function ThemeSwitcher() {
+  const [themeToggle, setThemeToggle] = useState(false);
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(event.target.checked);
-    if (!document) {
-      return;
-    }
-    document
-      .getElementsByTagName('html')[0]
-      .setAttribute('class', event.target.checked ? 'dark theme-dark' : '');
+  const toggleChange = (event: ToggleCustomEvent) => {
+    toggleDarkTheme(event.detail.checked);
+  };
+
+  const toggleDarkTheme = (shouldAdd: boolean) => {
+    document.body.classList.toggle('dark', shouldAdd);
+  };
+
+  const initializeDarkTheme = (isDark: boolean) => {
+    setThemeToggle(isDark);
+    toggleDarkTheme(isDark);
   };
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    // Use matchMedia to check the user preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
-  if (!mounted) return null;
+    // Initialize the dark theme based on the initial
+    // value of the prefers-color-scheme media query
+    initializeDarkTheme(prefersDark.matches);
+
+    // Listen for changes to the prefers-color-scheme media query
+    prefersDark.addEventListener('change', (mediaQuery) =>
+      initializeDarkTheme(mediaQuery.matches)
+    );
+  }, []);
 
   return (
     <>
-      <Toggle checked={isChecked} onChange={onChange} component='label' className={`${className}`}>
-        <MdLightMode className='w-6 h-6 relative -top-6.5 left-0.5 fill-primary dark:fill-none ' />
-        <MdDarkMode className='w-7 h-7 relative -top-13 -right-5 fill-none dark:fill-black ' />
-      </Toggle>
+      <IonGrid slot='end'>
+        <IonIcon color='secondary' size='large' icon={sunny} />
+        <IonToggle
+          color={'tertiary'}
+          checked={themeToggle}
+          onIonChange={toggleChange}
+          justify='space-between'
+        />
+        <IonIcon color='secondary' size='large' icon={moon} />
+      </IonGrid>
     </>
   );
 }

@@ -1,36 +1,48 @@
 'use client';
 
-import React, { SyntheticEvent, useEffect, useState } from 'react';
-import { MdSearch, MdSmartDisplay, MdWhatshot, MdInfo } from 'react-icons/md';
+import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { Tabbar, TabbarLink } from 'konsta/react';
 import { iTab } from '@/shared/interface/tab';
+import {
+  IonFooter,
+  IonIcon,
+  IonLabel,
+  IonTabButton,
+  IonGrid,
+  IonRow,
+  IonToolbar,
+} from '@ionic/react';
+import {
+  logoYoutube,
+  search,
+  trendingUp,
+  informationCircle,
+} from 'ionicons/icons';
 
-const iconSize = 'w-7 h-7';
 const bottomMenu: Record<string, iTab> = {
   home: {
     href: 'home',
     isActive: true,
-    icon: <MdSmartDisplay className={iconSize} />,
+    icon: logoYoutube,
   },
   search: {
     href: 'search',
     isActive: false,
-    icon: <MdSearch className={iconSize} />,
+    icon: search,
   },
   trend: {
     href: 'trend',
     isActive: false,
-    icon: <MdWhatshot className={iconSize} />,
+    icon: trendingUp,
   },
   about: {
     href: 'about',
     isActive: false,
-    icon: <MdInfo className={iconSize} />,
+    icon: informationCircle,
   },
 };
 
-export default function Footer({ className }: { className?: string }) {
+export default function Footer() {
   const router = useRouter();
   const pathname = usePathname();
   const [tabList, setTabList] = useState(bottomMenu);
@@ -41,19 +53,9 @@ export default function Footer({ className }: { className?: string }) {
     if (-1 === Object.keys(bottomMenu).indexOf(currentTab)) {
       return;
     }
-    
-    setCurrentTab(previousTab, currentTab);
-  }, [pathname])
-
-  const onClickTab = (event: SyntheticEvent) => {
-    const currentTab = event.currentTarget.getAttribute('id');
-    if (!currentTab || tabList[currentTab].isActive) {
-      return;
-    }
 
     setCurrentTab(previousTab, currentTab);
-    router.replace(currentTab, { scroll: false });
-  };
+  }, [pathname]);
 
   const setCurrentTab = (previousTab: string, currentTab: string) => {
     if (previousTab) {
@@ -63,26 +65,40 @@ export default function Footer({ className }: { className?: string }) {
     tabList[currentTab].isActive = true;
     setTabList(Object.assign({}, tabList));
     setPreviousTab(currentTab);
-  }
+  };
+
+  const onClickTab = (event: CustomEvent) => {
+    const currentTab = event.detail.href;
+    if (!currentTab || tabList[currentTab].isActive) {
+      return;
+    }
+
+    setCurrentTab(previousTab, currentTab);
+    router.replace(currentTab, { scroll: false });
+  };
 
   return (
     <>
-      <Tabbar
-        labels={true}
-        icons={true}
-        className={`${className}`}
-      >
-        {Object.keys(tabList).map((key, index) => (
-          <TabbarLink
-            id={key}
-            key={index}
-            active={tabList[key].isActive}
-            onClick={onClickTab}
-            icon={tabList[key].icon}
-            label={key}
-          />
-        ))}
-      </Tabbar>
+      <IonFooter translucent={false}>
+        <IonToolbar>
+          <IonGrid>
+            <IonRow>
+              {Object.keys(tabList).map((key, index) => (
+                <IonTabButton
+                  tab={key}
+                  href={key}
+                  className={tabList[key].isActive ? 'text-primary' : ''}
+                  onClick={onClickTab}
+                  key={index}
+                >
+                  <IonIcon icon={tabList[key].icon} />
+                  {/* <IonLabel>{key}</IonLabel> */}
+                </IonTabButton>
+              ))}
+            </IonRow>
+          </IonGrid>
+        </IonToolbar>
+      </IonFooter>
     </>
   );
 }
