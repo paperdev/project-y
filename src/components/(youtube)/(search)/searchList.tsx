@@ -25,13 +25,11 @@ export default function ComponentSearchList({
 }) {
   const [recentVideo, setRecentVideo] = useState<iSearchVideoItem[]>(videoList);
   const [pageToken, setPageToken] = useState(nextPageToken);
-  const [loadMore, setLoadMore] = useState(true);
   const query = useContext(QueryContext);
   const regionCode = query.regionCode;
 
   const loadMoreVideo = async () => {
     if (recentVideo.length >= totalResults) {
-      setLoadMore(false);
       return;
     }
 
