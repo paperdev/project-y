@@ -49,7 +49,7 @@ export default function ComponentSearchList({
 
   return (
     <>
-    <IonList>
+    <IonList lines='full'>
       {recentVideo.map((video: iSearchVideoItem, index) => {
           if (video.id.channelId) {
             return <></>;

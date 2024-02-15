@@ -60,7 +60,7 @@ export default function ComponentTrendList({
 
   return (
     <>
-      <IonList>
+      <IonList lines='full'>
         {recentVideo.map((video, index) => (
           <IonItem key={video.id}>
             <ComponentTrendVideoCard video={video} />

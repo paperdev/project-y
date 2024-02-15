@@ -44,7 +44,7 @@ export default function ComponentChannelVideoList({
 
   return (
     <>
-      <IonList>
+      <IonList lines='full'>
         {recentVideo.map((video, index) => {
           return (
             <IonItem key={index}>
