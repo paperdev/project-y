@@ -1,9 +1,9 @@
 'use client';
 
-import { IonButton, IonButtons, IonContent, IonHeader, IonModal, IonTitle, IonToolbar } from '@ionic/react';
-import { MdZoomOutMap } from 'react-icons/md';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar } from '@ionic/react';
 import ChannelPage from '@/app/(pages)/channel/page';
 import { useEffect, useRef, useState } from 'react';
+import { expand } from 'ionicons/icons';
 
 export default function ComponentChannelButton({
   channelId,
@@ -32,9 +32,10 @@ export default function ComponentChannelButton({
     <>
       <IonButton
         id={`open-channel-${channelId}`}
+        fill='clear'
       >
         {channelTitle}
-        <MdZoomOutMap className='pl-2 w-7 h-7' />
+        <IonIcon slot="end" icon={expand}></IonIcon>
       </IonButton>
       <IonModal
         ref={modal}

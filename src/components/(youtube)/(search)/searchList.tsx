@@ -8,7 +8,6 @@ import { QueryContext } from '@/app/providers';
 import {
   IonInfiniteScroll,
   IonInfiniteScrollContent,
-  IonItem,
   IonList,
 } from '@ionic/react';
 
@@ -49,16 +48,14 @@ export default function ComponentSearchList({
 
   return (
     <>
-    <IonList lines='full'>
+    <IonList lines='none'>
       {recentVideo.map((video: iSearchVideoItem, index) => {
           if (video.id.channelId) {
             return <></>;
           }
 
           return (
-            <IonItem key={index}>
-              <ComponentSearchVideoCard video={video} />
-            </IonItem>
+            <ComponentSearchVideoCard key={index} video={video} />
           );
         })}
     </IonList>

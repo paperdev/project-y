@@ -8,7 +8,6 @@ import { QueryContext } from '@/app/providers';
 import {
   IonInfiniteScroll,
   IonInfiniteScrollContent,
-  IonItem,
   IonList,
 } from '@ionic/react';
 
@@ -60,11 +59,9 @@ export default function ComponentTrendList({
 
   return (
     <>
-      <IonList lines='full'>
+      <IonList lines='none'>
         {recentVideo.map((video, index) => (
-          <IonItem key={video.id}>
-            <ComponentTrendVideoCard video={video} />
-          </IonItem>
+          <ComponentTrendVideoCard key={video.id} video={video} />
         ))}
       </IonList>
 

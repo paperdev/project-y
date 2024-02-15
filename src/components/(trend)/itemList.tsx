@@ -16,7 +16,7 @@ export default function ComponentItemList({
 
   return (
     <>
-      <IonList lines='full'>
+      <IonList lines='none'>
         {recentItem.map((item: iTrendItem, index: number) => {
           if (0 === Object.keys(item.image).length) {
             return <></>;

@@ -5,7 +5,7 @@ import { getPlayListItems } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
 import ComponentChannelVideoCard from '@/components/(youtube)/(channel)/channelVideoCard';
 import { iChannelVideoItem } from '@/shared/interface/channelVideo';
-import { IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonList } from '@ionic/react';
+import { IonInfiniteScroll, IonInfiniteScrollContent, IonList } from '@ionic/react';
 
 export default function ComponentChannelVideoList({
   playlistId,
@@ -44,12 +44,10 @@ export default function ComponentChannelVideoList({
 
   return (
     <>
-      <IonList lines='full'>
+      <IonList lines='none'>
         {recentVideo.map((video, index) => {
           return (
-            <IonItem key={index}>
-              <ComponentChannelVideoCard video={video} />
-            </IonItem>
+            <ComponentChannelVideoCard key={index} video={video} />
           );
         })}
       </IonList>

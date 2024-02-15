@@ -46,12 +46,8 @@ export default function Page({channelId} : {channelId: string}) {
       {
         dataChannel &&
         <>
-          <div className='flex flex-col sticky top-0 bg-background backdrop-blur-0 z-30'>
-            <ComponentChannel dataChannel={dataChannel} />
-          </div>
-          <div className='h-screen mx-auto'>
-            <ComponentChannelVideoList playlistId={dataChannel.contentDetails.relatedPlaylists.uploads} />
-          </div>
+          <ComponentChannel dataChannel={dataChannel} />
+          <ComponentChannelVideoList playlistId={dataChannel.contentDetails.relatedPlaylists.uploads} />
         </>
       }
     </>
