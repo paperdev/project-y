@@ -9,6 +9,7 @@ import ComponentSearchInput from '@/components/(youtube)/(search)/searchInput';
 import ComponentSearchList from '@/components/(youtube)/(search)/searchList';
 import { iSearchVideo } from '@/shared/interface/searchVideo';
 import { QueryContext } from '@/app/providers';
+import { IonContent, IonPage } from '@ionic/react';
 
 export default function Page() {
   const [searchKey, setSearchKey] = useState<string>('');
@@ -48,18 +49,21 @@ export default function Page() {
   }
 
   return (
-    <>    
-      <ComponentSearchInput
-        onSearch={onSearch}
-      />
-      {searchVideo && (
-        <ComponentSearchList
-          videoList={searchVideo.items}
-          nextPageToken={searchVideo.nextPageToken}
-          totalResults={searchVideo.pageInfo.totalResults}
-          searchKey={searchKey}
-        />
-      )}
+    <>
+      <IonPage>
+        <ComponentSearchInput onSearch={onSearch} />
+
+        <IonContent>
+          {searchVideo && (
+            <ComponentSearchList
+              videoList={searchVideo.items}
+              nextPageToken={searchVideo.nextPageToken}
+              totalResults={searchVideo.pageInfo.totalResults}
+              searchKey={searchKey}
+            />
+          )}
+        </IonContent>
+      </IonPage>
     </>
   );
 }
