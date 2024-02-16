@@ -2,8 +2,9 @@
 
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar } from '@ionic/react';
 import ChannelPage from '@/app/(pages)/channel/page';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { expand } from 'ionicons/icons';
+import { QueryContext, SetQueryContext } from '@/app/providers';
 
 export default function ComponentChannelButton({
   channelId,
@@ -14,8 +15,18 @@ export default function ComponentChannelButton({
 }) {
   const modal = useRef<HTMLIonModalElement>(null);
   const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
+  const query = useContext(QueryContext);
+  const setQuery = useContext(SetQueryContext);
 
-  function onClickClose() {
+  const onClickChannel = () => {
+    setQuery({
+      regionCode: query.regionCode,
+      videoCategoryId: query.videoCategoryId,
+      channelId: channelId,
+    });
+  }
+
+  const onClickClose = () => {
     modal.current?.dismiss();
   }
 
@@ -33,6 +44,7 @@ export default function ComponentChannelButton({
       <IonButton
         id={`open-channel-${channelId}`}
         fill='clear'
+        onClick={onClickChannel}
       >
         {channelTitle}
         <IonIcon slot="end" icon={expand}></IonIcon>
@@ -44,14 +56,14 @@ export default function ComponentChannelButton({
       >
         <IonHeader>
           <IonToolbar>
-            <IonTitle>{channelTitle}</IonTitle>
+            <IonTitle color={'primary'}>{channelTitle}</IonTitle>
             <IonButtons slot='end'>
               <IonButton onClick={onClickClose}>Close</IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent className='ion-padding'>
-          <ChannelPage channelId={channelId} />
+          <ChannelPage/>
         </IonContent>
       </IonModal>
     </>

@@ -4,10 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import Header from './header';
 import Footer from './footer';
 import { Capacitor } from '@capacitor/core';
-import {
-  IonContent,
-  IonPage,
-} from '@ionic/react';
+import { IonApp, IonContent, IonPage } from '@ionic/react';
 
 export default function TemplateHome({
   children,
@@ -35,14 +32,16 @@ export default function TemplateHome({
   };
 
   return (
-    <IonPage id='rootPage'>
-      <Header />
+    <IonApp>
+      <IonPage id='rootPage' className='ion-padding'>
+        <Header />
 
-      <IonContent ref={navTopRef} className='ion-padding'>
-        {children}
-      </IonContent>
+        <IonContent ref={navTopRef}>
+          {children}
+        </IonContent>
 
-      <Footer />
-    </IonPage>
+        <Footer />
+      </IonPage>
+    </IonApp>
   );
 }
