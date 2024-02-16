@@ -3,8 +3,8 @@
 import React from 'react';
 import { iTitle } from '@/shared/interface/trendItem';
 import { Browser } from '@capacitor/browser';
-import { Link } from 'konsta/react';
-import { MdOutlineOpenInNew } from 'react-icons/md';
+import { openOutline } from 'ionicons/icons';
+import { IonIcon, IonItem } from '@ionic/react';
 
 export default function ComponentRelatedSearch({
   className,
@@ -22,7 +22,8 @@ export default function ComponentRelatedSearch({
       <div className={`${className} flex overflow-x-scroll ml-2`}>
         {relatedSearches.map((title: iTitle, index: number) => {
           return (
-            <Link
+            <IonItem
+              button={true}
               key={index}
               onClick={() => {
                 Browser.open({
@@ -32,8 +33,8 @@ export default function ComponentRelatedSearch({
               className='flex-none rounded-lg shadow-md m-1 pl-1'
             >
               {title.query}
-              <MdOutlineOpenInNew className='pl-2 w-7 h-7'/>
-            </Link>
+              <IonIcon slot='end' icon={openOutline} className='ml-1' />
+            </IonItem>
           );
         })}
       </div>

@@ -43,13 +43,12 @@ export default function ComponentChannelVideoCard({
   return (
     <>
       <IonCard>
-        
         <IonCardHeader>
-            <IonLabel className='ml-2'>{video.snippet.publishedAt}</IonLabel>
-            <IonCardTitle color={'primary'} className='text-xl'>
-              {video.snippet.title}
-            </IonCardTitle>
-          </IonCardHeader>
+          <IonLabel className='ml-2'>{video.snippet.publishedAt}</IonLabel>
+          <IonCardTitle color={'primary'} className='text-xl'>
+            {video.snippet.title}
+          </IonCardTitle>
+        </IonCardHeader>
 
         <IonCardContent>
           <ComponentPlayer videoId={video.snippet.resourceId.videoId} />
@@ -74,7 +73,6 @@ export default function ComponentChannelVideoCard({
             {video.snippet.description}
           </div>
         </IonCardContent>
-        
       </IonCard>
     </>
   );

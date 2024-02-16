@@ -4,8 +4,8 @@ import React from 'react';
 import { iArticle } from '@/shared/interface/trendItem';
 import ComponentImage from '@/components/(trend)/image';
 import { Browser } from '@capacitor/browser';
-import DecodedText from '../template/decodedText';
-import { Link } from 'konsta/react';
+import DecodedText from '@/components/template/decodedText';
+import { IonItem } from '@ionic/react';
 
 export default function ComponentRelatedNews({
   className,
@@ -22,8 +22,12 @@ export default function ComponentRelatedNews({
     <>
       <div className={`${className} overflow-x-scroll`}>
         {relatedNews.map((article: iArticle, index: number) => {
+          if (!article.image) {
+            return <></>
+          }
           return (
-            <Link
+            <IonItem
+              button={true}
               key={index}
               onClick={() => {
                 Browser.open({
@@ -46,7 +50,7 @@ export default function ComponentRelatedNews({
                   </div>
                 </div>
               </div>
-            </Link>
+            </IonItem>
           );
         })}
       </div>

@@ -11,7 +11,7 @@ export default function ComponentItemList({
   dataItem: iTrendItem[];
 }) {
   const [recentItem, setRecentItem] = useState<iTrendItem[]>(dataItem);
-
+ 
   const loadMoreItem = async () => {};
 
   return (
@@ -23,9 +23,7 @@ export default function ComponentItemList({
           }
 
           return (
-            <IonItem key={index}>
-              <ComponentItemCard item={item} />
-            </IonItem>
+            <ComponentItemCard key={index} item={item} />
           );
         })}
       </IonList>
