@@ -16,6 +16,7 @@ import {
   IonLabel,
 } from '@ionic/react';
 import { openOutline } from 'ionicons/icons';
+import DecodedText from '../template/decodedText';
 
 export default function ComponentItemCard({ item }: { item: iTrendItem }) {
   const hiddenRef = useRef<HTMLDivElement>(null);
@@ -60,7 +61,9 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
             <IonLabel className='text-xs ml-1'>
               Searches : {item.formattedTraffic}
             </IonLabel>
-            <IonCardTitle color={'primary'}>{item.title.query}</IonCardTitle>
+            <IonCardTitle color={'primary'}>
+              <DecodedText text={item.title.query} className='' />
+            </IonCardTitle>
           </IonCardHeader>
         </IonItem>
 

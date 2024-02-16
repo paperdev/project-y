@@ -12,6 +12,7 @@ import {
   IonCardTitle,
   IonLabel,
 } from '@ionic/react';
+import DecodedText from '@/components/template/decodedText';
 
 export default function ComponentSearchVideoCard({
   video,
@@ -27,11 +28,12 @@ export default function ComponentSearchVideoCard({
             <ComponentChannelButton
               channelId={video.snippet.channelId}
               channelTitle={video.snippet.channelTitle}
+              etag={video.etag}
             />
           </IonCardSubtitle>
           <IonLabel className='ml-2'>{video.snippet.publishedAt}</IonLabel>
           <IonCardTitle color={'primary'} className='text-xl'>
-            {video.snippet.title}
+            <DecodedText text={video.snippet.title} className='' />
           </IonCardTitle>
         </IonCardHeader>
 

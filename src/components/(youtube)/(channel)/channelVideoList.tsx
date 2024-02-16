@@ -60,33 +60,6 @@ export default function ComponentChannelVideoList({
       >
         <IonInfiniteScrollContent loadingSpinner='circular' />
       </IonInfiniteScroll>
-
-
-      {/* <InfiniteScroll
-        dataLength={recentVideo.length}
-        next={loadMoreVideo}
-        scrollThreshold={'200px'}
-        hasMore={loadMore}
-        loader={
-          <div className='flex justify-center'>
-            <Preloader />
-          </div>
-        }
-        endMessage={
-          <div className='flex justify-center font-bold'>No more videos!</div>
-        }
-        scrollableTarget='scrollableElementDiv'
-      >
-
-        {recentVideo.map((video, index) => {
-          return (
-            <div key={index}>
-              <ComponentChannelVideoCard video={video} />
-            </div>
-          );
-        })}
-
-      </InfiniteScroll> */}
     </>
   );
 }

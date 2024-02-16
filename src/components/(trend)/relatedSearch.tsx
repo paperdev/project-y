@@ -24,6 +24,7 @@ export default function ComponentRelatedSearch({
           return (
             <IonItem
               button={true}
+              detail={false}
               key={index}
               onClick={() => {
                 Browser.open({

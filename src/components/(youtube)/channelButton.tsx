@@ -9,9 +9,11 @@ import { QueryContext, SetQueryContext } from '@/app/providers';
 export default function ComponentChannelButton({
   channelId,
   channelTitle,
+  etag,
 }: {
   channelId: string;
   channelTitle: string;
+  etag: string;
 }) {
   const modal = useRef<HTMLIonModalElement>(null);
   const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
@@ -42,7 +44,7 @@ export default function ComponentChannelButton({
   return (
     <>
       <IonButton
-        id={`open-channel-${channelId}`}
+        id={`open-channel-${channelId}-${etag}`}
         fill='clear'
         onClick={onClickChannel}
       >
@@ -51,7 +53,7 @@ export default function ComponentChannelButton({
       </IonButton>
       <IonModal
         ref={modal}
-        trigger={`open-channel-${channelId}`}
+        trigger={`open-channel-${channelId}-${etag}`}
         presentingElement={presentingElement!}
       >
         <IonHeader>

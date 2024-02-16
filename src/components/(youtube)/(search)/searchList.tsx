@@ -50,14 +50,14 @@ export default function ComponentSearchList({
     <>
     <IonList lines='none'>
       {recentVideo.map((video: iSearchVideoItem, index) => {
-          if (video.id.channelId) {
-            return <></>;
-          }
+        if (!video.id.videoId) {
+          return <div key={index}></div>
+        }
 
-          return (
-            <ComponentSearchVideoCard key={index} video={video} />
-          );
-        })}
+        return (
+          <ComponentSearchVideoCard key={index} video={video} />
+        );
+      })}
     </IonList>
 
       <IonInfiniteScroll

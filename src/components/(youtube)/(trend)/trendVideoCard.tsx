@@ -7,6 +7,7 @@ import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 import ComponentChannelButton from '@/components/(youtube)/channelButton';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
 import { bookmark, caretDown, caretUp, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle } from 'ionicons/icons';
+import DecodedText from '@/components/template/decodedText';
 
 export default function ComponentTrendVideoCard({
   video,
@@ -80,11 +81,12 @@ export default function ComponentTrendVideoCard({
             <ComponentChannelButton
               channelId={video.snippet.channelId}
               channelTitle={video.snippet.channelTitle}
+              etag={video.etag}
             />
           </IonCardSubtitle>
           <IonLabel className='ml-2'>{video.snippet.publishedAt}</IonLabel>
           <IonCardTitle color={'primary'} className='text-xl'>
-            {video.snippet.title}
+            <DecodedText text={video.snippet.title} className='' />
           </IonCardTitle>
         </IonCardHeader>
 
