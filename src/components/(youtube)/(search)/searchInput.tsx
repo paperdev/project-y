@@ -24,6 +24,16 @@ export default function ComponentSearchInput({
   const onIonChange = (event: CustomEvent<SearchbarInputEventDetail>) => {
   };
 
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.code === 'Enter') {
+      if (!inputRef?.current?.value) {
+        return;
+      }
+
+      onSearch(inputRef.current.value);
+    }
+  }
+
   return (
     <>
       <IonSearchbar
@@ -38,6 +48,7 @@ export default function ComponentSearchInput({
         onIonInput={onIonInput}
         onIonChange={onIonChange}
         enterkeyhint={'search'}
+        onKeyDown={onKeyDown}
       />
     </>
   );
