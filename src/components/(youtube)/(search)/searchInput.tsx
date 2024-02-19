@@ -38,8 +38,8 @@ export default function ComponentSearchInput({
         slot='fixed'
         inputmode={'search'}
         showCancelButton="focus"
-        cancelButtonText='Search'
-        onIonCancel={onIonCancel}
+        // cancelButtonText='Search'
+        // onIonCancel={onIonCancel}
         onIonInput={onIonInput}
         onIonChange={onIonChange}
         enterkeyhint={'search'}

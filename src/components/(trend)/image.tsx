@@ -9,10 +9,12 @@ export default function ComponentImage({
   className,
   dataImage,
   isShownLink,
+  isShownSource,
 }: {
   className: string;
   dataImage: iImage;
   isShownLink: boolean;
+  isShownSource: boolean;
 }) {
   if (!dataImage) {
     return <></>;
@@ -37,9 +39,13 @@ export default function ComponentImage({
         <img className='z-0 object-cover rounded-lg' src={dataImage.imageUrl} />
       )}
 
-      <div className='absolute bottom-1 text-tiny text-white m-auto left-0 right-0 grid place-items-center'>
-        {dataImage.source}
-      </div>
+      {
+        isShownSource && (
+          <div className='absolute bottom-1 text-tiny text-white m-auto left-0 right-0 grid place-items-center'>
+            {dataImage.source}
+          </div>
+        )
+      }
     </div>
   );
 }

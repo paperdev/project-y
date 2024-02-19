@@ -22,36 +22,36 @@ export default function ComponentRelatedNews({
     <>
       <div className={`${className} overflow-x-scroll`}>
         {relatedNews.map((article: iArticle, index: number) => {
-          if (!article.image) {
-            return <></>
-          }
-          return (
-            <IonItem
-              button={true}
-              key={index}
-              onClick={() => {
-                Browser.open({
-                  url: article.url
-                })
-              }}
-              className='min-w-full rounded-lg border-with border'
-            >
-              <div className='flex justify-between m-1'>
-                <ComponentImage
-                  className='flex'
-                  dataImage={article.image}
-                  isShownLink={false}
-                />
+          if (article.image) {
+            return (
+              <IonItem
+                button={true}
+                key={index}
+                onClick={() => {
+                  Browser.open({
+                    url: article.url
+                  })
+                }}
+                className='min-w-full rounded-lg border-with border'
+              >
+                <div className='flex justify-between m-1'>
+                  <ComponentImage
+                    className='flex'
+                    dataImage={article.image}
+                    isShownLink={false}
+                    isShownSource={false}
+                  />
 
-                <div className='flex flex-col justify-center ml-6'>
-                  <DecodedText text={article.title} className='whitespace-pre-wrap line-clamp-2' />
-                  <div className='text-xs mt-2'>
-                    {article.source} - {article.timeAgo}
+                  <div className='flex flex-col justify-center ml-6'>
+                    <DecodedText text={article.title} className='whitespace-pre-wrap line-clamp-2' />
+                    <div className='text-xs mt-2'>
+                      {article.source} - {article.timeAgo}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </IonItem>
-          );
+              </IonItem>
+            );
+          }
         })}
       </div>
     </>

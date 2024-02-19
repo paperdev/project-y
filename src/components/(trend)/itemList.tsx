@@ -18,13 +18,11 @@ export default function ComponentItemList({
     <>
       <IonList lines='none'>
         {recentItem.map((item: iTrendItem, index: number) => {
-          if (0 === Object.keys(item.image).length) {
-            return <></>;
+          if (0 !== Object.keys(item.image).length) {
+            return (
+              <ComponentItemCard key={index} item={item} />
+            );
           }
-
-          return (
-            <ComponentItemCard key={index} item={item} />
-          );
         })}
       </IonList>
 

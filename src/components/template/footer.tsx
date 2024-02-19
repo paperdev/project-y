@@ -87,12 +87,12 @@ export default function Footer() {
                 <IonTabButton
                   tab={key}
                   href={key}
-                  className={tabList[key].isActive ? 'text-primary' : ''}
+                  className={tabList[key].isActive ? 'text-blue-500' : 'text-gray-500'}
                   onClick={onClickTab}
                   key={index}
                 >
-                  <IonIcon icon={tabList[key].icon} />
-                  {/* <IonLabel>{key}</IonLabel> */}
+                  <IonIcon size='large' icon={tabList[key].icon} />
+                  <IonLabel className='text-base'>{key}</IonLabel>
                 </IonTabButton>
               ))}
             </IonRow>

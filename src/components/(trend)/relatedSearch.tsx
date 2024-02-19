@@ -34,7 +34,7 @@ export default function ComponentRelatedSearch({
               className='flex-none rounded-lg shadow-md m-1 pl-1'
             >
               {title.query}
-              <IonIcon slot='end' icon={openOutline} className='ml-1' />
+              <IonIcon color='primary' slot='end' icon={openOutline} className='ml-1' />
             </IonItem>
           );
         })}
