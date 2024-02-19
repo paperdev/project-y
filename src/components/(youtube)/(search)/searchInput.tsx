@@ -11,11 +11,6 @@ export default function ComponentSearchInput({
   const inputRef = useRef<HTMLIonSearchbarElement>(null);
 
   const onIonCancel = () => {
-    if (!inputRef.current || !inputRef.current.value) {
-      return;
-    }
-
-    onSearch(inputRef.current.value);
   };
 
   const onIonInput = (event: CustomEvent<SearchbarInputEventDetail>) => {

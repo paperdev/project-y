@@ -32,8 +32,8 @@ export default function TemplateHome({
   };
 
   return (
-    <IonApp>
-      <IonPage id='rootPage' className='ion-padding'>
+    <IonApp >
+      <IonPage id='rootPage' className='ion-padding-top ion-padding-bottom'>
         <Header />
 
         <IonContent ref={navTopRef}>
