@@ -1,12 +1,12 @@
 import React from 'react';
-import { Block, Preloader } from 'konsta/react';
+import { IonSpinner } from '@ionic/react';
 
 export default function Loading() {
   return (
     <>
-      <Block className="flex justify-center items-center">
-        <Preloader />
-      </Block>
+      <div className="flex justify-center items-center inset-x-0 inset-y-0">
+        <IonSpinner name="circular"></IonSpinner>
+      </div>
     </>
   );
 }

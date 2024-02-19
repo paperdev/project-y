@@ -1,15 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { IonGrid, IonIcon, IonToggle, ToggleCustomEvent } from '@ionic/react';
-import { moon, sunny } from 'ionicons/icons';
+import { IonButton, IonIcon } from '@ionic/react';
+import { contrast, contrastOutline } from 'ionicons/icons';
 
 export function ThemeSwitcher() {
   const [themeToggle, setThemeToggle] = useState(false);
-
-  const toggleChange = (event: ToggleCustomEvent) => {
-    toggleDarkTheme(event.detail.checked);
-  };
 
   const toggleDarkTheme = (shouldAdd: boolean) => {
     document.body.classList.toggle('dark', shouldAdd);
@@ -34,18 +30,17 @@ export function ThemeSwitcher() {
     );
   }, []);
 
+  const onClick = () => {
+    const themeToggleFlag = !themeToggle;
+    setThemeToggle(themeToggleFlag);
+    toggleDarkTheme(themeToggleFlag);
+  }
+
   return (
     <>
-      <IonGrid slot='end'>
-        <IonIcon color='secondary' size='large' icon={sunny} />
-        <IonToggle
-          color={'tertiary'}
-          checked={themeToggle}
-          onIonChange={toggleChange}
-          justify='space-between'
-        />
-        <IonIcon color='secondary' size='large' icon={moon} />
-      </IonGrid>
+      <IonButton slot='end' fill='clear' onClick={onClick} >
+        <IonIcon color='primary' size='large' icon={themeToggle ? contrastOutline : contrast} /> 
+      </IonButton>
     </>
   );
 }

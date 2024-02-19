@@ -1,8 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-const konstaConfig = require('konsta/config');
 
-// wrap your config with konstaConfig
-module.exports = konstaConfig({
+module.exports = {
   content: [
     './src/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -28,4 +26,4 @@ module.exports = konstaConfig({
   //   xl: { min: '1259px' }, // Desktop wide.
   //   '2xl': { min: '1359px' } // Desktop widescreen.
   // },
-});
+}

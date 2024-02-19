@@ -1,18 +1,22 @@
 'use client';
 
 import React from 'react';
-import { ThemeSwitcher } from './ThemeSwitcher';
+import { ThemeSwitcher } from '@/components/template/ThemeSwitcher';
 import { RegionSelecter } from '@/components/RegionSelecter';
-import { IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/react';
-import { barChart } from 'ionicons/icons';
+import { IonButton, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/react';
+import { globeOutline } from 'ionicons/icons';
 
 export default function Header() {
   return (
     <IonHeader collapse='fade'>
       <IonToolbar>
-        <IonIcon color='primary' size='large' icon={barChart}></IonIcon>
-        <IonTitle color='primary'>TrendInsight</IonTitle>
+        
+        <RegionSelecter />
+        
+        <IonTitle color='primary' >Trend Insight</IonTitle>
+
         <ThemeSwitcher />
+
       </IonToolbar>
     </IonHeader>
   );

@@ -1,11 +1,12 @@
 'use client';
 
-import React, { Key, useContext, useEffect, useState } from 'react';
-// import { Avatar, Image, Autocomplete, AutocompleteItem } from '@nextui-org/react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getRegionList } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
 import { iRegionElement, iRegionItem } from '@/shared/interface/region';
 import { QueryContext, SetQueryContext } from '@/app/providers';
+import { IonButton, IonIcon, IonPicker, PickerColumnOption } from '@ionic/react';
+import { globeOutline } from 'ionicons/icons';
 
 export function RegionSelecter() {
   const [selectedValue, setSelectedValue] = useState<string>('');
@@ -18,7 +19,7 @@ export function RegionSelecter() {
     setSelectedValue(regionCode);
   }, [regionCode])
 
-  const [regionList, setRegionList] = useState<iRegionElement[]>([]);
+  const [regionList, setRegionList] = useState<PickerColumnOption[]>([]);
 
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['regionList'],
@@ -43,68 +44,56 @@ export function RegionSelecter() {
 
       const regionListElement: iRegionElement[] = sortedRegionList.map((item: iRegionItem) => {
         return {
-          label: item.snippet.name,
+          text: item.snippet.name,
           value: item.snippet.gl,
-          src: `https://flagcdn.com/${item.snippet.gl.toLocaleLowerCase()}.svg`,
+          // src: `https://flagcdn.com/${item.snippet.gl.toLocaleLowerCase()}.svg`,
         }
       });
       setRegionList(regionListElement);
     }
   }, [data]);
-  
-  const onSelectionChange = (key: Key) => {
-    if (!key) {
+
+  const onPick = (item: any) => {
+    if (!item.region.value) {
       return;
     }
 
     setQuery(
       {
-        regionCode: key.toString(),
+        regionCode: item.region.value.toString(),
         videoCategoryId: videoCategoryId
       }
-    )
-  };
+    );
+  }
 
   return (
     <>
-      {/* {
+      <IonButton slot='start' fill='clear' id='region-picker'>
+        <IonIcon color='primary' size='large' icon={globeOutline} />
+      </IonButton>
+      {
         (!isPending && !isFetching && !error ) &&
-          <Autocomplete
-            defaultItems={regionList}
-            label='Region'
-            placeholder='Select an region'
-            size='sm'
-            color='primary'
-            scrollShadowProps={{
-              isEnabled: false
-            }}
-            startContent={
-              <Image
-                radius='none'
-                className='w-6 h-4'
-                src={selectedValue ? `https://flagcdn.com/${selectedValue.toLocaleLowerCase()}.svg` : ''}
-              />
-            }
-            selectedKey={selectedValue}
-            onSelectionChange={onSelectionChange}
-          >
-            {regionList.map((region: iRegionElement) => {
-              return (
-                <AutocompleteItem
-                  key={region.value}
-                  startContent={
-                    <Avatar
-                      className='w-6 h-6'
-                      src={region.src}
-                    />
-                  }
-                >
-                  {region.label}
-                </AutocompleteItem>
-              );
-            })}
-          </Autocomplete>
-      } */}
+          <IonPicker
+            trigger='region-picker'
+            backdropDismiss={true}
+            showBackdrop={true}
+            columns={[
+              {
+                name: 'region',
+                options: regionList
+              }
+            ]}
+            buttons={[
+              {
+                text: 'Close',
+              },
+              {
+                text: 'Select',
+                handler: onPick,
+              },
+            ]}
+          />
+      }
     </>
   );
 }

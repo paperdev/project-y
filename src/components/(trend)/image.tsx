@@ -3,7 +3,7 @@
 import React from 'react';
 import { iImage } from '@/shared/interface/trendItem';
 import { Browser } from '@capacitor/browser';
-import { Link } from 'konsta/react';
+import { IonLabel } from '@ionic/react';
 
 export default function ComponentImage({
   className,
@@ -21,7 +21,7 @@ export default function ComponentImage({
   return (
     <div className={`${className} relative`}>
       {isShownLink ? (
-        <Link
+        <IonLabel
           onClick={() => {
             Browser.open({
               url: dataImage.newsUrl,
@@ -32,7 +32,7 @@ export default function ComponentImage({
             className='z-0 object-cover rounded-lg'
             src={dataImage.imageUrl}
           />
-        </Link>
+        </IonLabel>
       ) : (
         <img className='z-0 object-cover rounded-lg' src={dataImage.imageUrl} />
       )}

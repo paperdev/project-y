@@ -1,9 +1,9 @@
 'use client';
 
-import { Chip } from 'konsta/react';
+import { IonChip } from '@ionic/react';
 import React from 'react';
 
-const MAX_TAGS = 5;
+const MAX_TAGS = 2;
 
 function ComponentTag({
   className,
@@ -22,9 +22,9 @@ function ComponentTag({
         {tags.map((tag, index) => {
           return (
             index < MAX_TAGS && (
-              <Chip key={index} className='cursor-pointer'>
+              <IonChip key={index} className='cursor-pointer'>
                 {`#${tag}`}
-              </Chip>
+              </IonChip>
             )
           );
         })}
@@ -52,7 +52,7 @@ function ComponentHiddenTag({
             return;
           }
           return (
-            <Chip key={index} className='cursor-pointer'>{`#${tag}`}</Chip>
+            <IonChip key={index} className='cursor-pointer'>{`#${tag}`}</IonChip>
           );
         })}
       </div>

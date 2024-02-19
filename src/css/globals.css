@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base{
+  body {
+      @apply dark:opacity-70
+  }
+}
+
 @import '@ionic/react/css/core.css';
 /* Basic CSS for apps built with Ionic */
 @import '@ionic/react/css/normalize.css';
