@@ -32,7 +32,7 @@ export default function TemplateHome({
   };
 
   return (
-    <IonApp >
+    <IonApp>
       <IonPage id='rootPage' className='ion-padding-top ion-padding-bottom'>
         <Header />
 

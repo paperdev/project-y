@@ -1,6 +1,6 @@
 'use client';
 
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ChannelPage from '@/app/(pages)/channel/page';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { expand } from 'ionicons/icons';
@@ -54,21 +54,28 @@ export default function ComponentChannelButton({
       </IonButton>
 
       <IonModal
+        showBackdrop={true}
         ref={modal}
         trigger={`open-channel-${channelId}-${etag}`}
-        presentingElement={presentingElement!}
+        // presentingElement={presentingElement!}
+        initialBreakpoint={0.95}
       >
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle color={'primary'}>{channelTitle}</IonTitle>
-            <IonButtons slot='end'>
-              <IonButton onClick={onClickClose}>Close</IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className='ion-padding'>
-          <ChannelPage/>
-        </IonContent>
+        <IonPage className='ion-padding-top ion-padding-bottom'>
+
+          <IonHeader collapse='condense'>
+            <IonToolbar>
+              <IonTitle color={'primary'}>{channelTitle}</IonTitle>
+              <IonButtons slot='end'>
+                <IonButton onClick={onClickClose}>Close</IonButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+
+          <IonContent>
+            <ChannelPage/>
+          </IonContent>
+
+        </IonPage>
       </IonModal>
     </>
   );

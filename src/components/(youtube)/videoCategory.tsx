@@ -12,7 +12,6 @@ import {
   IonLabel,
   IonSegment,
   IonSegmentButton,
-  IonToolbar,
 } from '@ionic/react';
 
 export default function ComponentVideoCategory() {
@@ -63,21 +62,19 @@ export default function ComponentVideoCategory() {
   return (
     <>
       {!isPending && !isFetching && !error && (
-        <IonToolbar slot='fixed'>
-          <IonSegment
-            onIonChange={onIonChange}
-            scrollable={true}
-            value={videoCategoryId}
-          >
-            {videoCategoryList.map((item) => {
-              return (
-                <IonSegmentButton value={item.id} key={item.id}>
-                  <IonLabel>{item.name}</IonLabel>
-                </IonSegmentButton>
-              );
-            })}
-          </IonSegment>
-        </IonToolbar>
+        <IonSegment
+          onIonChange={onIonChange}
+          scrollable={true}
+          value={videoCategoryId}
+        >
+          {videoCategoryList.map((item) => {
+            return (
+              <IonSegmentButton value={item.id} key={item.id}>
+                <IonLabel>{item.name}</IonLabel>
+              </IonSegmentButton>
+            );
+          })}
+        </IonSegment>
       )}
     </>
   );

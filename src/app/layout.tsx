@@ -6,7 +6,6 @@ import { Providers } from './providers';
 import type { Viewport } from 'next';
 import { setupIonicReact } from '@ionic/react';
 
-// setupIonicReact();
 setupIonicReact({ mode: 'ios' });
 
 export const viewport: Viewport = {
