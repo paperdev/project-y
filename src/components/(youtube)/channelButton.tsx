@@ -25,6 +25,7 @@ export default function ComponentChannelButton({
       regionCode: query.regionCode,
       videoCategoryId: query.videoCategoryId,
       channelId: channelId,
+      searchKey: query.searchKey,
     });
   }
 
@@ -51,6 +52,7 @@ export default function ComponentChannelButton({
         {channelTitle}
         <IonIcon slot="end" icon={expand}></IonIcon>
       </IonButton>
+
       <IonModal
         ref={modal}
         trigger={`open-channel-${channelId}-${etag}`}

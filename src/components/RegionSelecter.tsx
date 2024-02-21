@@ -9,15 +9,8 @@ import { IonButton, IonIcon, IonPicker, PickerColumnOption } from '@ionic/react'
 import { globeOutline } from 'ionicons/icons';
 
 export function RegionSelecter() {
-  const [selectedValue, setSelectedValue] = useState<string>('');
   const query = useContext(QueryContext);
   const setQuery = useContext(SetQueryContext);
-  const regionCode = query.regionCode;
-  const videoCategoryId = query.videoCategoryId;
-
-  useEffect(() => {
-    setSelectedValue(regionCode);
-  }, [regionCode])
 
   const [regionList, setRegionList] = useState<PickerColumnOption[]>([]);
 
@@ -61,7 +54,9 @@ export function RegionSelecter() {
     setQuery(
       {
         regionCode: item.region.value.toString(),
-        videoCategoryId: videoCategoryId
+        videoCategoryId: query.videoCategoryId,
+        channelId: query.channelId,
+        searchKey: query.searchKey,
       }
     );
   }

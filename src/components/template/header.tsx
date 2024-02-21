@@ -3,10 +3,13 @@
 import React from 'react';
 import { ThemeSwitcher } from '@/components/template/ThemeSwitcher';
 import { RegionSelecter } from '@/components/RegionSelecter';
-import { IonButton, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/react';
-import { globeOutline } from 'ionicons/icons';
+import { IonHeader, IonTitle, IonToolbar } from '@ionic/react';
+import ComponentSearchInput from '@/components/(youtube)/(search)/searchInput';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
+  const pathname = usePathname();
+
   return (
     <IonHeader collapse='fade'>
       <IonToolbar>
@@ -18,6 +21,14 @@ export default function Header() {
         <ThemeSwitcher />
 
       </IonToolbar>
+
+      {
+        ('/search' === pathname) && 
+          <IonToolbar>
+            <ComponentSearchInput />
+          </IonToolbar>
+      }
+
     </IonHeader>
   );
 }

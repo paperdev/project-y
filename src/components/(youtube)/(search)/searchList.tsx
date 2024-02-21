@@ -60,14 +60,14 @@ export default function ComponentSearchList({
       })}
     </IonList>
 
-      <IonInfiniteScroll
-        onIonInfinite={(event) => {
-          loadMoreVideo();
-          setTimeout(() => event.target.complete(), 500);
-        }}
-      >
-        <IonInfiniteScrollContent loadingSpinner='circular' />
-      </IonInfiniteScroll>
+    <IonInfiniteScroll
+      onIonInfinite={(event) => {
+        loadMoreVideo();
+        setTimeout(() => event.target.complete(), 500);
+      }}
+    >
+      <IonInfiniteScrollContent loadingSpinner='circular' />
+    </IonInfiniteScroll>
     </>
   );
 }

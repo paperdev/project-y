@@ -53,8 +53,10 @@ export default function ComponentVideoCategory() {
 
   const onIonChange = (event: CustomEvent) => {
     setQuery({
-      regionCode: regionCode,
+      regionCode: query.regionCode,
       videoCategoryId: event.detail.value,
+      channelId: query.channelId,
+      searchKey: query.searchKey,
     });
   };
 

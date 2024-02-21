@@ -1,17 +1,14 @@
 'use client';
 
 import { IonSearchbar, SearchbarInputEventDetail } from '@ionic/react';
-import React, { useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
+import { QueryContext, SetQueryContext } from '@/app/providers';
 
-export default function ComponentSearchInput({
-  onSearch
-}: {
-  onSearch: Function
-}) {
+export default function ComponentSearchInput() {
   const inputRef = useRef<HTMLIonSearchbarElement>(null);
-
-  const onIonCancel = () => {
-  };
+  const [ inputValue , setInputValue ] = useState<string>('');
+  const query = useContext(QueryContext);
+  const setQuery = useContext(SetQueryContext);
 
   const onIonInput = (event: CustomEvent<SearchbarInputEventDetail>) => {
   };
@@ -25,7 +22,14 @@ export default function ComponentSearchInput({
         return;
       }
 
-      onSearch(inputRef.current.value);
+      setQuery({
+        regionCode: query.regionCode,
+        videoCategoryId: query.videoCategoryId,
+        channelId: query.channelId,
+        searchKey: inputRef.current.value,
+      });
+
+      setInputValue(inputRef.current.value);
     }
   }
 
@@ -35,15 +39,13 @@ export default function ComponentSearchInput({
         ref={inputRef}
         placeholder='Search anything'
         animated={true}
-        slot='fixed'
         inputmode={'search'}
         showCancelButton="focus"
-        // cancelButtonText='Search'
-        // onIonCancel={onIonCancel}
         onIonInput={onIonInput}
         onIonChange={onIonChange}
         enterkeyhint={'search'}
         onKeyDown={onKeyDown}
+        value={inputValue}
       />
     </>
   );
