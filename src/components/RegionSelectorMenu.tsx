@@ -5,7 +5,7 @@ import { getRegionList } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
 import { iRegionElement, iRegionItem } from '@/shared/interface/region';
 import { QueryContext, SetQueryContext } from '@/app/providers';
-import { IonButton, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonMenu, IonMenuButton, IonMenuToggle, IonPage, IonPicker, IonRadio, IonRadioGroup, IonSelect, IonSelectOption, IonTitle, IonToolbar, PickerColumnOption, RadioGroupChangeEventDetail } from '@ionic/react';
+import { IonContent, IonFooter, IonHeader, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonList, IonMenu, IonPage, IonRadio, IonRadioGroup, IonTitle, IonToolbar, RadioGroupChangeEventDetail } from '@ionic/react';
 
 export function RegionSelectorMenu({
   rootPageId,
@@ -16,7 +16,7 @@ export function RegionSelectorMenu({
   const setQuery = useContext(SetQueryContext);
 
   const [regionList, setRegionList] = useState<Record<string, iRegionElement[]>>();
-  const [currentRegion, setCurrentRegion] = useState();
+  const [currentRegion, setCurrentRegion] = useState(query.regionCode);
 
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['regionList'],
@@ -46,7 +46,7 @@ export function RegionSelectorMenu({
             {
               label: item.snippet.name,
               value: item.snippet.gl,
-              src: `https://flagcdn.com/${item.snippet.gl.toLocaleLowerCase()}.svg`,
+              // src: `https://flagcdn.com/${item.snippet.gl.toLocaleLowerCase()}.svg`,
             }
           )
         }
@@ -55,7 +55,7 @@ export function RegionSelectorMenu({
             {
               label: item.snippet.name,
               value: item.snippet.gl,
-              src: `https://flagcdn.com/${item.snippet.gl.toLocaleLowerCase()}.svg`,
+              // src: `https://flagcdn.com/${item.snippet.gl.toLocaleLowerCase()}.svg`,
             }
           ]
         }
@@ -65,7 +65,7 @@ export function RegionSelectorMenu({
     }
   }, [data]);
 
-  const onIonWillClose = () => {
+  const onIonDidClose = () => {
     if (!currentRegion) {
       return;
     }
@@ -80,12 +80,21 @@ export function RegionSelectorMenu({
     );
   }
 
+  const onIonWillOpen = () => {
+    const selectedRegionElement = document.getElementById('scrollRegion-' + currentRegion);
+    if (!selectedRegionElement) {
+      return;
+    }
+
+    selectedRegionElement.scrollIntoView({behavior: 'instant'});
+  }
+
   const onIonChange = (event: CustomEvent<RadioGroupChangeEventDetail>) => {
     setCurrentRegion(event.detail.value);
   }
 
   return (
-    <IonMenu menuId='region-selector' contentId={rootPageId} side='start' onIonDidClose={onIonWillClose}>
+    <IonMenu menuId='region-selector' contentId={rootPageId} side='start' onIonDidClose={onIonDidClose} onIonWillOpen={onIonWillOpen}>
       <IonPage className='ion-padding-top ion-padding-bottom'>
 
         <IonHeader>
@@ -95,24 +104,35 @@ export function RegionSelectorMenu({
         </IonHeader>
 
         <IonContent >
-          <IonList inset={true}>
+          <IonList inset={true} lines='full'>
             <IonRadioGroup
               onIonChange={onIonChange}
+              value={currentRegion}
             >
               {
                 regionList && 
                 Object.keys(regionList).map((key: string) => {
                   return (
-                    <IonItemGroup>
+                    <IonItemGroup key={key}>
                       <IonItemDivider>
                         <IonLabel>{key}</IonLabel>
                       </IonItemDivider>
                       {
                         regionList[key].map((item: iRegionElement, index: number) => {
                           return (
-                            <IonItem key={index}>
-                              <IonRadio value={item.value}>
-                                {item.label}
+                            <IonItem key={index} id={`scrollRegion-${item.value}`}>
+                              <IonRadio value={item.value} justify='space-between'>
+                                {
+                                  currentRegion === item.value 
+                                    ? 
+                                      <IonLabel color={'primary'} className='font-bold'>
+                                        {item.label}
+                                      </IonLabel>
+                                    : 
+                                      <IonLabel>
+                                        {item.label}
+                                      </IonLabel>
+                                }
                               </IonRadio>
                             </IonItem>
                           )
