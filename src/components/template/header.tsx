@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ThemeSwitcher } from '@/components/template/ThemeSwitcher';
-import { RegionSelecter } from '@/components/RegionSelecter';
+import { RegionSelector } from '@/components/RegionSelector';
 import { IonHeader, IonTitle, IonToolbar } from '@ionic/react';
 import ComponentSearchInput from '@/components/(youtube)/(search)/searchInput';
 import ComponentVideoCategory from '@/components/(youtube)/videoCategory';
@@ -15,7 +15,7 @@ export default function Header() {
     <IonHeader collapse='condense'>
       <IonToolbar>
         
-        <RegionSelecter />
+        <RegionSelector />
         
         <IonTitle color='primary' >Trend Insight</IonTitle>
 

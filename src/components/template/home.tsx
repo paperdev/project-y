@@ -5,6 +5,7 @@ import Header from './header';
 import Footer from './footer';
 import { Capacitor } from '@capacitor/core';
 import { IonApp, IonContent, IonPage } from '@ionic/react';
+import { RegionSelectorMenu } from '@/components/RegionSelectorMenu';
 
 export default function TemplateHome({
   children,
@@ -33,12 +34,12 @@ export default function TemplateHome({
 
   return (
     <IonApp>
+      <RegionSelectorMenu rootPageId='rootPage'/>
+      
       <IonPage id='rootPage' className='ion-padding-top ion-padding-bottom'>
         <Header />
 
-        <IonContent ref={navTopRef}>
-          {children}
-        </IonContent>
+        <IonContent ref={navTopRef}>{children}</IonContent>
 
         <Footer />
       </IonPage>
