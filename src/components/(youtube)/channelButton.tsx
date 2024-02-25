@@ -58,7 +58,7 @@ export default function ComponentChannelButton({
         ref={modal}
         trigger={`open-channel-${channelId}-${etag}`}
         // presentingElement={presentingElement!}
-        initialBreakpoint={0.95}
+        initialBreakpoint={0.94}
       >
         <IonPage className='ion-padding-top ion-padding-bottom'>
 

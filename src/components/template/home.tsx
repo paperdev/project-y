@@ -34,15 +34,16 @@ export default function TemplateHome({
 
   return (
     <IonApp>
-      <RegionSelectorMenu rootPageId='rootPage'/>
-      
-      <IonPage id='rootPage' className='ion-padding-top ion-padding-bottom'>
+      <IonPage id='rootPage' className='safe-area-padding'>
         <Header />
 
         <IonContent ref={navTopRef}>{children}</IonContent>
 
         <Footer />
       </IonPage>
+
+      <RegionSelectorMenu rootPageId='rootPage'/>
+
     </IonApp>
   );
 }

@@ -114,7 +114,7 @@ export function RegionSelectorMenu({
                 Object.keys(regionList).map((key: string) => {
                   return (
                     <IonItemGroup key={key}>
-                      <IonItemDivider>
+                      <IonItemDivider color={'medium'} className='opacity-70'>
                         <IonLabel>{key}</IonLabel>
                       </IonItemDivider>
                       {
