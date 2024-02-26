@@ -8,7 +8,7 @@ import ComponentChannelButton from '@/components/(youtube)/channelButton';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
 import { bookmark, caretDown, caretUp, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
-import { formatDate } from '@/utils/helper';
+import { formatDate, formatNumber } from '@/utils/helper';
 
 export default function ComponentTrendVideoCard({
   video,
@@ -132,22 +132,22 @@ export default function ComponentTrendVideoCard({
                 <>
                   <div className='flex gap-1 items-center'>
                     <IonIcon icon={heartCircle} />
-                    <div>{video.statistics.likeCount}</div>
+                    <div>{formatNumber(video.statistics.likeCount)}</div>
                   </div>
 
                   <div className='flex gap-1 items-center'>
                     <IonIcon icon={eye} />
-                    <div>{video.statistics.viewCount}</div>
+                    <div>{formatNumber(video.statistics.viewCount)}</div>
                   </div>
 
                   <div className='flex gap-1 items-center'>
                     <IonIcon icon={chatboxEllipses} />
-                    <div>{video.statistics.commentCount}</div>
+                    <div>{formatNumber(video.statistics.commentCount)}</div>
                   </div>
 
                   <div className='flex gap-1 items-center'>
                     <IonIcon icon={bookmark} />
-                    <div>{video.statistics.favoriteCount}</div>
+                    <div>{formatNumber(video.statistics.favoriteCount)}</div>
                   </div>
                 </>
               )}

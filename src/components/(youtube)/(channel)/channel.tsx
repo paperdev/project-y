@@ -2,7 +2,7 @@ import React from 'react';
 import { iChannelItem } from '@/shared/interface/channel';
 import { IonCardContent, IonIcon, IonImg } from '@ionic/react';
 import { albums, bookmarks, calendar, eye } from 'ionicons/icons';
-import { formatDate } from '@/utils/helper';
+import { formatDate, formatNumber } from '@/utils/helper';
 
 export default function ComponentChannel({
   dataChannel,
@@ -19,15 +19,15 @@ export default function ComponentChannel({
         <div className='flex flex-col'>
           <div className='flex gap-2 items-center'>
             <IonIcon icon={bookmarks} />
-            <div>{dataChannel.statistics.subscriberCount}</div>
+            <div>{formatNumber(dataChannel.statistics.subscriberCount)}</div>
           </div>
           <div className='flex gap-2 items-center'>
             <IonIcon icon={eye} />
-            <div>{dataChannel.statistics.viewCount}</div>
+            <div>{formatNumber(dataChannel.statistics.viewCount)}</div>
           </div>
           <div className='flex gap-2 items-center'>
             <IonIcon icon={albums} />
-            <div>{dataChannel.statistics.videoCount}</div>
+            <div>{formatNumber(dataChannel.statistics.videoCount)}</div>
           </div>
           <div className='flex gap-2 items-center'>
             <IonIcon icon={calendar} />
