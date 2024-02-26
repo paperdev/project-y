@@ -12,7 +12,7 @@ const config: CapacitorConfig = {
   ios: {
     scheme: 'TrendInsight',
     allowsLinkPreview: true,
-    contentInset: 'automatic',
+    // contentInset: 'automatic',
   },
 
   plugins: {

@@ -1,31 +1,42 @@
 'use client';
 
 import React from 'react';
-import { ThemeSwitcher } from './ThemeSwitcher';
-import { RegionSelecter } from '@/components/RegionSelecter';
-import { Navbar, NavbarContent } from '@nextui-org/react';
-import { MdDataThresholding } from 'react-icons/md';
+import { ThemeSwitcher } from '@/components/template/ThemeSwitcher';
+import { RegionSelector } from '@/components/RegionSelector';
+import { IonHeader, IonTitle, IonToolbar } from '@ionic/react';
+import ComponentSearchInput from '@/components/(youtube)/(search)/searchInput';
+import ComponentVideoCategory from '@/components/(youtube)/videoCategory';
+import { usePathname } from 'next/navigation';
 
-export default function Header({
-  className,
-}: {
-  className?: string;
-}) {
+export default function Header() {
+  const pathname = usePathname();
+
   return (
-    <>
-      <Navbar className={`${className}`}>
-        <NavbarContent justify='start' className='text-3xl'>
-          <MdDataThresholding />
-        </NavbarContent>
+    <IonHeader collapse='condense'>
+      <IonToolbar>
+        
+        <RegionSelector />
+        
+        <IonTitle color='primary' >Trend Insight</IonTitle>
 
-        <NavbarContent justify='center' className='sm:w-5/12 w-7/12 '>
-          <RegionSelecter />
-        </NavbarContent>
+        <ThemeSwitcher />
 
-        <NavbarContent justify='end'>
-          <ThemeSwitcher />
-        </NavbarContent>
-      </Navbar>
-    </>
+      </IonToolbar>
+
+      {
+        ('/search' === pathname) && 
+          <IonToolbar>
+            <ComponentSearchInput />
+          </IonToolbar>
+      }
+
+      {
+        ('/home' === pathname) && 
+          <IonToolbar>
+            <ComponentVideoCategory />
+          </IonToolbar>
+      }
+
+    </IonHeader>
   );
 }

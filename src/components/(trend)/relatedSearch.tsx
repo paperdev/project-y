@@ -1,9 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Link } from '@nextui-org/react';
 import { iTitle } from '@/shared/interface/trendItem';
 import { Browser } from '@capacitor/browser';
+import { openOutline } from 'ionicons/icons';
+import { IonIcon, IonItem } from '@ionic/react';
 
 export default function ComponentRelatedSearch({
   className,
@@ -13,27 +14,28 @@ export default function ComponentRelatedSearch({
   relatedSearches: iTitle[];
 }) {
   if (0 === relatedSearches.length) {
-    return <>No related searches!</>;
+    return <></>;
   }
 
   return (
     <>
-      <div className={`${className}`}>
+      <div className={`${className} flex overflow-x-scroll ml-2`}>
         {relatedSearches.map((title: iTitle, index: number) => {
           return (
-            <Link
+            <IonItem
+              button={true}
+              detail={false}
               key={index}
-              showAnchorIcon
-              onPress={() => {
+              onClick={() => {
                 Browser.open({
                   url: process.env.GOOGLE_TREND_URL + title.exploreLink
                 })
               }}
-              className='flex-none'
-              isBlock
+              className='flex-none rounded-lg shadow-md m-1 pl-1'
             >
               {title.query}
-            </Link>
+              <IonIcon color='primary' slot='end' icon={openOutline} className='ml-1' />
+            </IonItem>
           );
         })}
       </div>

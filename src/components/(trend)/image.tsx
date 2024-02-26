@@ -1,52 +1,51 @@
 'use client';
 
 import React from 'react';
-import { Link, Card, CardFooter, Image } from '@nextui-org/react';
 import { iImage } from '@/shared/interface/trendItem';
 import { Browser } from '@capacitor/browser';
+import { IonLabel } from '@ionic/react';
 
 export default function ComponentImage({
+  className,
   dataImage,
   isShownLink,
+  isShownSource,
 }: {
-  dataImage: iImage,
-  isShownLink: boolean,
+  className: string;
+  dataImage: iImage;
+  isShownLink: boolean;
+  isShownSource: boolean;
 }) {
   if (!dataImage) {
-    return <></>
+    return <></>;
   }
-  
+
   return (
-    <>
-      <Card>
-        {isShownLink ? (
-          <Link 
-            onPress={() => {
-              Browser.open({
-                url: dataImage.newsUrl
-              })
-            }}
-           >
-            <Image
-              removeWrapper
-              className='z-0 object-cover'
-              src={dataImage.imageUrl}
-            />
-          </Link>
-        ) : (
-          <Image
-            removeWrapper
-            className='z-0 object-cover'
+    <div className={`${className} relative`}>
+      {isShownLink ? (
+        <IonLabel
+          onClick={() => {
+            Browser.open({
+              url: dataImage.newsUrl,
+            });
+          }}
+        >
+          <img
+            className='z-0 object-cover rounded-lg'
             src={dataImage.imageUrl}
           />
-        )}
+        </IonLabel>
+      ) : (
+        <img className='z-0 object-cover rounded-lg' src={dataImage.imageUrl} />
+      )}
 
-        <CardFooter className='absolute bottom-0 rounded-lg'>
-          <div className='flex mx-auto text-tiny text-default'>
+      {
+        isShownSource && (
+          <div className='absolute bottom-1 text-tiny text-white m-auto left-0 right-0 grid place-items-center'>
             {dataImage.source}
           </div>
-        </CardFooter>
-      </Card>
-    </>
+        )
+      }
+    </div>
   );
 }

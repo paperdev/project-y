@@ -2,52 +2,38 @@
 
 import React, { useState } from 'react';
 import { iTrendItem } from '@/shared/interface/trendItem';
-import {
-  Divider,
-  Spinner,
-} from '@nextui-org/react';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import ComponentItemCard from './itemCard';
+import { IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonList } from '@ionic/react';
 
 export default function ComponentItemList({
   dataItem: dataItem,
 }: {
-  dataItem: iTrendItem[],
+  dataItem: iTrendItem[];
 }) {
   const [recentItem, setRecentItem] = useState<iTrendItem[]>(dataItem);
-
-  const loadMoreItem = async () => {
-    
-  };
+ 
+  const loadMoreItem = async () => {};
 
   return (
     <>
-      <InfiniteScroll
-        dataLength={recentItem.length}
-        next={loadMoreItem}
-        scrollThreshold={'200px'}
-        hasMore={false}
-        loader={
-          <div className='flex justify-center'>
-            <Spinner label='Loading...' color='primary' />
-          </div>
-        }
-        endMessage={
-          <div className='flex justify-center font-bold'>No more items!</div>
-        }
-        scrollableTarget='scrollableElementDiv'
-      >
-
+      <IonList lines='none'>
         {recentItem.map((item: iTrendItem, index: number) => {
-          return (
-            <div key={index}>
-              <ComponentItemCard item={item} />
-              <Divider />
-            </div>
-          );
+          if (0 !== Object.keys(item.image).length) {
+            return (
+              <ComponentItemCard key={index} item={item} />
+            );
+          }
         })}
+      </IonList>
 
-      </InfiniteScroll>
+      <IonInfiniteScroll
+        onIonInfinite={(event) => {
+          loadMoreItem();
+          setTimeout(() => event.target.complete(), 500);
+        }}
+      >
+        <IonInfiniteScrollContent loadingSpinner='circular' />
+      </IonInfiniteScroll>
     </>
   );
 }

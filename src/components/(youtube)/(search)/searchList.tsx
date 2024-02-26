@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  Divider,
-  Spinner,
-} from '@nextui-org/react';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { getSearchVideoList } from '@/utils/request';
 import { iSearchVideoItem } from '@/shared/interface/searchVideo';
 import ComponentSearchVideoCard from './searchVideoCard';
 import { QueryContext } from '@/app/providers';
+import {
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonList,
+} from '@ionic/react';
 
 export default function ComponentSearchList({
   videoList,
@@ -24,13 +24,11 @@ export default function ComponentSearchList({
 }) {
   const [recentVideo, setRecentVideo] = useState<iSearchVideoItem[]>(videoList);
   const [pageToken, setPageToken] = useState(nextPageToken);
-  const [loadMore, setLoadMore] = useState(true);
   const query = useContext(QueryContext);
   const regionCode = query.regionCode;
 
   const loadMoreVideo = async () => {
     if (recentVideo.length >= totalResults) {
-      setLoadMore(false);
       return;
     }
 
@@ -50,36 +48,26 @@ export default function ComponentSearchList({
 
   return (
     <>
-      <InfiniteScroll
-        dataLength={recentVideo.length}
-        next={loadMoreVideo}
-        scrollThreshold={'200px'}
-        hasMore={loadMore}
-        loader={
-          <div className='flex justify-center'>
-            <Spinner label='Loading...' color='primary' />
-          </div>
+    <IonList lines='none'>
+      {recentVideo.map((video: iSearchVideoItem, index) => {
+        if (!video.id.videoId) {
+          return <div key={index}></div>
         }
-        endMessage={
-          <div className='flex justify-center font-bold'>No more videos!</div>
-        }
-        scrollableTarget='scrollableElementDiv'
-      >
 
-        {recentVideo.map((video: iSearchVideoItem, index) => {
-          if (video.id.channelId) {
-            return (<div key={index}></div>)
-          }
+        return (
+          <ComponentSearchVideoCard key={index} video={video} />
+        );
+      })}
+    </IonList>
 
-          return (
-            <div key={index}>
-              <ComponentSearchVideoCard video={video} />
-              <Divider />
-            </div>
-          );
-        })}
-
-      </InfiniteScroll>
+    <IonInfiniteScroll
+      onIonInfinite={(event) => {
+        loadMoreVideo();
+        setTimeout(() => event.target.complete(), 500);
+      }}
+    >
+      <IonInfiniteScrollContent loadingSpinner='circular' />
+    </IonInfiniteScroll>
     </>
   );
 }

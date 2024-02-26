@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+// import { motion, AnimatePresence } from 'framer-motion';
 
 const variants = {
   initialState: {
@@ -17,21 +17,22 @@ const variants = {
 
 export function TransitionPage({ children }: { children: React.ReactNode }) {
   return (
-    <AnimatePresence mode={'wait'}>
-      <motion.div
-        key={'routerMotion'}
-        initial='initialState'
-        animate='animateState'
-        exit='exitState'
-        transition={{
-          type: 'tween',
-          duration: 0.5
-        }}
-        variants={variants}
-        className=''
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <></>
+    // <AnimatePresence mode={'wait'}>
+    //   <motion.div
+    //     key={'routerMotion'}
+    //     initial='initialState'
+    //     animate='animateState'
+    //     exit='exitState'
+    //     transition={{
+    //       type: 'tween',
+    //       duration: 0.5
+    //     }}
+    //     variants={variants}
+    //     className=''
+    //   >
+    //     {children}
+    //   </motion.div>
+    // </AnimatePresence>
   );
 }

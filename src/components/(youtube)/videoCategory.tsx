@@ -1,18 +1,27 @@
 'use client';
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Tabs, Tab } from '@nextui-org/react';
 import { getVideoCategoryList } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
-import { iVideoCategoryElement, iVideoCategoryItem } from '@/shared/interface/videoCategory';
+import {
+  iVideoCategoryElement,
+  iVideoCategoryItem,
+} from '@/shared/interface/videoCategory';
 import { QueryContext, SetQueryContext } from '@/app/providers';
+import {
+  IonLabel,
+  IonSegment,
+  IonSegmentButton,
+} from '@ionic/react';
 
 export default function ComponentVideoCategory() {
-  const [videoCategoryList, setVideoCategoryList] = useState<iVideoCategoryElement[]>([]);
+  const [videoCategoryList, setVideoCategoryList] = useState<
+    iVideoCategoryElement[]
+  >([]);
   const query = useContext(QueryContext);
   const setQuery = useContext(SetQueryContext);
   const regionCode = query.regionCode;
-  const videoCategoryId = query.videoCategoryId;
+  const videoCategoryId = query.videoCategoryId ? query.videoCategoryId : 0;
 
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['videoCategoryList', regionCode],
@@ -23,51 +32,50 @@ export default function ComponentVideoCategory() {
 
   useEffect(() => {
     if (data) {
-      const videoCategoryElement: iVideoCategoryElement[] = data.items.reduce((accItem: iVideoCategoryElement[], item: iVideoCategoryItem) => {
-        if (item.snippet.assignable) {
-          const newItem = {
-            id: parseInt(item.id),
-            name: item.snippet.title,
+      const videoCategoryElement: iVideoCategoryElement[] = data.items.reduce(
+        (accItem: iVideoCategoryElement[], item: iVideoCategoryItem) => {
+          if (item.snippet.assignable) {
+            const newItem = {
+              id: parseInt(item.id),
+              name: item.snippet.title,
+            };
+            accItem.push(newItem);
           }
-          accItem.push(newItem)
-        }
-        return accItem;
-      }, []);
+          return accItem;
+        },
+        []
+      );
 
-      setVideoCategoryList([{id: 0, name:'All'}, ...videoCategoryElement]);
+      setVideoCategoryList([{ id: 0, name: 'All' }, ...videoCategoryElement]);
     }
   }, [data, regionCode]);
 
-  const onSelectionChange = (key: React.Key) => {
-    if (!key) {
-      return;
-    }
-
-    setQuery(
-      {
-        regionCode: regionCode,
-        videoCategoryId: key.toString()
-      }
-    )
+  const onIonChange = (event: CustomEvent) => {
+    setQuery({
+      regionCode: query.regionCode,
+      videoCategoryId: event.detail.value,
+      channelId: query.channelId,
+      searchKey: query.searchKey,
+    });
   };
 
   return (
     <>
-      {
-        (!isPending && !isFetching && !error) &&
-        <div className='flex flex-col sticky top-0 bg-background backdrop-blur-0 z-30'>
-          <Tabs 
-              items={videoCategoryList}
-              onSelectionChange={onSelectionChange}
-              color={'primary'}
-            >
-            {(item) => (
-              <Tab key={item.id} title={item.name}>
-              </Tab>
-            )}
-          </Tabs>
-        </div>
-      }
+      {!isPending && !isFetching && !error && (
+        <IonSegment
+          onIonChange={onIonChange}
+          scrollable={true}
+          value={videoCategoryId}
+        >
+          {videoCategoryList.map((item) => {
+            return (
+              <IonSegmentButton value={item.id} key={item.id}>
+                <IonLabel>{item.name}</IonLabel>
+              </IonSegmentButton>
+            );
+          })}
+        </IonSegment>
+      )}
     </>
   );
 }

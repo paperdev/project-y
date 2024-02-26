@@ -1,64 +1,104 @@
 'use client';
 
-import React from 'react';
-import { MdSearch, MdSmartDisplay, MdWhatshot, MdInfo } from 'react-icons/md';
-import { Tabs, Tab } from '@nextui-org/react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { iTab } from '@/shared/interface/tab';
+import {
+  IonFooter,
+  IonIcon,
+  IonLabel,
+  IonTabButton,
+  IonGrid,
+  IonRow,
+  IonToolbar,
+} from '@ionic/react';
+import {
+  logoYoutube,
+  search,
+  trendingUp,
+  informationCircle,
+} from 'ionicons/icons';
 
-const bottomMenu = [
-  {
-    name: 'home',
+const bottomMenu: Record<string, iTab> = {
+  home: {
     href: 'home',
-    icon: <MdSmartDisplay />,
+    isActive: true,
+    icon: logoYoutube,
   },
-  {
-    name: 'search',
+  search: {
     href: 'search',
-    icon: <MdSearch />,
+    isActive: false,
+    icon: search,
   },
-  {
-    name: 'trend',
+  trend: {
     href: 'trend',
-    icon: <MdWhatshot />,
+    isActive: false,
+    icon: trendingUp,
   },
-  {
-    name: 'about',
+  about: {
     href: 'about',
-    icon: <MdInfo />,
+    isActive: false,
+    icon: informationCircle,
   },
-];
+};
 
-export default function Footer({ className }: { className?: string }) {
+export default function Footer() {
   const router = useRouter();
+  const pathname = usePathname();
+  const [tabList, setTabList] = useState(bottomMenu);
+  const [previousTab, setPreviousTab] = useState('home');
 
-  const onSelectionChange = (key: React.Key) => {
-    router.replace(key.toString(), {scroll: false});
+  useEffect(() => {
+    const currentTab = pathname.slice(1);
+    if (-1 === Object.keys(bottomMenu).indexOf(currentTab)) {
+      return;
+    }
+
+    setCurrentTab(previousTab, currentTab);
+  }, [pathname]);
+
+  const setCurrentTab = (previousTab: string, currentTab: string) => {
+    if (previousTab) {
+      tabList[previousTab].isActive = false;
+    }
+
+    tabList[currentTab].isActive = true;
+    setTabList(Object.assign({}, tabList));
+    setPreviousTab(currentTab);
+  };
+
+  const onClickTab = (event: CustomEvent) => {
+    const currentTab = event.detail.href;
+    if (!currentTab || tabList[currentTab].isActive) {
+      return;
+    }
+
+    setCurrentTab(previousTab, currentTab);
+    router.replace(currentTab, { scroll: false });
   };
 
   return (
     <>
-      <div className={`${className}`}>
-        <Tabs
-          color='default'
-          radius='md'
-          variant='light'
-          fullWidth={true}
-          onSelectionChange={onSelectionChange}
-        >
-          {bottomMenu.map((menu) => (
-            <Tab
-              key={menu.href}
-              className='h-12'
-              title={
-                <div className='flex items-center font-bold text-base text-default-300 group-data-[selected=true]:text-primary-500'>
-                  {menu.icon}
-                  <div className='capitalize'>{menu.name}</div>
-                </div>
-              }
-            />
-          ))}
-        </Tabs>
-      </div>
+      <IonFooter translucent={false}>
+        <IonToolbar>
+          <IonGrid>
+            <IonRow>
+              {Object.keys(tabList).map((key, index) => (
+                <IonTabButton
+                  tab={key}
+                  href={key}
+                  className={tabList[key].isActive ? 'text-blue-500' : 'text-gray-500'}
+                  onClick={onClickTab}
+                  key={index}
+                >
+                  <IonIcon size='large' icon={tabList[key].icon} />
+                  <IonLabel className='text-base'>{key}</IonLabel>
+                </IonTabButton>
+              ))}
+            </IonRow>
+          </IonGrid>
+        </IonToolbar>
+      </IonFooter>
     </>
   );
 }

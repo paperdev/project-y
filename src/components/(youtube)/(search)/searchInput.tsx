@@ -1,52 +1,52 @@
 'use client';
 
-import React, { MutableRefObject } from 'react';
-import { Input, Button } from "@nextui-org/react";
+import { IonSearchbar, SearchbarInputEventDetail } from '@ionic/react';
+import React, { useContext, useRef, useState } from 'react';
+import { QueryContext, SetQueryContext } from '@/app/providers';
 
-export default function ComponentSearchInput({
-  className,
-  inputRef,
-  onSearch,
-}: {
-  className: string;
-  inputRef: MutableRefObject<HTMLInputElement | null>
-  onSearch: Function
-}) {
-  const onPressSearch = () => {
-    if (!inputRef?.current?.value) {
-      return;
-    }
-    onSearch(inputRef.current.value);
-  }
+export default function ComponentSearchInput() {
+  const inputRef = useRef<HTMLIonSearchbarElement>(null);
+  const [ inputValue , setInputValue ] = useState<string>('');
+  const query = useContext(QueryContext);
+  const setQuery = useContext(SetQueryContext);
 
-  const checkKeyDown = (event: React.KeyboardEvent) => {
+  const onIonInput = (event: CustomEvent<SearchbarInputEventDetail>) => {
+  };
+
+  const onIonChange = (event: CustomEvent<SearchbarInputEventDetail>) => {
+  };
+
+  const onKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.code === 'Enter') {
       if (!inputRef?.current?.value) {
         return;
       }
-      onSearch(inputRef.current.value);
-      inputRef.current.value = '';
+
+      setQuery({
+        regionCode: query.regionCode,
+        videoCategoryId: query.videoCategoryId,
+        channelId: query.channelId,
+        searchKey: inputRef.current.value,
+      });
+
+      setInputValue(inputRef.current.value);
     }
   }
 
   return (
     <>
-      <div className={`${className}`}>
-        <Input
-          type='text'
-          variant='bordered'
-          placeholder='Search anything'
-          endContent={
-            <Button
-              onPress={() => { onPressSearch(); }}
-            >
-              Search
-            </Button>
-          }
-          ref={inputRef}
-          onKeyDown={(event: React.KeyboardEvent) => { checkKeyDown(event); }}
-        />
-      </div>
+      <IonSearchbar
+        ref={inputRef}
+        placeholder='Search anything'
+        animated={true}
+        inputmode={'search'}
+        showCancelButton="focus"
+        onIonInput={onIonInput}
+        onIonChange={onIonChange}
+        enterkeyhint={'search'}
+        onKeyDown={onKeyDown}
+        value={inputValue}
+      />
     </>
-  )
+  );
 }

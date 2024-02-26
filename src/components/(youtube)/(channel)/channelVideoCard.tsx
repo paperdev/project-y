@@ -2,24 +2,15 @@
 
 import React, { useState } from 'react';
 import ComponentPlayer from '@/components/(youtube)/player';
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-} from '@nextui-org/react';
-import {
-  MdExpandMore,
-  MdExpandLess,
-} from 'react-icons/md';
 import { iChannelVideoItem } from '@/shared/interface/channelVideo';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
+import { caretDown, caretUp } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
 
 export default function ComponentChannelVideoCard({
-  video
+  video,
 }: {
-  video: iChannelVideoItem
+  video: iChannelVideoItem;
 }) {
   const [descExpanded, setDescExpanded] = useState<boolean>(false);
 
@@ -52,36 +43,38 @@ export default function ComponentChannelVideoCard({
 
   return (
     <>
-      <Card shadow='none' className='rounded-none'>
-        <CardHeader>
-          <div>
-            <DecodedText text={video.snippet.title} className='text-2xl font-bold text-primary-500' />
-            <span className='text-xs ml-2 text-default-500'>
-              {video.snippet.publishedAt}
-            </span>
-          </div>
-        </CardHeader>
+      <IonCard>
+        <IonCardHeader>
+          <IonLabel className='ml-2'>{video.snippet.publishedAt}</IonLabel>
+          <IonCardTitle color={'primary'} className='text-xl'>
+            <DecodedText text={video.snippet.title} className='' />
+          </IonCardTitle>
+        </IonCardHeader>
 
-        <CardBody>
+        <IonCardContent>
           <ComponentPlayer videoId={video.snippet.resourceId.videoId} />
-        </CardBody>
 
-        <CardFooter className='justify-end'>
-          <Button
-            isIconOnly
-            variant='flat'
-            className='w-7 h-7'
-            onClick={onClickDescExpand}
-            data-videoid={video.id}
-          >
-            {descExpanded ? <MdExpandLess /> : <MdExpandMore />}
-          </Button>
-        </CardFooter>
+          <div className='flex justify-end'>
+            <IonButton
+              onClick={onClickDescExpand}
+              data-videoid={video.id}
+              slot='icon-only'
+              size='small'
+              fill='clear'
+            >
+              {descExpanded ? (
+                <IonIcon icon={caretUp} size='large' />
+              ) : (
+                <IonIcon icon={caretDown} size='large' />
+              )}
+            </IonButton>
+          </div>
 
-        <CardBody className='hiddenDescClass hidden whitespace-pre-wrap'>
-          {video.snippet.description}
-        </CardBody>
-      </Card>
+          <div className='hiddenDescClass hidden whitespace-pre-wrap text-black dark:text-white'>
+            {video.snippet.description}
+          </div>
+        </IonCardContent>
+      </IonCard>
     </>
   );
 }

@@ -1,39 +1,46 @@
 'use client';
 
-import { useTheme } from 'next-themes';
 import React, { useEffect, useState } from 'react';
-import { Switch } from '@nextui-org/react';
-import { MdLightMode, MdDarkMode } from 'react-icons/md';
+import { IonButton, IonIcon } from '@ionic/react';
+import { contrast, contrastOutline } from 'ionicons/icons';
 
 export function ThemeSwitcher() {
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const [isSelected, setIsSelected] = useState(theme === 'dark' ? true : false);
+  const [themeToggle, setThemeToggle] = useState(false);
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.target.checked ? setTheme('dark') : setTheme('light');
-    setIsSelected(event.target.checked);
+  const toggleDarkTheme = (shouldAdd: boolean) => {
+    document.body.classList.toggle('dark', shouldAdd);
+  };
+
+  const initializeDarkTheme = (isDark: boolean) => {
+    setThemeToggle(isDark);
+    toggleDarkTheme(isDark);
   };
 
   useEffect(() => {
-    setMounted(true);
+    // Use matchMedia to check the user preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    // Initialize the dark theme based on the initial
+    // value of the prefers-color-scheme media query
+    initializeDarkTheme(prefersDark.matches);
+
+    // Listen for changes to the prefers-color-scheme media query
+    prefersDark.addEventListener('change', (mediaQuery) =>
+      initializeDarkTheme(mediaQuery.matches)
+    );
   }, []);
 
-  if (!mounted) return null;
+  const onClick = () => {
+    const themeToggleFlag = !themeToggle;
+    setThemeToggle(themeToggleFlag);
+    toggleDarkTheme(themeToggleFlag);
+  }
 
   return (
     <>
-      <Switch
-        isSelected={isSelected}
-        onValueChange={setIsSelected}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          onChange(event);
-        }}
-        size='md'
-        color='primary'
-        startContent={<MdLightMode />}
-        endContent={<MdDarkMode />}
-      />
+      <IonButton slot='end' fill='clear' onClick={onClick} >
+        <IonIcon color='primary' size='large' icon={themeToggle ? contrastOutline : contrast} /> 
+      </IonButton>
     </>
   );
 }
