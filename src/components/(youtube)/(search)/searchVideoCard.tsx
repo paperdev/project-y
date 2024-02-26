@@ -13,6 +13,7 @@ import {
   IonLabel,
 } from '@ionic/react';
 import DecodedText from '@/components/template/decodedText';
+import { formatDate } from '@/utils/helper';
 
 export default function ComponentSearchVideoCard({
   video,
@@ -31,7 +32,7 @@ export default function ComponentSearchVideoCard({
               etag={video.etag}
             />
           </IonCardSubtitle>
-          <IonLabel className='ml-2'>{video.snippet.publishedAt}</IonLabel>
+          <IonLabel className='ml-2'>{formatDate(video.snippet.publishedAt)}</IonLabel>
           <IonCardTitle color={'primary'} className='text-xl'>
             <DecodedText text={video.snippet.title} className='' />
           </IonCardTitle>

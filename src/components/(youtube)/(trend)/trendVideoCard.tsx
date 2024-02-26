@@ -8,6 +8,7 @@ import ComponentChannelButton from '@/components/(youtube)/channelButton';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
 import { bookmark, caretDown, caretUp, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
+import { formatDate } from '@/utils/helper';
 
 export default function ComponentTrendVideoCard({
   video,
@@ -84,7 +85,7 @@ export default function ComponentTrendVideoCard({
               etag={video.etag}
             />
           </IonCardSubtitle>
-          <IonLabel className='ml-2'>{video.snippet.publishedAt}</IonLabel>
+          <IonLabel className='ml-2'>{formatDate(video.snippet.publishedAt)}</IonLabel>
           <IonCardTitle color={'primary'} className='text-xl'>
             <DecodedText text={video.snippet.title} className='' />
           </IonCardTitle>

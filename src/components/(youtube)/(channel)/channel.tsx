@@ -2,16 +2,13 @@ import React from 'react';
 import { iChannelItem } from '@/shared/interface/channel';
 import { IonCardContent, IonIcon, IonImg } from '@ionic/react';
 import { albums, bookmarks, calendar, eye } from 'ionicons/icons';
+import { formatDate } from '@/utils/helper';
 
 export default function ComponentChannel({
   dataChannel,
 }: {
   dataChannel: iChannelItem;
 }) {
-  const date = new Date(dataChannel.snippet.publishedAt);
-  const formatDate =
-    date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-
   return (
     <>
       <IonCardContent className='flex flex-row gap-x-10 justify-center items-center'>
@@ -34,7 +31,7 @@ export default function ComponentChannel({
           </div>
           <div className='flex gap-2 items-center'>
             <IonIcon icon={calendar} />
-            <div>{formatDate}</div>
+            <div>{formatDate(dataChannel.snippet.publishedAt)}</div>
           </div>
         </div>
       </IonCardContent>

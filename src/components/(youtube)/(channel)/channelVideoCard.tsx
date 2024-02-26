@@ -6,6 +6,7 @@ import { iChannelVideoItem } from '@/shared/interface/channelVideo';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
 import { caretDown, caretUp } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
+import { formatDate } from '@/utils/helper';
 
 export default function ComponentChannelVideoCard({
   video,
@@ -45,7 +46,7 @@ export default function ComponentChannelVideoCard({
     <>
       <IonCard>
         <IonCardHeader>
-          <IonLabel className='ml-2'>{video.snippet.publishedAt}</IonLabel>
+          <IonLabel className='ml-2'>{formatDate(video.snippet.publishedAt)}</IonLabel>
           <IonCardTitle color={'primary'} className='text-xl'>
             <DecodedText text={video.snippet.title} className='' />
           </IonCardTitle>
