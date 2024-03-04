@@ -9,6 +9,7 @@ import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, Ion
 import { bookmark, caretDown, caretUp, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle, shareSocial } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
 import { formatDate, formatNumber } from '@/utils/helper';
+import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 
 export default function ComponentTrendVideoCard({
@@ -64,6 +65,10 @@ export default function ComponentTrendVideoCard({
   };
 
   const onClickShare = async (event: React.SyntheticEvent) => {
+    if ('web' === Capacitor.getPlatform()) {
+      return;
+    }
+
     if (!event || !event.currentTarget) {
       return;
     }
@@ -135,16 +140,14 @@ export default function ComponentTrendVideoCard({
         </IonCardContent>
 
         <div className='flex flex-row justify-between'>
-          <div className='flex'>
-            <IonButton
-              onClick={onClickShare}
-              data-videoid={video.id}
-              slot='icon-only'
-              fill='clear'
-            >
-              <IonIcon size='default' icon={shareSocial} />
-            </IonButton>
-          </div>
+          <IonButton
+            onClick={onClickShare}
+            data-videoid={video.id}
+            slot='icon-only'
+            fill='clear'
+          >
+            <IonIcon size='default' icon={shareSocial} />
+          </IonButton>
 
           <div className='flex flex-row gap-4'>
             {video.statistics && (

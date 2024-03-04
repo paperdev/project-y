@@ -25,7 +25,6 @@ export default function ComponentSearchVideoCard({
       <IonCard>
         <IonCardHeader>
           <IonCardSubtitle className='flex items-center'>
-            <div className=''>Channel : </div>
             <ComponentChannelButton
               channelId={video.snippet.channelId}
               channelTitle={video.snippet.channelTitle}
@@ -40,10 +39,6 @@ export default function ComponentSearchVideoCard({
 
         <IonCardContent>
           <ComponentPlayer videoId={video.id.videoId} />
-
-          <div className='whitespace-pre-wrap text-black dark:text-white mt-2'>
-            {video.snippet.description}
-          </div>
         </IonCardContent>
       </IonCard>
     </>
