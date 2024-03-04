@@ -8,6 +8,9 @@ dependencies:
   '@capacitor-community/http':
     specifier: ^1.4.1
     version: 1.4.1
+  '@capacitor/app-launcher':
+    specifier: ^5.0.7
+    version: 5.0.7(@capacitor/core@5.6.0)
   '@capacitor/browser':
     specifier: ^5.1.0
     version: 5.1.0(@capacitor/core@5.6.0)
@@ -170,6 +173,14 @@ packages:
       '@capacitor/core': ^3.9.0
     dependencies:
       '@capacitor/core': 3.9.0
+    dev: false
+
+  /@capacitor/app-launcher@5.0.7(@capacitor/core@5.6.0):
+    resolution: {integrity: sha512-FJacB/mK/iwWUKNf1PJz1d7sGyVNRLvEYyYSwbmn9F9+6onj/T2lCL7TU40qhsVwFt8oDmdvygjOnoIoqU9Bpg==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
+    dependencies:
+      '@capacitor/core': 5.6.0
     dev: false
 
   /@capacitor/assets@3.0.4(@types/node@20.10.0)(typescript@5.3.2):
