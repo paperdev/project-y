@@ -86,7 +86,6 @@ export default function ComponentTrendVideoCard({
       <IonCard>
         <IonCardHeader>
           <IonCardSubtitle className='flex items-center'>
-            <div className=''>Channel : </div>
             <ComponentChannelButton
               channelId={video.snippet.channelId}
               channelTitle={video.snippet.channelTitle}

@@ -1,9 +1,9 @@
 'use client';
 
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonChip, IonContent, IonHeader, IonIcon, IonLabel, IonModal, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ChannelPage from '@/app/(pages)/channel/page';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { expand } from 'ionicons/icons';
+import { ellipsisHorizontalCircle } from 'ionicons/icons';
 import { QueryContext, SetQueryContext } from '@/app/providers';
 
 export default function ComponentChannelButton({
@@ -44,14 +44,14 @@ export default function ComponentChannelButton({
   
   return (
     <>
-      <IonButton
+      <IonChip 
+        color={'primary'}
         id={`open-channel-${channelId}-${etag}`}
-        fill='clear'
         onClick={onClickChannel}
       >
-        {channelTitle}
-        <IonIcon slot="end" icon={expand}></IonIcon>
-      </IonButton>
+        <IonLabel>{channelTitle}</IonLabel>
+        <IonIcon icon={ellipsisHorizontalCircle} />
+      </IonChip>
 
       <IonModal
         showBackdrop={true}
