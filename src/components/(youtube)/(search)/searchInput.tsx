@@ -3,6 +3,7 @@
 import { IonSearchbar, SearchbarInputEventDetail } from '@ionic/react';
 import React, { useContext, useRef, useState } from 'react';
 import { QueryContext, SetQueryContext } from '@/app/providers';
+import { Capacitor } from '@capacitor/core';
 import { Keyboard } from '@capacitor/keyboard';
 
 export default function ComponentSearchInput() {
@@ -32,7 +33,9 @@ export default function ComponentSearchInput() {
 
       setInputValue(inputRef.current.value);
 
-      await Keyboard.hide();
+      if ('web' !== Capacitor.getPlatform()) {
+        await Keyboard.hide();
+      }
     }
   }
 
