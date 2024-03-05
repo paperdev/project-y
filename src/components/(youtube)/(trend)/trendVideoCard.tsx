@@ -106,26 +106,32 @@ export default function ComponentTrendVideoCard({
         </IonCardHeader>
 
         <IonCardContent>
-          <div className='flex justify-between'>
-            <ComponentTag
-              className='flex flex-wrap gap-1'
-              tags={video.snippet.tags}
-            />
-
-            <IonButton
-              onClick={onClickTagExpand}
-              data-videoid={video.id}
-              slot='icon-only'
-              size='small'
-              fill='clear'
-            >
-              {tagExpanded ? (
-                <IonIcon icon={chevronCollapse} />
-              ) : (
-                <IonIcon icon={chevronExpand} />
-              )}
-            </IonButton>
-          </div>
+          {
+            (!video.snippet.tags) 
+              ? 
+                <IonLabel>No tags!</IonLabel>
+              : 
+              <div className='flex justify-between'>
+                <ComponentTag
+                  className='flex flex-wrap gap-1'
+                  tags={video.snippet.tags}
+                />
+    
+                <IonButton
+                  onClick={onClickTagExpand}
+                  data-videoid={video.id}
+                  slot='icon-only'
+                  size='small'
+                  fill='clear'
+                >
+                  {tagExpanded ? (
+                    <IonIcon icon={chevronCollapse} />
+                  ) : (
+                    <IonIcon icon={chevronExpand} />
+                  )}
+                </IonButton>
+              </div>
+          }
 
           <div className='hiddenTagClass hidden pt-1'>
             <ComponentHiddenTag
