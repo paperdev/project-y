@@ -36,7 +36,7 @@ export default function ComponentRelatedNews({
               >
                 <div className='flex justify-between m-1'>
                   <ComponentImage
-                    className='flex'
+                    className='flex w-full h-full'
                     dataImage={article.image}
                     isShownLink={false}
                     isShownSource={false}

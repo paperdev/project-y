@@ -3,6 +3,8 @@
 import { IonSearchbar, SearchbarInputEventDetail } from '@ionic/react';
 import React, { useContext, useRef, useState } from 'react';
 import { QueryContext, SetQueryContext } from '@/app/providers';
+import { Capacitor } from '@capacitor/core';
+import { Keyboard } from '@capacitor/keyboard';
 
 export default function ComponentSearchInput() {
   const inputRef = useRef<HTMLIonSearchbarElement>(null);
@@ -16,7 +18,7 @@ export default function ComponentSearchInput() {
   const onIonChange = (event: CustomEvent<SearchbarInputEventDetail>) => {
   };
 
-  const onKeyDown = (event: React.KeyboardEvent) => {
+  const onKeyDown = async (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.code === 'Enter') {
       if (!inputRef?.current?.value) {
         return;
@@ -30,6 +32,10 @@ export default function ComponentSearchInput() {
       });
 
       setInputValue(inputRef.current.value);
+
+      if ('web' !== Capacitor.getPlatform()) {
+        await Keyboard.hide();
+      }
     }
   }
 
@@ -40,6 +46,7 @@ export default function ComponentSearchInput() {
         placeholder='Search anything'
         animated={true}
         inputmode={'search'}
+        type={'search'}
         showCancelButton="focus"
         onIonInput={onIonInput}
         onIonChange={onIonChange}

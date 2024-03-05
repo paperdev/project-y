@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { iProfile } from '@/shared/interface/profile';
-import { Browser } from '@capacitor/browser';
+import { AppLauncher } from '@capacitor/app-launcher';
 import { IonButton, IonIcon } from '@ionic/react';
 import { logoGithub, logoLinkedin, mail } from 'ionicons/icons';
 
@@ -13,6 +13,15 @@ export default function ComponentProfile({
   className: string;
   dataProfile: iProfile;
 }) {
+
+  const clickToOpen = async (url: string) => {
+    const { value } = await AppLauncher.canOpenUrl({url: url});
+
+    if (value) {
+      AppLauncher.openUrl({url: url});
+    }
+  }
+
   return (
     <>
       <div
@@ -34,11 +43,7 @@ export default function ComponentProfile({
               <IonButton
                 fill='clear'
                 className='text-purple-500'
-                onClick={() => {
-                  Browser.open({
-                    url: dataProfile.github
-                  })
-                }}
+                onClick={() => { clickToOpen(dataProfile.github); }}
               >
                 <IonIcon size='large' icon={logoGithub} />
               </IonButton>
@@ -46,11 +51,7 @@ export default function ComponentProfile({
               <IonButton
                 fill='clear'
                 className='text-purple-500'
-                onClick={() => {
-                  Browser.open({
-                    url: dataProfile.linkedin
-                  })
-                }}
+                onClick={() => { clickToOpen(dataProfile.linkedin); }}
               >
                 <IonIcon size='large' icon={logoLinkedin} />
               </IonButton>
@@ -58,11 +59,7 @@ export default function ComponentProfile({
               <IonButton
                 fill='clear'
                 className='text-purple-500'
-                onClick={() => {
-                  Browser.open({
-                    url: `mailto:${dataProfile.email}`
-                  })
-                }}
+                onClick={() => { clickToOpen(`mailto:${dataProfile.email}`); }}
               >
                 <IonIcon size='large' icon={mail} />
               </IonButton>

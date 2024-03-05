@@ -4,7 +4,7 @@ import React from 'react';
 import { iTitle } from '@/shared/interface/trendItem';
 import { Browser } from '@capacitor/browser';
 import { openOutline } from 'ionicons/icons';
-import { IonIcon, IonItem } from '@ionic/react';
+import { IonChip, IonIcon, IonLabel } from '@ionic/react';
 
 export default function ComponentRelatedSearch({
   className,
@@ -22,20 +22,19 @@ export default function ComponentRelatedSearch({
       <div className={`${className} flex overflow-x-scroll ml-2`}>
         {relatedSearches.map((title: iTitle, index: number) => {
           return (
-            <IonItem
-              button={true}
-              detail={false}
+            <IonChip
               key={index}
+              className='flex-none'
+              color={'primary'}
               onClick={() => {
                 Browser.open({
                   url: process.env.GOOGLE_TREND_URL + title.exploreLink
                 })
               }}
-              className='flex-none rounded-lg shadow-md m-1 pl-1'
             >
-              {title.query}
-              <IonIcon color='primary' slot='end' icon={openOutline} className='ml-1' />
-            </IonItem>
+              <IonLabel>{title.query}</IonLabel>
+              <IonIcon icon={openOutline} />
+            </IonChip>
           );
         })}
       </div>

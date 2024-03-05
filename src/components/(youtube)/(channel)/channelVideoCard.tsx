@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import ComponentPlayer from '@/components/(youtube)/player';
 import { iChannelVideoItem } from '@/shared/interface/channelVideo';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
-import { caretDown, caretUp } from 'ionicons/icons';
+import { caretDown, caretUp, shareSocial } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
+import { formatDate } from '@/utils/helper';
+import { Capacitor } from '@capacitor/core';
+import { Share } from '@capacitor/share';
 
 export default function ComponentChannelVideoCard({
   video,
@@ -41,39 +44,71 @@ export default function ComponentChannelVideoCard({
     setDescExpanded(!descExpanded);
   };
 
+  const onClickShare = async (event: React.SyntheticEvent) => {
+    if ('web' === Capacitor.getPlatform()) {
+      return;
+    }
+
+    if (!event || !event.currentTarget) {
+      return;
+    }
+
+    if (!event.currentTarget.hasAttribute('data-videoid')) {
+      return;
+    }
+    const videoId = event.currentTarget.getAttribute('data-videoid');
+    if (null == videoId) {
+      return;
+    }
+
+    await Share.share({
+      url: process.env.YOUTUBE_URL_WATCH + videoId,
+    });
+  };
+
   return (
     <>
       <IonCard>
         <IonCardHeader>
-          <IonLabel className='ml-2'>{video.snippet.publishedAt}</IonLabel>
+          <IonLabel className='ml-2'>{formatDate(video.snippet.publishedAt)}</IonLabel>
           <IonCardTitle color={'primary'} className='text-xl'>
-            <DecodedText text={video.snippet.title} className='' />
+            <DecodedText text={video.snippet.title} />
           </IonCardTitle>
         </IonCardHeader>
 
         <IonCardContent>
           <ComponentPlayer videoId={video.snippet.resourceId.videoId} />
-
-          <div className='flex justify-end'>
-            <IonButton
-              onClick={onClickDescExpand}
-              data-videoid={video.id}
-              slot='icon-only'
-              size='small'
-              fill='clear'
-            >
-              {descExpanded ? (
-                <IonIcon icon={caretUp} size='large' />
-              ) : (
-                <IonIcon icon={caretDown} size='large' />
-              )}
-            </IonButton>
-          </div>
-
-          <div className='hiddenDescClass hidden whitespace-pre-wrap text-black dark:text-white'>
-            {video.snippet.description}
-          </div>
         </IonCardContent>
+
+        <div className='flex flex-row justify-between'>
+          <IonButton
+            onClick={onClickShare}
+            data-videoid={video.id}
+            slot='icon-only'
+            fill='clear'
+          >
+            <IonIcon size='default' icon={shareSocial} />
+          </IonButton>
+
+          <IonButton
+            onClick={onClickDescExpand}
+            data-videoid={video.id}
+            slot='icon-only'
+            size='small'
+            fill='clear'
+          >
+            {descExpanded ? (
+              <IonIcon icon={caretUp} size='large' />
+            ) : (
+              <IonIcon icon={caretDown} size='large' />
+            )}
+          </IonButton>
+        </div>
+
+        <div className='hiddenDescClass hidden whitespace-pre-wrap'>
+          <IonCardContent>{video.snippet.description}</IonCardContent>
+        </div>
+        
       </IonCard>
     </>
   );

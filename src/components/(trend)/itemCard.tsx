@@ -11,6 +11,7 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonChip,
   IonIcon,
   IonItem,
   IonLabel,
@@ -48,7 +49,7 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
           </IonCardContent>
 
           <IonCardHeader className='gap-1'>
-            <IonLabel
+            <IonChip 
               color={'primary'}
               onClick={() => {
                 Browser.open({
@@ -56,9 +57,10 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
                 });
               }}
             >
-              Statistics
-              <IonIcon slot='end' icon={openOutline} className='ml-1' />
-            </IonLabel>
+              <IonLabel>Statistics</IonLabel>
+              <IonIcon icon={openOutline} />
+            </IonChip>
+
             <IonLabel className='text-xs ml-1'>
               Searches : {item.formattedTraffic}
             </IonLabel>
