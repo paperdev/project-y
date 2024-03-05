@@ -23,6 +23,7 @@ export default function ComponentRelatedSearch({
         {relatedSearches.map((title: iTitle, index: number) => {
           return (
             <IonChip
+              key={index}
               className='flex-none'
               color={'primary'}
               onClick={() => {
