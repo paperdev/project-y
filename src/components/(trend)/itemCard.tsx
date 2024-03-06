@@ -48,6 +48,7 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
             </IonLabel>
             
             <IonChip
+              className='-ml-1'
               color={'primary'}
               onClick={() => {
                 Browser.open({
