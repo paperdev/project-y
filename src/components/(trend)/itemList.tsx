@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { iTrendItem } from '@/shared/interface/trendItem';
 import ComponentItemCard from './itemCard';
-import { IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonList } from '@ionic/react';
+import { IonInfiniteScroll, IonInfiniteScrollContent, IonList } from '@ionic/react';
 
 export default function ComponentItemList({
   dataItem: dataItem,

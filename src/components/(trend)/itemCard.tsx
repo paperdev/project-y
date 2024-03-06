@@ -9,8 +9,6 @@ import { Browser } from '@capacitor/browser';
 import {
   IonCard,
   IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
   IonChip,
   IonIcon,
   IonItem,
@@ -39,17 +37,18 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
     <>
       <IonCard>
         <IonItem button={true} onClick={onClickExpand} detail={false}>
-          <IonCardContent slot='end'>
-            <ComponentImage
-              className=''
-              dataImage={item.image}
-              isShownLink={true}
-              isShownSource={true}
-            />
-          </IonCardContent>
 
-          <IonCardHeader className='gap-1'>
-            <IonChip 
+          <IonCardContent slot='start'>
+            <IonLabel color={'primary'}>
+              <DecodedText text={item.title.query} className='text-xl font-bold' />
+            </IonLabel>
+
+            <IonLabel className='text-xs'>
+              Searches: {item.formattedTraffic}
+            </IonLabel>
+            
+            <IonChip
+              className='-ml-1'
               color={'primary'}
               onClick={() => {
                 Browser.open({
@@ -60,14 +59,17 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
               <IonLabel>Statistics</IonLabel>
               <IonIcon icon={openOutline} />
             </IonChip>
+          </IonCardContent>
 
-            <IonLabel className='text-xs ml-1'>
-              Searches : {item.formattedTraffic}
-            </IonLabel>
-            <IonCardTitle color={'primary'}>
-              <DecodedText text={item.title.query} className='' />
-            </IonCardTitle>
-          </IonCardHeader>
+          <IonCardContent slot='end'>
+            <ComponentImage
+              className=''
+              dataImage={item.image}
+              isShownLink={true}
+              isShownSource={true}
+            />
+          </IonCardContent>
+
         </IonItem>
 
         <div ref={hiddenRef} className='hidden'>
