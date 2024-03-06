@@ -24,7 +24,8 @@ export default function Header() {
         
         <IonTitle color='primary' >
           <IonText>Trend Insight</IonText>
-          <p>
+          <p className='text-center flex justify-center items-center gap-1'>
+            {/* <IonIcon src={`https://flagcdn.com/${regionCode.toLocaleLowerCase()}.svg`} /> */}
             <IonText color={'secondary'} className='text-xs'>{displayRegionName.of(regionCode)}</IonText>
           </p>
         </IonTitle>
