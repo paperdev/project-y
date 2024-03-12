@@ -18,9 +18,7 @@ export default function DeveloperPage() {
       </IonHeader>
 
       <IonContent className='ion-padding-top ion-padding-bottom'>
-        <div className='h-screen flex flex-col justify-center inset-x-0 inset-y-0 fixed' >
-          <ComponentProfile className='mt-2' dataProfile={profile} />
-        </div>
+        <ComponentProfile className='mt-10' dataProfile={profile} />
       </IonContent>
     </>
   );
