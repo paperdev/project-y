@@ -3,16 +3,30 @@
 import ComponentProfile from '@/components/(about)/profile';
 import React from 'react';
 import { profile } from '@/shared/data/profile';
+import TemplatePage from '@/components/template/_page';
+import { IonItem, IonList, IonNav, IonNavLink, IonPage } from '@ionic/react';
+import DeveloperPage from './developer';
+
+function RootPage() {
+  return (
+    <>
+      <TemplatePage>
+        <IonList>
+
+          <IonNavLink routerDirection="forward" component={() => <DeveloperPage />}>
+            <IonItem detail={true} >Developer</IonItem>
+          </IonNavLink>
+
+        </IonList>
+      </TemplatePage>
+    </>
+  )
+}
 
 export default function Page() {
   return (
     <>
-      <div className='h-screen flex flex-col justify-center inset-x-0 inset-y-0 fixed' >
-        <div className='flex justify-center mx-auto font-extrabold text-purple-500 '>
-          Developer
-        </div>
-        <ComponentProfile className='mt-2' dataProfile={profile} />
-      </div>
+      <IonNav animated={true} swipeGesture={true} root={() => <RootPage />} />
     </>
-  );
+  )
 }

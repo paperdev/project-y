@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import ComponentSearchList from '@/components/(youtube)/(search)/searchList';
 import { iSearchVideo } from '@/shared/interface/searchVideo';
 import { QueryContext } from '@/app/providers';
+import TemplatePage from '@/components/template/_page';
 
 export default function Page() {
   const [searchVideo, setSearchVideo] = useState<iSearchVideo>();
@@ -44,14 +45,16 @@ export default function Page() {
 
   return (
     <>
-      {searchVideo && (
-        <ComponentSearchList
-          videoList={searchVideo.items}
-          nextPageToken={searchVideo.nextPageToken}
-          totalResults={searchVideo.pageInfo.totalResults}
-          searchKey={searchKey}
-        />
-      )}
+      <TemplatePage>
+        {searchVideo && (
+          <ComponentSearchList
+            videoList={searchVideo.items}
+            nextPageToken={searchVideo.nextPageToken}
+            totalResults={searchVideo.pageInfo.totalResults}
+            searchKey={searchKey}
+          />
+        )}
+      </TemplatePage>
     </>
   );
 }
