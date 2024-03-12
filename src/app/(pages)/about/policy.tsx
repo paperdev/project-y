@@ -16,7 +16,7 @@ export default function PolicyPage() {
       </IonHeader>
 
       <IonContent>
-        <IonText>
+        <IonText className='p-10'>
           {/* <p className='text-xl font-bold'>TrendInsight Privacy Policy</p>
           <hr className='my-4' /> */}
         
