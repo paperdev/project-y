@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default function LicensesPage() {
   return (
     <>
-      <IonHeader>
+      <IonHeader className='ion-padding-top ion-padding-bottom'>
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton></IonBackButton>
@@ -16,7 +16,7 @@ export default function LicensesPage() {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent>
+      <IonContent className='ion-padding-top ion-padding-bottom'>
         <IonText className='p-10'>
           <li>
             Audio streaming data developed with YouTube.com are licensed by 

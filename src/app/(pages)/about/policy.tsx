@@ -6,7 +6,7 @@ import { IonBackButton, IonButtons, IonContent, IonHeader, IonText, IonTitle, Io
 export default function PolicyPage() {
   return (
     <>
-      <IonHeader>
+      <IonHeader className='ion-padding-top ion-padding-bottom'>
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton></IonBackButton>
@@ -15,7 +15,7 @@ export default function PolicyPage() {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent>
+      <IonContent className='ion-padding-top ion-padding-bottom'>
         <IonText className='p-10'>
           {/* <p className='text-xl font-bold'>TrendInsight Privacy Policy</p>
           <hr className='my-4' /> */}

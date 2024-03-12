@@ -8,7 +8,7 @@ import { IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar 
 export default function DeveloperPage() {
   return (
     <>
-      <IonHeader>
+      <IonHeader className='ion-padding-top ion-padding-bottom'>
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton></IonBackButton>
@@ -17,7 +17,7 @@ export default function DeveloperPage() {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent>
+      <IonContent className='ion-padding-top ion-padding-bottom'>
         <div className='h-screen flex flex-col justify-center inset-x-0 inset-y-0 fixed' >
           <ComponentProfile className='mt-2' dataProfile={profile} />
         </div>
