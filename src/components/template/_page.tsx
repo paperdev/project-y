@@ -4,13 +4,19 @@ import React, { useEffect, useRef } from 'react';
 import Header from './header';
 import Footer from './footer';
 import { Capacitor } from '@capacitor/core';
-import { IonApp, IonContent, IonPage } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 import { RegionSelectorMenu } from '@/components/RegionSelectorMenu';
 
-export default function TemplateHome({
+export default function TemplatePage({
   children,
+  showHeader = true,
+  showContent = true,
+  showFooter = true,
 }: {
   children: React.ReactNode;
+  showHeader?: boolean;
+  showContent?: boolean;
+  showFooter?: boolean;
 }) {
   const navTopRef = useRef<HTMLIonContentElement>(null);
 
@@ -33,17 +39,23 @@ export default function TemplateHome({
   };
 
   return (
-    <IonApp>
+    <>
       <IonPage id='rootPage' className='safe-area-padding'>
-        <Header />
+        {
+          showHeader && <Header />
+        }
 
-        <IonContent ref={navTopRef}>{children}</IonContent>
+        {
+          showContent ? <IonContent ref={navTopRef}>{children}</IonContent> : <>{children}</>
+        }
 
-        <Footer />
+        {
+          showFooter && <Footer />
+        }
+        
       </IonPage>
 
       <RegionSelectorMenu rootPageId='rootPage'/>
-
-    </IonApp>
+    </>
   );
 }
