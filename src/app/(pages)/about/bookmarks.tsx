@@ -28,7 +28,7 @@ const tempData: iBookmark[] = [
 
 export default function BookmarksPage() {
   const [bookmarkList, setBookmarkList] = useState(tempData);
-  const listRef = useRef(null);
+  const listRef = useRef<HTMLIonListElement>(null);
 
   const onClickDelete = (index: number) => {
     const temp = Array.from(bookmarkList);

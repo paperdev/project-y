@@ -6,7 +6,7 @@ import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 import ComponentChannelButton from '@/components/(youtube)/channelButton';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
-import { bookmark, caretDown, caretUp, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle, shareSocial } from 'ionicons/icons';
+import { bookmark, bookmarkOutline, caretDownCircleOutline, caretUpCircleOutline, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle, shareOutline } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
 import { formatDate, formatNumber } from '@/utils/helper';
 import { Capacitor } from '@capacitor/core';
@@ -19,6 +19,7 @@ export default function ComponentTrendVideoCard({
 }) {
   const [tagExpanded, setTagExpanded] = useState<boolean>(false);
   const [descExpanded, setDescExpanded] = useState<boolean>(false);
+  const [buttonExpanded, setButtonExpanded] = useState<boolean>(false);
 
   const onClickDescExpand = (event: React.SyntheticEvent) => {
     if (!event || !event.currentTarget) {
@@ -86,6 +87,20 @@ export default function ComponentTrendVideoCard({
     });
   };
 
+  const onClickButtonExpand = (event: React.SyntheticEvent) => {
+    if (!event || !event.currentTarget) {
+      return;
+    }
+
+    const currentDescElement =
+      event.currentTarget.parentElement?.getElementsByClassName(
+        'hiddenButtonClass'
+      )[0];
+    currentDescElement?.classList.toggle('hidden');
+
+    setButtonExpanded(!buttonExpanded);
+  }
+
   return (
     <>
       <IonCard>
@@ -146,14 +161,53 @@ export default function ComponentTrendVideoCard({
         </IonCardContent>
 
         <div className='flex flex-row justify-between'>
-          <IonButton
-            onClick={onClickShare}
-            data-videoid={video.id}
-            slot='icon-only'
-            fill='clear'
-          >
-            <IonIcon size='default' icon={shareSocial} />
-          </IonButton>
+          <div className='relative'>
+            <IonButton
+              onClick={onClickButtonExpand}
+              data-videoid={video.id}
+              slot='icon-only'
+              fill='clear'
+            >
+              {buttonExpanded ? (
+                <IonIcon icon={caretDownCircleOutline} size='large' />
+              ) : (
+                <IonIcon icon={caretUpCircleOutline} size='large' />
+              )}
+            </IonButton>
+
+            <div className='hiddenButtonClass hidden absolute -top-24 -space-y-4'>
+              <IonButton
+                onClick={onClickShare}
+                data-videoid={video.id}
+                slot='icon-only'
+                fill='clear'
+              >
+                <IonIcon size='large' icon={bookmarkOutline} className='rounded-full bg-white dark:bg-gray-800'/>
+              </IonButton>
+              <IonButton
+                onClick={onClickShare}
+                data-videoid={video.id}
+                slot='icon-only'
+                fill='clear'
+              >
+                <IonIcon size='large' icon={shareOutline} className='rounded-full bg-white dark:bg-gray-800'/>
+              </IonButton>
+            </div>
+
+            {/* <div className='hiddenButtonClass hidden absolute -top-24 left-2 space-y-3'>
+              <IonFabButton
+                size='small'
+                onClick={onClickShare}
+                data-videoid={video.id}
+              >
+                <IonIcon icon={bookmarkOutline} className='text-white dark:text-gray-800'/>
+              </IonFabButton>
+              <IonFabButton size='small'>
+                <IonIcon icon={shareSocialOutline} className='text-white dark:text-gray-800'/>
+              </IonFabButton>
+            </div> */}
+          </div>
+          
 
           <div className='flex flex-row gap-4'>
             {video.statistics && (
@@ -188,9 +242,9 @@ export default function ComponentTrendVideoCard({
             fill='clear'
           >
             {descExpanded ? (
-              <IonIcon icon={caretUp} size='default' />
+              <IonIcon icon={caretUpCircleOutline} size='large' />
             ) : (
-              <IonIcon icon={caretDown} size='default' />
+              <IonIcon icon={caretDownCircleOutline} size='large' />
             )}
           </IonButton>
         </div>
