@@ -7,8 +7,13 @@ import DeveloperPage from './developer';
 import LicensesPage from './licenses';
 import TermsPage from './terms';
 import PolicyPage from './policy';
+import BookmarksPage from './bookmarks';
 
 const aboutList = [
+  {
+    name: 'Bookmarks',
+    component: BookmarksPage
+  },
   {
     name: 'Terms of Service',
     component: TermsPage
