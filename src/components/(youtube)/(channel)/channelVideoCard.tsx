@@ -3,12 +3,13 @@
 import React, { useState } from 'react';
 import ComponentPlayer from '@/components/(youtube)/player';
 import { iChannelVideoItem } from '@/shared/interface/channelVideo';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
-import { caretDown, caretUp, shareSocial } from 'ionicons/icons';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonIcon, IonLabel, useIonToast } from '@ionic/react';
+import { bookmark, bookmarkOutline, caretBackCircleOutline, caretDownCircleOutline, caretForwardCircleOutline, caretUpCircleOutline, shareOutline } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
 import { formatDate } from '@/utils/helper';
 import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
+import { Preferences } from '@capacitor/preferences';
 
 export default function ComponentChannelVideoCard({
   video,
@@ -16,6 +17,27 @@ export default function ComponentChannelVideoCard({
   video: iChannelVideoItem;
 }) {
   const [descExpanded, setDescExpanded] = useState<boolean>(false);
+  const [buttonExpanded, setButtonExpanded] = useState<boolean>(false);
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+  const [isBookmarkable, setIsBookmarkable] = useState<boolean>(true);
+
+  const [present] = useIonToast();
+  const presentToast = (position: 'top' | 'middle' | 'bottom', message: string, color: string, cssClass: string) => {
+    setIsBookmarkable(false);
+
+    present({
+      color: color,
+      cssClass: cssClass,
+      message: message,
+      duration: 2000,
+      position: position,
+      positionAnchor: 'footer'
+    });
+
+    setTimeout(() => {
+      setIsBookmarkable(true);
+    }, 2500);
+  };
 
   const onClickDescExpand = (event: React.SyntheticEvent) => {
     if (!event || !event.currentTarget) {
@@ -44,6 +66,34 @@ export default function ComponentChannelVideoCard({
     setDescExpanded(!descExpanded);
   };
 
+  const onClickBookmark = async (event: React.SyntheticEvent) => {
+    if (!isBookmarkable) {
+      return;
+    }
+
+    if (!isBookmarked) {
+      presentToast('bottom', 'Bookmark successfully created.', 'success', 'text-blue-500 font-bold');
+      await Preferences.set({
+        key: video.id,
+        value: JSON.stringify(
+          {
+            id: video.id,
+            group: video.snippet.channelTitle,
+            name: video.snippet.title,
+            url: process.env.YOUTUBE_URL_WATCH + video.id,
+            timestamp: Date.now().toString()
+          }
+        ),
+      });
+    }
+    else {
+      presentToast('bottom', 'Bookmark successfully deleted.', 'warning', 'text-red-500 font-bold');
+      await Preferences.remove({key: video.id});
+    }
+    
+    setIsBookmarked(!isBookmarked);
+  };
+
   const onClickShare = async (event: React.SyntheticEvent) => {
     if ('web' === Capacitor.getPlatform()) {
       return;
@@ -66,6 +116,22 @@ export default function ComponentChannelVideoCard({
     });
   };
 
+  const onClickButtonExpand = async (event: React.SyntheticEvent) => {
+    if (!event || !event.currentTarget) {
+      return;
+    }
+
+    const currentDescElement =
+      event.currentTarget.parentElement?.getElementsByClassName(
+        'hiddenButtonClass'
+      )[0];
+    currentDescElement?.classList.toggle('invisible');
+
+    const { value } = await Preferences.get({ key: video.id });
+    setIsBookmarked(value ? true : false);
+    setButtonExpanded(!buttonExpanded);
+  }
+
   return (
     <>
       <IonCard>
@@ -81,14 +147,51 @@ export default function ComponentChannelVideoCard({
         </IonCardContent>
 
         <div className='flex flex-row justify-between'>
-          <IonButton
+          {/* <IonButton
             onClick={onClickShare}
             data-videoid={video.id}
             slot='icon-only'
             fill='clear'
           >
             <IonIcon size='default' icon={shareSocial} />
-          </IonButton>
+          </IonButton> */}
+
+          <div className='relative'>
+            <IonButton
+              onClick={onClickButtonExpand}
+              data-videoid={video.id}
+              slot='icon-only'
+              fill='clear'
+            >
+              {buttonExpanded ? (
+                <IonIcon icon={caretBackCircleOutline} size='large' />
+              ) : (
+                <IonIcon icon={caretForwardCircleOutline} size='large' />
+              )}
+            </IonButton>
+
+            <div className='hiddenButtonClass invisible flex flex-row absolute top-0 left-16 z-30 bg-white dark:bg-[#1C1C1D]'>
+              <IonButton
+                onClick={onClickBookmark}
+                slot='icon-only'
+                fill='clear'
+              >
+                {
+                  isBookmarked
+                    ? <IonIcon size='large' icon={bookmark}/>
+                    : <IonIcon size='large' icon={bookmarkOutline}/>
+                }
+              </IonButton>
+              <IonButton
+                onClick={onClickShare}
+                data-videoid={video.id}
+                slot='icon-only'
+                fill='clear'
+              >
+                <IonIcon size='large' icon={shareOutline} />
+              </IonButton>
+            </div>
+          </div>
 
           <IonButton
             onClick={onClickDescExpand}
@@ -98,9 +201,9 @@ export default function ComponentChannelVideoCard({
             fill='clear'
           >
             {descExpanded ? (
-              <IonIcon icon={caretUp} size='large' />
+              <IonIcon icon={caretUpCircleOutline} size='large' />
             ) : (
-              <IonIcon icon={caretDown} size='large' />
+              <IonIcon icon={caretDownCircleOutline} size='large' />
             )}
           </IonButton>
         </div>
