@@ -79,7 +79,7 @@ export default function Footer() {
 
   return (
     <>
-      <IonFooter translucent={false}>
+      <IonFooter translucent={false} id='footer'>
         <IonToolbar>
           <IonGrid>
             <IonRow>

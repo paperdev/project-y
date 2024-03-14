@@ -5,12 +5,13 @@ import ComponentPlayer from '@/components/(youtube)/player';
 import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 import ComponentChannelButton from '@/components/(youtube)/channelButton';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonLabel, IonToast, useIonToast } from '@ionic/react';
 import { bookmark, bookmarkOutline, caretDownCircleOutline, caretUpCircleOutline, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle, shareOutline } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
 import { formatDate, formatNumber } from '@/utils/helper';
 import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
+import { Preferences } from '@capacitor/preferences';
 
 export default function ComponentTrendVideoCard({
   video,
@@ -20,6 +21,16 @@ export default function ComponentTrendVideoCard({
   const [tagExpanded, setTagExpanded] = useState<boolean>(false);
   const [descExpanded, setDescExpanded] = useState<boolean>(false);
   const [buttonExpanded, setButtonExpanded] = useState<boolean>(false);
+
+  const [present] = useIonToast();
+  const presentToast = (position: 'top' | 'middle' | 'bottom') => {
+    present({
+      message: 'Bookmark successfully created.',
+      duration: 3000,
+      position: position,
+      positionAnchor: 'footer'
+    });
+  };
 
   const onClickDescExpand = (event: React.SyntheticEvent) => {
     if (!event || !event.currentTarget) {
@@ -63,6 +74,23 @@ export default function ComponentTrendVideoCard({
     }
 
     setTagExpanded(!tagExpanded);
+  };
+
+  const onClickBookmark = async (event: React.SyntheticEvent) => {
+    await Preferences.set({
+      key: video.id,
+      value: JSON.stringify(
+        {
+          id: video.id,
+          group: video.snippet.channelTitle,
+          name: video.snippet.title,
+          url: process.env.YOUTUBE_URL_WATCH + video.id,
+          timestamp: Date.now().toString()
+        }
+      ),
+    });
+
+    presentToast('bottom');
   };
 
   const onClickShare = async (event: React.SyntheticEvent) => {
@@ -177,8 +205,7 @@ export default function ComponentTrendVideoCard({
 
             <div className='hiddenButtonClass hidden absolute -top-24 -space-y-4'>
               <IonButton
-                onClick={onClickShare}
-                data-videoid={video.id}
+                onClick={onClickBookmark}
                 slot='icon-only'
                 fill='clear'
               >

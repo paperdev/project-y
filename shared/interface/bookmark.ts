@@ -1,7 +1,8 @@
 interface iBookmark {
+  id: string;
   group: string;
   name: string;
-  href: string;
+  url: string;
   timestamp: string;
 }
 

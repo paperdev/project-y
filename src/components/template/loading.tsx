@@ -1,12 +1,12 @@
 import React from 'react';
-import { IonSpinner } from '@ionic/react';
+import { IonContent, IonSpinner } from '@ionic/react';
 
 export default function Loading() {
   return (
     <>
-      <div className="flex justify-center items-center inset-x-0 inset-y-0">
-        <IonSpinner name="circular"></IonSpinner>
-      </div>
+      <IonContent className='ion-padding-top ion-padding-bottom text-center'>
+        <IonSpinner color={'primary'} name='circular'></IonSpinner>
+      </IonContent>
     </>
   );
 }
