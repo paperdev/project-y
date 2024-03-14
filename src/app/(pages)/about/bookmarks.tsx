@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { iBookmark } from '@/shared/interface/bookmark';
 import { trash } from 'ionicons/icons';
 import { Preferences } from '@capacitor/preferences';
@@ -73,7 +73,9 @@ export default function BookmarksPage() {
                   return (
                     <IonItemSliding key={index}>
                       <IonItem>
-                        {item.name}
+                        <IonText className='truncate overflow-hidden'>
+                          {item.name}
+                        </IonText>
                       </IonItem>
 
                       <IonItemOptions>
