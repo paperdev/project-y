@@ -6,7 +6,7 @@ import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 import ComponentChannelButton from '@/components/(youtube)/channelButton';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonLabel, IonToast, useIonToast } from '@ionic/react';
-import { bookmark, bookmarkOutline, caretDownCircleOutline, caretUpCircleOutline, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle, shareOutline } from 'ionicons/icons';
+import { bookmark, bookmarkOutline, caretBackCircleOutline, caretDownCircleOutline, caretForwardCircleOutline, caretUpCircleOutline, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle, shareOutline } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
 import { formatDate, formatNumber } from '@/utils/helper';
 import { Capacitor } from '@capacitor/core';
@@ -21,15 +21,25 @@ export default function ComponentTrendVideoCard({
   const [tagExpanded, setTagExpanded] = useState<boolean>(false);
   const [descExpanded, setDescExpanded] = useState<boolean>(false);
   const [buttonExpanded, setButtonExpanded] = useState<boolean>(false);
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+  const [isBookmarkable, setIsBookmarkable] = useState<boolean>(true);
 
   const [present] = useIonToast();
-  const presentToast = (position: 'top' | 'middle' | 'bottom') => {
+  const presentToast = (position: 'top' | 'middle' | 'bottom', message: string, color: string, cssClass: string) => {
+    setIsBookmarkable(false);
+
     present({
-      message: 'Bookmark successfully created.',
-      duration: 3000,
+      color: color,
+      cssClass: cssClass,
+      message: message,
+      duration: 2000,
       position: position,
       positionAnchor: 'footer'
     });
+
+    setTimeout(() => {
+      setIsBookmarkable(true);
+    }, 2500);
   };
 
   const onClickDescExpand = (event: React.SyntheticEvent) => {
@@ -77,20 +87,31 @@ export default function ComponentTrendVideoCard({
   };
 
   const onClickBookmark = async (event: React.SyntheticEvent) => {
-    await Preferences.set({
-      key: video.id,
-      value: JSON.stringify(
-        {
-          id: video.id,
-          group: video.snippet.channelTitle,
-          name: video.snippet.title,
-          url: process.env.YOUTUBE_URL_WATCH + video.id,
-          timestamp: Date.now().toString()
-        }
-      ),
-    });
+    if (!isBookmarkable) {
+      return;
+    }
 
-    presentToast('bottom');
+    if (!isBookmarked) {
+      presentToast('bottom', 'Bookmark successfully created.', 'success', 'text-blue-500 font-bold');
+      await Preferences.set({
+        key: video.id,
+        value: JSON.stringify(
+          {
+            id: video.id,
+            group: video.snippet.channelTitle,
+            name: video.snippet.title,
+            url: process.env.YOUTUBE_URL_WATCH + video.id,
+            timestamp: Date.now().toString()
+          }
+        ),
+      });
+    }
+    else {
+      presentToast('bottom', 'Bookmark successfully deleted.', 'warning', 'text-red-500 font-bold');
+      await Preferences.remove({key: video.id});
+    }
+    
+    setIsBookmarked(!isBookmarked);
   };
 
   const onClickShare = async (event: React.SyntheticEvent) => {
@@ -115,7 +136,7 @@ export default function ComponentTrendVideoCard({
     });
   };
 
-  const onClickButtonExpand = (event: React.SyntheticEvent) => {
+  const onClickButtonExpand = async (event: React.SyntheticEvent) => {
     if (!event || !event.currentTarget) {
       return;
     }
@@ -124,8 +145,10 @@ export default function ComponentTrendVideoCard({
       event.currentTarget.parentElement?.getElementsByClassName(
         'hiddenButtonClass'
       )[0];
-    currentDescElement?.classList.toggle('hidden');
+    currentDescElement?.classList.toggle('invisible');
 
+    const { value } = await Preferences.get({ key: video.id });
+    setIsBookmarked(value ? true : false);
     setButtonExpanded(!buttonExpanded);
   }
 
@@ -197,19 +220,23 @@ export default function ComponentTrendVideoCard({
               fill='clear'
             >
               {buttonExpanded ? (
-                <IonIcon icon={caretDownCircleOutline} size='large' />
+                <IonIcon icon={caretBackCircleOutline} size='large' />
               ) : (
-                <IonIcon icon={caretUpCircleOutline} size='large' />
+                <IonIcon icon={caretForwardCircleOutline} size='large' />
               )}
             </IonButton>
 
-            <div className='hiddenButtonClass hidden absolute -top-24 -space-y-4'>
+            <div className='hiddenButtonClass invisible flex flex-row absolute top-0 left-16 z-30 bg-white dark:bg-[#1C1C1D]'>
               <IonButton
                 onClick={onClickBookmark}
                 slot='icon-only'
                 fill='clear'
               >
-                <IonIcon size='large' icon={bookmarkOutline} className='rounded-full bg-white dark:bg-gray-800'/>
+                {
+                  isBookmarked
+                    ? <IonIcon size='large' icon={bookmark}/>
+                    : <IonIcon size='large' icon={bookmarkOutline}/>
+                }
               </IonButton>
               <IonButton
                 onClick={onClickShare}
@@ -217,7 +244,7 @@ export default function ComponentTrendVideoCard({
                 slot='icon-only'
                 fill='clear'
               >
-                <IonIcon size='large' icon={shareOutline} className='rounded-full bg-white dark:bg-gray-800'/>
+                <IonIcon size='large' icon={shareOutline} />
               </IonButton>
             </div>
 
