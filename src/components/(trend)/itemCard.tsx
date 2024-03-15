@@ -47,7 +47,7 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
             />
           </IonCardContent>
 
-          <IonCardContent slot='end'>
+          <IonCardContent>
             <IonLabel color={'primary'}>
               <DecodedText text={item.title.query} className='text-xl font-bold' />
             </IonLabel>
