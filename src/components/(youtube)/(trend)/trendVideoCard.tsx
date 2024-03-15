@@ -30,14 +30,6 @@ export default function ComponentTrendVideoCard({
       )[0];
     currentDescElement?.classList.toggle('hidden');
 
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
-
     setDescExpanded(!descExpanded);
   };
 
@@ -51,14 +43,6 @@ export default function ComponentTrendVideoCard({
         'hiddenTagClass'
       )[0];
     currentTagElement?.classList.toggle('hidden');
-
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
 
     setTagExpanded(!tagExpanded);
   };
@@ -96,7 +80,6 @@ export default function ComponentTrendVideoCard({
     
                 <IonButton
                   onClick={onClickTagExpand}
-                  data-videoid={video.id}
                   slot='icon-only'
                   size='small'
                   fill='clear'
@@ -153,7 +136,6 @@ export default function ComponentTrendVideoCard({
 
           <IonButton
             onClick={onClickDescExpand}
-            data-videoid={video.id}
             slot='icon-only'
             fill='clear'
           >

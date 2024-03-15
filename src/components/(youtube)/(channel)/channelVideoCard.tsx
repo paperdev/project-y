@@ -22,23 +22,10 @@ export default function ComponentChannelVideoCard({
     }
 
     const currentDescElement =
-      event.currentTarget.parentElement?.parentElement?.parentElement?.getElementsByClassName(
+      event.currentTarget.parentElement?.parentElement?.getElementsByClassName(
         'hiddenDescClass'
       )[0];
-    const isHidden = currentDescElement?.classList.contains('hidden');
-    if (isHidden) {
-      currentDescElement?.classList.remove('hidden');
-    } else {
-      currentDescElement?.classList.add('hidden');
-    }
-
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
+    currentDescElement?.classList.toggle('hidden');
 
     setDescExpanded(!descExpanded);
   };
@@ -62,7 +49,6 @@ export default function ComponentChannelVideoCard({
 
           <IonButton
             onClick={onClickDescExpand}
-            data-videoid={video.id}
             slot='icon-only'
             size='small'
             fill='clear'

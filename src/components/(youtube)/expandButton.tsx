@@ -66,18 +66,6 @@ export default function ComponentExpandButton({
       return;
     }
 
-    if (!event || !event.currentTarget) {
-      return;
-    }
-
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
-
     await Share.share({
       url: process.env.YOUTUBE_URL_WATCH + videoId,
     });
@@ -104,7 +92,6 @@ export default function ComponentExpandButton({
       <div className='relative'>
         <IonButton
           onClick={onClickButtonExpand}
-          data-videoid={videoId}
           slot='icon-only'
           fill='clear'
         >
@@ -129,7 +116,6 @@ export default function ComponentExpandButton({
           </IonButton>
           <IonButton
             onClick={onClickShare}
-            data-videoid={videoId}
             slot='icon-only'
             fill='clear'
           >
@@ -141,7 +127,6 @@ export default function ComponentExpandButton({
           <IonFabButton
             size='small'
             onClick={onClickShare}
-            data-videoid={video.id}
           >
             <IonIcon icon={bookmarkOutline} className='text-white dark:text-gray-800'/>
           </IonFabButton>
