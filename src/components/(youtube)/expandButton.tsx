@@ -80,7 +80,20 @@ export default function ComponentExpandButton({
       event.currentTarget.parentElement?.getElementsByClassName(
         'hiddenButtonClass'
       )[0];
-    currentDescElement?.classList.toggle('invisible');
+
+    if (buttonExpanded) {
+      currentDescElement?.classList.remove('animate__fadeInLeft');
+      currentDescElement?.classList.add('animate__fadeOutLeft');
+      setTimeout(()=>{
+        currentDescElement?.classList.add('invisible');
+      }, 200);
+    }
+    else {
+      currentDescElement?.classList.remove('invisible');
+      currentDescElement?.classList.remove('animate__fadeOutLeft');
+      currentDescElement?.classList.add('animate__fadeInLeft');
+    }
+    
 
     const { value } = await Preferences.get({ key: videoId });
     setIsBookmarked(value ? true : false);
@@ -102,7 +115,7 @@ export default function ComponentExpandButton({
           )}
         </IonButton>
 
-        <div className=' hiddenButtonClass invisible flex flex-row absolute top-0 left-16 z-30 bg-white dark:bg-[#1C1C1D]'>
+        <div className='animate__animated animate__faster hiddenButtonClass invisible flex flex-row absolute top-0 left-16 z-30 bg-white dark:bg-[#1C1C1D]'>
           <IonButton
             onClick={onClickBookmark}
             slot='icon-only'

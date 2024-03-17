@@ -1,6 +1,7 @@
 'use client';
 
 import '@/css/globals.css';
+import 'animate.css';
 import { Providers } from './providers';
 import { IonApp, setupIonicReact } from '@ionic/react';
 
