@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { iBookmark } from '@/shared/interface/bookmark';
-import { trash } from 'ionicons/icons';
+import { add, remove, trash } from 'ionicons/icons';
 import { Preferences } from '@capacitor/preferences';
 import { useQuery } from '@tanstack/react-query';
 
@@ -27,6 +27,8 @@ const getBookmarkList = async () => {
 
 export default function BookmarksPage() {
   const [bookmarkList, setBookmarkList] = useState<Record<string, iBookmark[]>>();
+  const [expandList, setExpandList] = useState<Record<string, boolean>>();
+  const [allHiddenFlag, setAllHiddenFlag] = useState<boolean>(false);
   const listRef = useRef<HTMLIonListElement>(null);
 
   const onClickDelete = async (key: string, index: number) => {
@@ -67,6 +69,7 @@ export default function BookmarksPage() {
     });
 
     let groupedList: Record<string, iBookmark[]> = {};
+    let groupedExpandList: Record<string, boolean> = {};
     sortedList.map((item: iBookmark) => {
       if (groupedList[item.group]) {
         groupedList[item.group].push(
@@ -89,11 +92,36 @@ export default function BookmarksPage() {
             timestamp: item.timestamp,
           }
         ]
+
+        groupedExpandList[item.group] = false;
       }
     });
 
     setBookmarkList(groupedList);
+    setExpandList(groupedExpandList);
   }, [data]);
+
+  const onClickExpandBookmark = (event: React.SyntheticEvent, key: string) => {
+    const expandableItems = event.currentTarget.parentElement?.parentElement?.getElementsByClassName(
+      'expandableItems'
+    )[0];
+    expandableItems?.classList.toggle('hidden');
+
+    const temp = Object.assign({}, expandList);
+    temp[key] = !expandList![key];
+    setExpandList(temp);
+  }
+
+  const onClickEdit = (event: React.SyntheticEvent) => {
+    setAllHiddenFlag(!allHiddenFlag);
+    
+    const temp = Object.assign({}, expandList);
+    Object.keys(temp).map((key) => {
+      temp[key]=!allHiddenFlag;
+    })
+    
+    setExpandList(temp);
+  }
   
   return (
     <>
@@ -103,6 +131,17 @@ export default function BookmarksPage() {
             <IonBackButton></IonBackButton>
           </IonButtons>
           <IonTitle>Bookmarks</IonTitle>
+          <IonButton
+            slot='end'
+            onClick={onClickEdit}
+            fill='clear'
+          >
+            {
+              allHiddenFlag
+                ? <IonIcon slot='icon-only' icon={add} />
+                : <IonIcon slot='icon-only' icon={remove} />
+            }
+          </IonButton>
         </IonToolbar>
       </IonHeader>
 
@@ -115,29 +154,48 @@ export default function BookmarksPage() {
                 <IonItemGroup key={key}>
                   <IonItemDivider color={'medium'} className='opacity-70'>
                     <IonLabel>{key}</IonLabel>
+                    <IonButton
+                      slot='end'
+                      onClick={
+                        (event) => {
+                          onClickExpandBookmark(event, key)
+                        }
+                      }
+                      fill='clear'
+                      color={'light'}
+                    >
+                      {
+                        (expandList![key])
+                          ? <IonIcon slot='icon-only' icon={add} size='large' />
+                          : <IonIcon slot='icon-only' icon={remove} size='large' />
+                      }
+                    </IonButton>
                   </IonItemDivider>
-                  {
-                    bookmarkList[key].map((item: iBookmark, index: number) => {
-                      return (
-                        <IonItemSliding key={index}>
-                          <IonItem>
-                            <IonText className='truncate overflow-hidden'>
-                              {item.name}
-                            </IonText>
-                          </IonItem>
+                  <div className={`expandableItems ${allHiddenFlag ? 'hidden' : ''}`}>
+                    {
+                      bookmarkList[key].map((item: iBookmark, index: number) => {
+                        return (
+                          <IonItemSliding key={index}>
+                            <IonItem>
+                              <IonText className='truncate overflow-hidden'>
+                                {item.name}
+                              </IonText>
+                            </IonItem>
 
-                          <IonItemOptions>
-                            <IonItemOption
-                              color='danger'
-                              onClick={() => {onClickDelete(key, index)}}
-                            >
-                              <IonIcon slot='icon-only' icon={trash} />
-                            </IonItemOption>
-                          </IonItemOptions>
-                        </IonItemSliding>
-                      )
-                    })
-                  }
+                            <IonItemOptions>
+                              <IonItemOption
+                                expandable={true}
+                                color='danger'
+                                onClick={() => {onClickDelete(key, index)}}
+                              >
+                                <IonIcon slot='icon-only' icon={trash} />
+                              </IonItemOption>
+                            </IonItemOptions>
+                          </IonItemSliding>
+                        )
+                      })
+                    }
+                  </div>
                 </IonItemGroup>
               )
             })
