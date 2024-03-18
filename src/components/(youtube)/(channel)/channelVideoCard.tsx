@@ -4,11 +4,10 @@ import React, { useState } from 'react';
 import ComponentPlayer from '@/components/(youtube)/player';
 import { iChannelVideoItem } from '@/shared/interface/channelVideo';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
-import { caretDown, caretUp, shareSocial } from 'ionicons/icons';
+import { caretDownCircleOutline, caretUpCircleOutline } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
 import { formatDate } from '@/utils/helper';
-import { Capacitor } from '@capacitor/core';
-import { Share } from '@capacitor/share';
+import ComponentExpandButton from '@/components/(youtube)/expandButton';
 
 export default function ComponentChannelVideoCard({
   video,
@@ -23,47 +22,12 @@ export default function ComponentChannelVideoCard({
     }
 
     const currentDescElement =
-      event.currentTarget.parentElement?.parentElement?.parentElement?.getElementsByClassName(
+      event.currentTarget.parentElement?.parentElement?.getElementsByClassName(
         'hiddenDescClass'
       )[0];
-    const isHidden = currentDescElement?.classList.contains('hidden');
-    if (isHidden) {
-      currentDescElement?.classList.remove('hidden');
-    } else {
-      currentDescElement?.classList.add('hidden');
-    }
-
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
+    currentDescElement?.classList.toggle('hidden');
 
     setDescExpanded(!descExpanded);
-  };
-
-  const onClickShare = async (event: React.SyntheticEvent) => {
-    if ('web' === Capacitor.getPlatform()) {
-      return;
-    }
-
-    if (!event || !event.currentTarget) {
-      return;
-    }
-
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
-
-    await Share.share({
-      url: process.env.YOUTUBE_URL_WATCH + videoId,
-    });
   };
 
   return (
@@ -81,26 +45,18 @@ export default function ComponentChannelVideoCard({
         </IonCardContent>
 
         <div className='flex flex-row justify-between'>
-          <IonButton
-            onClick={onClickShare}
-            data-videoid={video.id}
-            slot='icon-only'
-            fill='clear'
-          >
-            <IonIcon size='default' icon={shareSocial} />
-          </IonButton>
+          <ComponentExpandButton videoId={video.id} videoTitle={video.snippet.title} channelTitle={video.snippet.channelTitle} />
 
           <IonButton
             onClick={onClickDescExpand}
-            data-videoid={video.id}
             slot='icon-only'
             size='small'
             fill='clear'
           >
             {descExpanded ? (
-              <IonIcon icon={caretUp} size='large' />
+              <IonIcon icon={caretUpCircleOutline} size='large' />
             ) : (
-              <IonIcon icon={caretDown} size='large' />
+              <IonIcon icon={caretDownCircleOutline} size='large' />
             )}
           </IonButton>
         </div>

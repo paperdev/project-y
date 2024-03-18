@@ -39,6 +39,15 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
         <IonItem button={true} onClick={onClickExpand} detail={false}>
 
           <IonCardContent slot='start'>
+            <ComponentImage
+              className=''
+              dataImage={item.image}
+              isShownLink={true}
+              isShownSource={true}
+            />
+          </IonCardContent>
+
+          <IonCardContent>
             <IonLabel color={'primary'}>
               <DecodedText text={item.title.query} className='text-xl font-bold' />
             </IonLabel>
@@ -59,15 +68,6 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
               <IonLabel>Statistics</IonLabel>
               <IonIcon icon={openOutline} />
             </IonChip>
-          </IonCardContent>
-
-          <IonCardContent slot='end'>
-            <ComponentImage
-              className=''
-              dataImage={item.image}
-              isShownLink={true}
-              isShownSource={true}
-            />
           </IonCardContent>
 
         </IonItem>

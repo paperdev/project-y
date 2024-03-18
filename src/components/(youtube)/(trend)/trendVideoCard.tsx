@@ -6,11 +6,10 @@ import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
 import ComponentChannelButton from '@/components/(youtube)/channelButton';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
-import { bookmark, caretDown, caretUp, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle, shareSocial } from 'ionicons/icons';
+import { bookmark, caretDownCircleOutline, caretUpCircleOutline, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
 import { formatDate, formatNumber } from '@/utils/helper';
-import { Capacitor } from '@capacitor/core';
-import { Share } from '@capacitor/share';
+import ComponentExpandButton from '@/components/(youtube)/expandButton';
 
 export default function ComponentTrendVideoCard({
   video,
@@ -31,14 +30,6 @@ export default function ComponentTrendVideoCard({
       )[0];
     currentDescElement?.classList.toggle('hidden');
 
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
-
     setDescExpanded(!descExpanded);
   };
 
@@ -53,37 +44,7 @@ export default function ComponentTrendVideoCard({
       )[0];
     currentTagElement?.classList.toggle('hidden');
 
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
-
     setTagExpanded(!tagExpanded);
-  };
-
-  const onClickShare = async (event: React.SyntheticEvent) => {
-    if ('web' === Capacitor.getPlatform()) {
-      return;
-    }
-
-    if (!event || !event.currentTarget) {
-      return;
-    }
-
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
-
-    await Share.share({
-      url: process.env.YOUTUBE_URL_WATCH + videoId,
-    });
   };
 
   return (
@@ -119,7 +80,6 @@ export default function ComponentTrendVideoCard({
     
                 <IonButton
                   onClick={onClickTagExpand}
-                  data-videoid={video.id}
                   slot='icon-only'
                   size='small'
                   fill='clear'
@@ -146,14 +106,7 @@ export default function ComponentTrendVideoCard({
         </IonCardContent>
 
         <div className='flex flex-row justify-between'>
-          <IonButton
-            onClick={onClickShare}
-            data-videoid={video.id}
-            slot='icon-only'
-            fill='clear'
-          >
-            <IonIcon size='default' icon={shareSocial} />
-          </IonButton>
+          <ComponentExpandButton videoId={video.id} videoTitle={video.snippet.title} channelTitle={video.snippet.channelTitle} />
 
           <div className='flex flex-row gap-4'>
             {video.statistics && (
@@ -183,14 +136,13 @@ export default function ComponentTrendVideoCard({
 
           <IonButton
             onClick={onClickDescExpand}
-            data-videoid={video.id}
             slot='icon-only'
             fill='clear'
           >
             {descExpanded ? (
-              <IonIcon icon={caretUp} size='default' />
+              <IonIcon icon={caretUpCircleOutline} size='large' />
             ) : (
-              <IonIcon icon={caretDown} size='default' />
+              <IonIcon icon={caretDownCircleOutline} size='large' />
             )}
           </IonButton>
         </div>
