@@ -80,14 +80,13 @@ export default function ComponentTrendVideoCard({
     
                 <IonButton
                   onClick={onClickTagExpand}
-                  slot='icon-only'
                   size='small'
                   fill='clear'
                 >
                   {tagExpanded ? (
-                    <IonIcon icon={chevronCollapse} />
+                    <IonIcon slot='icon-only' icon={chevronCollapse} />
                   ) : (
-                    <IonIcon icon={chevronExpand} />
+                    <IonIcon slot='icon-only' icon={chevronExpand} />
                   )}
                 </IonButton>
               </div>
@@ -136,13 +135,12 @@ export default function ComponentTrendVideoCard({
 
           <IonButton
             onClick={onClickDescExpand}
-            slot='icon-only'
             fill='clear'
           >
             {descExpanded ? (
-              <IonIcon icon={caretUpCircleOutline} size='large' />
+              <IonIcon slot='icon-only' icon={caretUpCircleOutline} size='large' />
             ) : (
-              <IonIcon icon={caretDownCircleOutline} size='large' />
+              <IonIcon slot='icon-only' icon={caretDownCircleOutline} size='large' />
             )}
           </IonButton>
         </div>

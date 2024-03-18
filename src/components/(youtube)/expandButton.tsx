@@ -105,34 +105,31 @@ export default function ComponentExpandButton({
       <div className='relative'>
         <IonButton
           onClick={onClickButtonExpand}
-          slot='icon-only'
           fill='clear'
         >
           {buttonExpanded ? (
-            <IonIcon icon={caretBackCircleOutline} size='large' />
+            <IonIcon slot='icon-only' icon={caretBackCircleOutline} size='large' />
           ) : (
-            <IonIcon icon={caretForwardCircleOutline} size='large' />
+            <IonIcon slot='icon-only' icon={caretForwardCircleOutline} size='large' />
           )}
         </IonButton>
 
         <div className='animate__animated animate__faster hiddenButtonClass invisible flex flex-row absolute top-0 left-16 z-30 bg-white dark:bg-[#1C1C1D]'>
           <IonButton
             onClick={onClickBookmark}
-            slot='icon-only'
             fill='clear'
           >
             {
               isBookmarked
-                ? <IonIcon size='large' icon={bookmark}/>
-                : <IonIcon size='large' icon={bookmarkOutline}/>
+                ? <IonIcon slot='icon-only' size='large' icon={bookmark}/>
+                : <IonIcon slot='icon-only' size='large' icon={bookmarkOutline}/>
             }
           </IonButton>
           <IonButton
             onClick={onClickShare}
-            slot='icon-only'
             fill='clear'
           >
-            <IonIcon size='large' icon={shareOutline} />
+            <IonIcon slot='icon-only' size='large' icon={shareOutline} />
           </IonButton>
         </div>
 
