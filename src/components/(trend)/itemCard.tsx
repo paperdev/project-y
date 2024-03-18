@@ -42,7 +42,7 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
             <ComponentImage
               className=''
               dataImage={item.image}
-              isShownLink={true}
+              isShownLink={false}
               isShownSource={true}
             />
           </IonCardContent>
