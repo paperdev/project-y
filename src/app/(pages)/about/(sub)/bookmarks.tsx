@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { IonButton, IonFooter, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonText, IonToolbar } from '@ionic/react';
+import { IonAccordion, IonAccordionGroup, IonButton, IonFooter, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonText, IonToolbar } from '@ionic/react';
 import { iBookmark } from '@/shared/interface/bookmark';
-import { add, remove, share, trash } from 'ionicons/icons';
+import { add, chevronCollapse, chevronExpand, remove, share, trash } from 'ionicons/icons';
 import { Preferences } from '@capacitor/preferences';
 import { useQuery } from '@tanstack/react-query';
 import SubTemplate from './templage';
@@ -32,7 +32,7 @@ export default function BookmarksPage() {
   const [bookmarkList, setBookmarkList] = useState<Record<string, iBookmark[]>>();
   const [expandList, setExpandList] = useState<Record<string, boolean>>();
   const [allHiddenFlag, setAllHiddenFlag] = useState<boolean>(false);
-  const listRef = useRef<HTMLIonListElement>(null);
+  const accordionGroupRef = useRef<HTMLIonAccordionGroupElement>(null);
 
   const onClickShare = async (key: string, index: number) => {
     if ('web' === Capacitor.getPlatform()) {
@@ -48,7 +48,11 @@ export default function BookmarksPage() {
     });
   }
 
-  const onClickDelete = async (key: string, index: number) => {
+  const onClickDelete = async (event: React.SyntheticEvent, key: string, index: number) => {
+    const itemElement = event.currentTarget.parentElement?.parentElement?.parentElement as HTMLIonItemSlidingElement;
+    if (itemElement) {
+      itemElement.closeOpened();
+    }
     
     const temp = Object.assign({}, bookmarkList);
     const [item] = temp[key].splice(index, 1);
@@ -57,7 +61,6 @@ export default function BookmarksPage() {
     }
     setBookmarkList(temp);
 
-    listRef?.current?.closeSlidingItems();
     await Preferences.remove({key: item.id});
   }
 
@@ -116,102 +119,96 @@ export default function BookmarksPage() {
 
     setBookmarkList(groupedList);
     setExpandList(groupedExpandList);
+
+    if (!accordionGroupRef.current) {
+      return;
+    }
+
+    accordionGroupRef.current.value = Object.keys(groupedExpandList);
   }, [data]);
 
-  const onClickExpandBookmark = (event: React.SyntheticEvent, key: string) => {
-    const expandableItems = event.currentTarget.parentElement?.parentElement?.getElementsByClassName(
-      'expandableItems'
-    )[0];
-    expandableItems?.classList.toggle('hidden');
-
-    const temp = Object.assign({}, expandList);
-    temp[key] = !expandList![key];
-    setExpandList(temp);
-  }
-
-  const onClickEdit = (event: React.SyntheticEvent) => {
+  const onClickExpandBookmark = (event: React.SyntheticEvent) => {
+    if (!accordionGroupRef.current) {
+      return;
+    }
+    accordionGroupRef.current.value = accordionGroupRef.current.value ? undefined : Object.keys(expandList!);
     setAllHiddenFlag(!allHiddenFlag);
-    
-    const temp = Object.assign({}, expandList);
-    Object.keys(temp).map((key) => {
-      temp[key]=!allHiddenFlag;
-    })
-    
-    setExpandList(temp);
   }
 
   const onClickItem = (item: iBookmark) => {
+  }
+
+  const onClickGroup = (event: React.SyntheticEvent) => {
+    if (!accordionGroupRef.current) {
+      return;
+    }
+
+    let isHiddenAll = true;
+    if (!accordionGroupRef.current.value || 0 === accordionGroupRef.current.value.length) {
+      isHiddenAll = false;
+    }
+    
+    if (isHiddenAll === allHiddenFlag) {
+      setAllHiddenFlag(!allHiddenFlag);
+    }
   }
   
   return (
     <>
       <SubTemplate title='Bookmarks'>
-        <IonList ref={listRef}>
+        <IonAccordionGroup ref={accordionGroupRef} multiple={true} onClick={onClickGroup}>
           {
             bookmarkList && 
             Object.keys(bookmarkList).map((key: string) => {
               return (
-                <IonItemGroup key={key}>
-                  <IonItemDivider color={'medium'} className='opacity-70'>
-                    <IonLabel>{key}</IonLabel>
-                    <IonButton
-                      slot='end'
-                      onClick={
-                        (event) => {
-                          onClickExpandBookmark(event, key)
-                        }
-                      }
-                      fill='clear'
-                      color={'light'}
-                    >
-                      {
-                        (expandList![key])
-                          ? <IonIcon slot='icon-only' icon={add} size='large' />
-                          : <IonIcon slot='icon-only' icon={remove} size='large' />
-                      }
-                    </IonButton>
-                  </IonItemDivider>
-                  <div className={`expandableItems ${allHiddenFlag ? 'hidden' : ''}`}>
-                    {
-                      bookmarkList[key].map((item: iBookmark, index: number) => {
-                        return (
-                          <IonItemSliding key={index}>
-                            <IonItem onClick={() => {onClickItem(item)}}>
-                              <IonText className='truncate overflow-hidden'>
-                                {item.name}
-                              </IonText>
-                            </IonItem>
+                  <IonAccordion key={key} value={key}>
 
-                            <IonItemOptions>
-                              <IonItemOption color='primary'>
-                                <IonIcon slot='icon-only' icon={share} onClick={() => {onClickShare(key, index)}} />
-                              </IonItemOption>
-                              <IonItemOption color='danger'>
-                                <IonIcon slot='icon-only' icon={trash} onClick={() => {onClickDelete(key, index)}} />
-                              </IonItemOption>
-                            </IonItemOptions>
-                          </IonItemSliding>
-                        )
-                      })
-                    }
-                  </div>
-                </IonItemGroup>
+                    <IonItem slot='header' color={'light'}>
+                      <IonLabel>{key}</IonLabel>
+                    </IonItem>
+
+                    <div slot='content'>
+                      {
+                        bookmarkList[key].map((item: iBookmark, index: number) => {
+                          return (
+                            <IonItemSliding key={index}>
+                              <IonItem onClick={() => {onClickItem(item)}}>
+                                <IonText className='truncate overflow-hidden'>
+                                  {item.name}
+                                </IonText>
+                              </IonItem>
+
+                              <IonItemOptions>
+                                <IonItemOption color='primary'>
+                                  <IonIcon slot='icon-only' icon={share} onClick={() => {onClickShare(key, index)}} />
+                                </IonItemOption>
+                                <IonItemOption color='danger'>
+                                  <IonIcon slot='icon-only' icon={trash} onClick={(event) => {onClickDelete(event, key, index)}} />
+                                </IonItemOption>
+                              </IonItemOptions>
+                            </IonItemSliding>
+                          )
+                        })
+                      }
+                    </div>
+
+                  </IonAccordion>
               )
             })
           }
-        </IonList>
+        </IonAccordionGroup>
       </SubTemplate>
 
       <IonFooter>
         <IonToolbar className='text-center'>
           <IonButton
-            onClick={onClickEdit}
+            onClick={onClickExpandBookmark}
             fill='clear'
           >
             {
               allHiddenFlag
-                ? <IonIcon slot='icon-only' icon={add} />
-                : <IonIcon slot='icon-only' icon={remove} />
+                ? <IonIcon slot='icon-only' icon={chevronExpand} />
+                : <IonIcon slot='icon-only' icon={chevronCollapse} />
             }
           </IonButton>
         </IonToolbar>
