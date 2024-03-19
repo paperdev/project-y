@@ -3,10 +3,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonButton, IonFooter, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonText, IonToolbar } from '@ionic/react';
 import { iBookmark } from '@/shared/interface/bookmark';
-import { add, remove, trash } from 'ionicons/icons';
+import { add, remove, share, trash } from 'ionicons/icons';
 import { Preferences } from '@capacitor/preferences';
 import { useQuery } from '@tanstack/react-query';
 import SubTemplate from './templage';
+import { Capacitor } from '@capacitor/core';
+import { Share } from '@capacitor/share';
 
 const getBookmarkList = async () => {
   const { keys } = await Preferences.keys();
@@ -31,6 +33,20 @@ export default function BookmarksPage() {
   const [expandList, setExpandList] = useState<Record<string, boolean>>();
   const [allHiddenFlag, setAllHiddenFlag] = useState<boolean>(false);
   const listRef = useRef<HTMLIonListElement>(null);
+
+  const onClickShare = async (key: string, index: number) => {
+    if ('web' === Capacitor.getPlatform()) {
+      return;
+    }
+
+    if (!bookmarkList || !bookmarkList[key] || !bookmarkList[key][index].url) {
+      return;
+    }
+
+    await Share.share({
+      url: bookmarkList[key][index].url,
+    });
+  }
 
   const onClickDelete = async (key: string, index: number) => {
     
@@ -123,6 +139,9 @@ export default function BookmarksPage() {
     
     setExpandList(temp);
   }
+
+  const onClickItem = (item: iBookmark) => {
+  }
   
   return (
     <>
@@ -157,19 +176,18 @@ export default function BookmarksPage() {
                       bookmarkList[key].map((item: iBookmark, index: number) => {
                         return (
                           <IonItemSliding key={index}>
-                            <IonItem>
+                            <IonItem onClick={() => {onClickItem(item)}}>
                               <IonText className='truncate overflow-hidden'>
                                 {item.name}
                               </IonText>
                             </IonItem>
 
                             <IonItemOptions>
-                              <IonItemOption
-                                expandable={true}
-                                color='danger'
-                                onClick={() => {onClickDelete(key, index)}}
-                              >
-                                <IonIcon slot='icon-only' icon={trash} />
+                              <IonItemOption color='primary'>
+                                <IonIcon slot='icon-only' icon={share} onClick={() => {onClickShare(key, index)}} />
+                              </IonItemOption>
+                              <IonItemOption color='danger'>
+                                <IonIcon slot='icon-only' icon={trash} onClick={() => {onClickDelete(key, index)}} />
                               </IonItemOption>
                             </IonItemOptions>
                           </IonItemSliding>
