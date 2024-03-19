@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonFooter, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonText, IonToolbar } from '@ionic/react';
 import { iBookmark } from '@/shared/interface/bookmark';
 import { add, remove, trash } from 'ionicons/icons';
 import { Preferences } from '@capacitor/preferences';
 import { useQuery } from '@tanstack/react-query';
+import SubTemplate from './templage';
 
 const getBookmarkList = async () => {
   const { keys } = await Preferences.keys();
@@ -125,27 +126,7 @@ export default function BookmarksPage() {
   
   return (
     <>
-      <IonHeader className='ion-padding-top ion-padding-bottom'>
-        <IonToolbar>
-          <IonButtons slot='start'>
-            <IonBackButton></IonBackButton>
-          </IonButtons>
-          <IonTitle>Bookmarks</IonTitle>
-          <IonButton
-            slot='end'
-            onClick={onClickEdit}
-            fill='clear'
-          >
-            {
-              allHiddenFlag
-                ? <IonIcon slot='icon-only' icon={add} />
-                : <IonIcon slot='icon-only' icon={remove} />
-            }
-          </IonButton>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent className='ion-padding-top ion-padding-bottom'>
+      <SubTemplate title='Bookmarks'>
         <IonList ref={listRef}>
           {
             bookmarkList && 
@@ -201,7 +182,22 @@ export default function BookmarksPage() {
             })
           }
         </IonList>
-      </IonContent>
+      </SubTemplate>
+
+      <IonFooter>
+        <IonToolbar className='text-center'>
+          <IonButton
+            onClick={onClickEdit}
+            fill='clear'
+          >
+            {
+              allHiddenFlag
+                ? <IonIcon slot='icon-only' icon={add} />
+                : <IonIcon slot='icon-only' icon={remove} />
+            }
+          </IonButton>
+        </IonToolbar>
+      </IonFooter>
     </>
   );
 }

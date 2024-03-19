@@ -1,24 +1,28 @@
 'use client';
 
-import ComponentProfile from '@/components/(about)/profile';
 import React from 'react';
-import { profile } from '@/shared/data/profile';
 import { IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/react';
 
-export default function DeveloperPage() {
+export default function SubTemplate({
+  children,
+  title,
+}: {
+  children: React.ReactNode;
+  title: string;
+}) {
   return (
     <>
       <IonHeader className='ion-padding-top ion-padding-bottom'>
         <IonToolbar>
-          <IonButtons slot="start">
+          <IonButtons slot='start'>
             <IonBackButton></IonBackButton>
           </IonButtons>
-          <IonTitle>Developer</IonTitle>
+          <IonTitle>{title}</IonTitle>
         </IonToolbar>
       </IonHeader>
-
+      
       <IonContent className='ion-padding-top ion-padding-bottom'>
-        <ComponentProfile className='mt-10' dataProfile={profile} />
+        {children}
       </IonContent>
     </>
   );

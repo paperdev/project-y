@@ -1,24 +1,31 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Header from './header';
 import Footer from './footer';
 import { Capacitor } from '@capacitor/core';
 import { IonContent, IonPage } from '@ionic/react';
 import { RegionSelectorMenu } from '@/components/RegionSelectorMenu';
+import { OptionsContext } from '@/app/providers';
 
 export default function TemplatePage({
   children,
-  showHeader = true,
-  showContent = true,
-  showFooter = true,
 }: {
   children: React.ReactNode;
-  showHeader?: boolean;
-  showContent?: boolean;
-  showFooter?: boolean;
 }) {
   const navTopRef = useRef<HTMLIonContentElement>(null);
+  const [showHeader, setShowHeader] = useState<boolean>(true);
+  const [showContent, setShowContent] = useState<boolean>(true);
+  const [showFooter, setShowFooter] = useState<boolean>(true);
+
+  const options = useContext(OptionsContext);
+
+  useEffect(() => {
+    setShowHeader(options.showHeader);
+    setShowContent(options.showContent);
+    setShowFooter(options.showFooter);
+  }, [options]);
+
 
   useEffect(() => {
     if ('ios' === Capacitor.getPlatform()) {
