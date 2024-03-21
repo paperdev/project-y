@@ -21,7 +21,7 @@ export default function SubTemplate({
         </IonToolbar>
       </IonHeader>
       
-      <IonContent className='ion-padding-top ion-padding-bottom'>
+      <IonContent className='ion-padding'>
         {children}
       </IonContent>
     </>
