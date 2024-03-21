@@ -205,7 +205,7 @@ export default function BookmarksPage() {
         <IonToolbar className='text-center'>
           <IonButton
             onClick={onClickExpandBookmark}
-            fill='clear'
+            expand='full'
           >
             {
               allHiddenFlag
