@@ -17,7 +17,7 @@ export default function SubTemplate({
           <IonButtons slot='start'>
             <IonBackButton></IonBackButton>
           </IonButtons>
-          <IonTitle>{title}</IonTitle>
+          <IonTitle color={'primary'}>{title}</IonTitle>
         </IonToolbar>
       </IonHeader>
       

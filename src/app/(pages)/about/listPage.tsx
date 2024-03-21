@@ -40,7 +40,7 @@ export default function ListPage() {
           {
             aboutList.map((item, index) => {
               return (
-                <IonNavLink key={index} routerDirection="forward" component={() => <item.component />}>
+                <IonNavLink key={index} routerDirection='forward' component={() => <item.component />}>
                   <IonItem detail={true} >{item.name}</IonItem>
                 </IonNavLink>
               )

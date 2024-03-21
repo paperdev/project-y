@@ -1,14 +1,15 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { IonAccordion, IonAccordionGroup, IonButton, IonFooter, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonText, IonToolbar } from '@ionic/react';
+import { IonAccordion, IonAccordionGroup, IonButton, IonFooter, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonNavLink, IonText, IonToolbar } from '@ionic/react';
 import { iBookmark } from '@/shared/interface/bookmark';
-import { add, chevronCollapse, chevronExpand, remove, share, trash } from 'ionicons/icons';
+import { chevronCollapse, chevronExpand, share, trash } from 'ionicons/icons';
 import { Preferences } from '@capacitor/preferences';
 import { useQuery } from '@tanstack/react-query';
 import SubTemplate from './templage';
 import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
+import BookmarkPlayerPage from './bookmarkPlayer';
 
 const getBookmarkList = async () => {
   const { keys } = await Preferences.keys();
@@ -48,10 +49,12 @@ export default function BookmarksPage() {
     });
   }
 
-  const onClickDelete = async (event: React.SyntheticEvent, key: string, index: number) => {
-    const itemElement = event.currentTarget.parentElement?.parentElement?.parentElement as HTMLIonItemSlidingElement;
-    if (itemElement) {
-      itemElement.closeOpened();
+  const onClickDelete = async (event: React.SyntheticEvent, key: string, index: number, closeFlag: boolean) => {
+    if (closeFlag) {
+      const itemElement = event.currentTarget.parentElement?.parentElement?.parentElement as HTMLIonItemSlidingElement;
+      if (itemElement) {
+        itemElement.closeOpened();
+      }
     }
     
     const temp = Object.assign({}, bookmarkList);
@@ -135,9 +138,6 @@ export default function BookmarksPage() {
     setAllHiddenFlag(!allHiddenFlag);
   }
 
-  const onClickItem = (item: iBookmark) => {
-  }
-
   const onClickGroup = (event: React.SyntheticEvent) => {
     if (!accordionGroupRef.current) {
       return;
@@ -163,7 +163,7 @@ export default function BookmarksPage() {
               return (
                   <IonAccordion key={key} value={key}>
 
-                    <IonItem slot='header' color={'light'}>
+                    <IonItem slot='header' color={'medium'} className='opacity-60'>
                       <IonLabel>{key}</IonLabel>
                     </IonItem>
 
@@ -172,18 +172,20 @@ export default function BookmarksPage() {
                         bookmarkList[key].map((item: iBookmark, index: number) => {
                           return (
                             <IonItemSliding key={index}>
-                              <IonItem onClick={() => {onClickItem(item)}}>
-                                <IonText className='truncate overflow-hidden'>
-                                  {item.name}
-                                </IonText>
-                              </IonItem>
+                              <IonNavLink routerDirection='forward' component={() => <BookmarkPlayerPage bookmark={item} onClickDelete={(event) => {onClickDelete(event, key, index, false)}} />}>
+                                <IonItem>
+                                  <IonText className='truncate overflow-hidden'>
+                                    {item.name}
+                                  </IonText>
+                                </IonItem>
+                              </IonNavLink>
 
                               <IonItemOptions>
                                 <IonItemOption color='primary'>
                                   <IonIcon slot='icon-only' icon={share} onClick={() => {onClickShare(key, index)}} />
                                 </IonItemOption>
                                 <IonItemOption color='danger'>
-                                  <IonIcon slot='icon-only' icon={trash} onClick={(event) => {onClickDelete(event, key, index)}} />
+                                  <IonIcon slot='icon-only' icon={trash} onClick={(event) => {onClickDelete(event, key, index, true)}} />
                                 </IonItemOption>
                               </IonItemOptions>
                             </IonItemSliding>
