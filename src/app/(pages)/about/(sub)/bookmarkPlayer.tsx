@@ -1,7 +1,7 @@
 'use client';
 
 import React, { MouseEventHandler } from 'react';
-import SubTemplate from './templage';
+import SubTemplate from './template';
 import ComponentPlayer from '@/components/(youtube)/player';
 import { IonButton, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import DecodedText from '@/components/template/decodedText';

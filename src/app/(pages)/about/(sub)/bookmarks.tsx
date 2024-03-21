@@ -6,7 +6,7 @@ import { iBookmark } from '@/shared/interface/bookmark';
 import { chevronCollapse, chevronExpand, share, trash } from 'ionicons/icons';
 import { Preferences } from '@capacitor/preferences';
 import { useQuery } from '@tanstack/react-query';
-import SubTemplate from './templage';
+import SubTemplate from './template';
 import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 import BookmarkPlayerPage from './bookmarkPlayer';

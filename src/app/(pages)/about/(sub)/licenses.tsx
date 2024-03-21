@@ -3,7 +3,7 @@
 import React from 'react';
 import { IonText } from '@ionic/react';
 import { Browser } from '@capacitor/browser';
-import SubTemplate from './templage';
+import SubTemplate from './template';
 
 export default function LicensesPage() {
   return (

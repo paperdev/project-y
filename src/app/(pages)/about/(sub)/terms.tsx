@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { IonText } from '@ionic/react';
-import SubTemplate from './templage';
+import SubTemplate from './template';
 
 export default function TermsPage() {
   return (

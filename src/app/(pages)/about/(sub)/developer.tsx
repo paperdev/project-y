@@ -3,7 +3,7 @@
 import ComponentProfile from '@/components/(about)/profile';
 import React from 'react';
 import { profile } from '@/shared/data/profile';
-import SubTemplate from './templage';
+import SubTemplate from './template';
 
 export default function DeveloperPage() {
   return (
