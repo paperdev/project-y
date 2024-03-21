@@ -67,12 +67,11 @@ export default function ComponentSearchVideoCard({
 
           <IonButton
             onClick={onClickDescExpand}
-            slot='icon-only'
             size='small'
             fill='clear'
           >
             {descExpanded ? (
-              <IonIcon icon={caretUpCircleOutline} size='large' />
+              <IonIcon slot='icon-only' icon={caretUpCircleOutline} size='large' />
             ) : (
               <IonIcon icon={caretDownCircleOutline} size='large' />
             )}

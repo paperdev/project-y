@@ -1,21 +1,13 @@
 'use client';
 
 import React from 'react';
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonText } from '@ionic/react';
+import SubTemplate from './templage';
 
 export default function PolicyPage() {
   return (
     <>
-      <IonHeader className='ion-padding-top ion-padding-bottom'>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton></IonBackButton>
-          </IonButtons>
-          <IonTitle>Privacy Policy</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent className='ion-padding-top ion-padding-bottom'>
+      <SubTemplate title='Privacy Policy'>
         <IonText className='p-10'>
           {/* <p className='text-xl font-bold'>TrendInsight Privacy Policy</p>
           <hr className='my-4' /> */}
@@ -135,8 +127,7 @@ export default function PolicyPage() {
           <br/>
 
         </IonText>
-        
-      </IonContent>
+      </SubTemplate>
     </>
   );
 }

@@ -7,12 +7,13 @@ import { IonHeader, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import ComponentSearchInput from '@/components/(youtube)/(search)/searchInput';
 import ComponentVideoCategory from '@/components/(youtube)/videoCategory';
 import { usePathname } from 'next/navigation';
-import { QueryContext } from '@/app/providers';
+import { OptionsContext, QueryContext } from '@/app/providers';
 
 const displayRegionName = new Intl.DisplayNames(['EN'], { type: 'region' });
 
 export default function Header() {
   const pathname = usePathname();
+  const options = useContext(OptionsContext);
   const query = useContext(QueryContext);
   const regionCode = query.regionCode;
 
@@ -23,7 +24,7 @@ export default function Header() {
         <RegionSelector />
         
         <IonTitle color='primary' >
-          <IonText>Trend Insight</IonText>
+          <IonText>{options.title}</IonText>
           <p className='text-center flex justify-center items-center gap-1'>
             {/* <IonIcon src={`https://flagcdn.com/${regionCode.toLocaleLowerCase()}.svg`} /> */}
             <IonText color={'secondary'} className='text-xs'>{displayRegionName.of(regionCode)}</IonText>

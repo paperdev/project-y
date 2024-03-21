@@ -8,7 +8,6 @@ import { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { iTrendVideo } from '@/shared/interface/trendVideo';
 import { QueryContext } from '@/app/providers';
-import TemplatePage from '@/components/template/_page';
 
 export default function Page() {
   const [trendVideo, setTrendVideo] = useState<iTrendVideo>();
@@ -48,15 +47,13 @@ export default function Page() {
 
   return (
     <>
-      <TemplatePage>
-        {trendVideo && (
-          <ComponentTrendList
-            videoList={trendVideo.items}
-            nextPageToken={trendVideo.nextPageToken}
-            totalResults={trendVideo.pageInfo.totalResults}
-          />
-        )}
-      </TemplatePage>
+      {trendVideo && (
+        <ComponentTrendList
+          videoList={trendVideo.items}
+          nextPageToken={trendVideo.nextPageToken}
+          totalResults={trendVideo.pageInfo.totalResults}
+        />
+      )}
     </>
   );
 }

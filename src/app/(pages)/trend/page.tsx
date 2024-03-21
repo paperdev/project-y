@@ -8,7 +8,6 @@ import { iTrendItem } from '@/shared/interface/trendItem';
 import { useQuery } from '@tanstack/react-query'
 import Error from '@/components/template/error';
 import { QueryContext } from '@/app/providers';
-import TemplatePage from '@/components/template/_page';
 
 export default function Page() {
   const [searchItem, setSearchItem] = useState<iTrendItem[]>([]);
@@ -53,11 +52,9 @@ export default function Page() {
 
   return (
     <>
-      <TemplatePage>
-        {
+      {
           0 !== searchItem.length && <ComponentItemList dataItem={searchItem} />
         }
-      </TemplatePage>
     </>
   );
 }

@@ -1,23 +1,14 @@
 'use client';
 
 import React from 'react';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonText, IonTitle, IonToolbar } from '@ionic/react';
-import Link from 'next/link';
+import { IonText } from '@ionic/react';
 import { Browser } from '@capacitor/browser';
+import SubTemplate from './templage';
 
 export default function LicensesPage() {
   return (
     <>
-      <IonHeader className='ion-padding-top ion-padding-bottom'>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton></IonBackButton>
-          </IonButtons>
-          <IonTitle>Licenses</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent className='ion-padding-top ion-padding-bottom'>
+      <SubTemplate title='Licenses'>
         <IonText className='p-10'>
           <li>
             Audio streaming data developed with YouTube.com are licensed by 
@@ -52,7 +43,7 @@ export default function LicensesPage() {
             > Apache License, Version 2.0.</IonText>
           </li>
         </IonText>
-      </IonContent>
+      </SubTemplate>
     </>
   );
 }

@@ -12,6 +12,7 @@ import { setBackForwardNavigationGestures } from 'capacitor-plugin-ios-webview-c
 import { Capacitor } from '@capacitor/core';
 import { Query } from '@/shared/interface/query';
 import { getCurrentLocation } from '@/utils/request';
+import { Options } from '@/shared/interface/options';
 
 const defaultQuery: Query = {
   regionCode: process.env.DEFAULT_REGION ? process.env.DEFAULT_REGION : 'US',
@@ -23,8 +24,24 @@ const SetQueryContext = createContext<Dispatch<SetStateAction<Query>>>(
   () => {}
 );
 
+const defaultOptions: Options = {
+  theme: 'light',
+  showHeader: true,
+  showBackButton: false,
+  showContent: true,
+  showFooter: true,
+  title: 'Trend Insight',
+  subTitle: '',
+};
+
+const OptionsContext = createContext<Options>(defaultOptions);
+const SetOptionsContext = createContext<Dispatch<SetStateAction<Options>>>(
+  () => {}
+);
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const [query, setQuery] = useState<Query>(defaultQuery);
+  const [options, setOptions] = useState<Options>(defaultOptions);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [queryClient] = useState(
@@ -61,16 +78,25 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <>
       {!isLoading && (
-        <QueryContext.Provider value={query}>
-          <SetQueryContext.Provider value={setQuery}>
-            <QueryClientProvider client={queryClient}>
-              {children}
-            </QueryClientProvider>
-          </SetQueryContext.Provider>
-        </QueryContext.Provider>
+        <OptionsContext.Provider value={options}>
+          <SetOptionsContext.Provider value={setOptions}>
+            <QueryContext.Provider value={query}>
+              <SetQueryContext.Provider value={setQuery}>
+                <QueryClientProvider client={queryClient}>
+                  {children}
+                </QueryClientProvider>
+              </SetQueryContext.Provider>
+            </QueryContext.Provider>
+          </SetOptionsContext.Provider>
+        </OptionsContext.Provider>
       )}
     </>
   );
 }
 
-export { QueryContext, SetQueryContext };
+export { 
+  QueryContext, 
+  SetQueryContext,
+  OptionsContext,
+  SetOptionsContext,
+};

@@ -4,6 +4,8 @@ import '@/css/globals.css';
 import 'animate.css';
 import { Providers } from './providers';
 import { IonApp, setupIonicReact } from '@ionic/react';
+import TemplatePage from '@/components/template/_page';
+import { usePathname } from 'next/navigation';
 
 setupIonicReact({ mode: 'ios' });
 
@@ -23,6 +25,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  
   return (
     <html lang='en' suppressHydrationWarning={true}>
       <meta name='color-scheme' content='light dark' />
@@ -30,7 +34,11 @@ export default function RootLayout({
       <body>
         <Providers>
           <IonApp>
-            {children}
+            {
+              pathname.startsWith('/about')
+                ? <>{children}</>
+                : <TemplatePage>{children}</TemplatePage>
+            }
           </IonApp>
         </Providers>
       </body>

@@ -45,16 +45,15 @@ export default function ComponentChannelVideoCard({
         </IonCardContent>
 
         <div className='flex flex-row justify-between'>
-          <ComponentExpandButton videoId={video.id} videoTitle={video.snippet.title} channelTitle={video.snippet.channelTitle} />
+          <ComponentExpandButton videoId={video.snippet.resourceId.videoId} videoTitle={video.snippet.title} channelTitle={video.snippet.channelTitle} />
 
           <IonButton
             onClick={onClickDescExpand}
-            slot='icon-only'
             size='small'
             fill='clear'
           >
             {descExpanded ? (
-              <IonIcon icon={caretUpCircleOutline} size='large' />
+              <IonIcon slot='icon-only' icon={caretUpCircleOutline} size='large' />
             ) : (
               <IonIcon icon={caretDownCircleOutline} size='large' />
             )}
