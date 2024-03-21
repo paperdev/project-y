@@ -6,9 +6,11 @@ import { IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar 
 export default function SubTemplate({
   children,
   title,
+  padding,
 }: {
   children: React.ReactNode;
   title: string;
+  padding?: string | undefined;
 }) {
   return (
     <>
@@ -21,7 +23,7 @@ export default function SubTemplate({
         </IonToolbar>
       </IonHeader>
       
-      <IonContent className='ion-padding'>
+      <IonContent className={`${padding ? padding : 'ion-padding'}`}>
         {children}
       </IonContent>
     </>

@@ -155,7 +155,7 @@ export default function BookmarksPage() {
   
   return (
     <>
-      <SubTemplate title='Bookmarks'>
+      <SubTemplate title='Bookmarks' padding='p-0'>
         <IonAccordionGroup ref={accordionGroupRef} multiple={true} onClick={onClickGroup}>
           {
             bookmarkList && 
