@@ -3,44 +3,58 @@
 import React, { useEffect, useState } from 'react';
 import { IonButton, IonIcon } from '@ionic/react';
 import { contrast, contrastOutline } from 'ionicons/icons';
+import { getTheme, setTheme } from '@/utils/preferences';
 
 export function ThemeSwitcher() {
-  const [themeToggle, setThemeToggle] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const toggleDarkTheme = (shouldAdd: boolean) => {
     document.body.classList.toggle('dark', shouldAdd);
   };
 
-  const initializeDarkTheme = (isDark: boolean) => {
-    setThemeToggle(isDark);
-    toggleDarkTheme(isDark);
-  };
-
   useEffect(() => {
-    // Use matchMedia to check the user preference
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const getCurrentTheme = async () => {
+      setIsLoading(true);
+      const value = await getTheme();
+      
+      let isDark: boolean;
+      if (value) {
+        isDark = 'dark' === value ? true : false;
+        toggleDarkTheme(isDark);
+        await saveDarkTheme(isDark);
+        setIsLoading(false);
+        return;
+      }
 
-    // Initialize the dark theme based on the initial
-    // value of the prefers-color-scheme media query
-    initializeDarkTheme(prefersDark.matches);
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      isDark = prefersDark.matches;
+      toggleDarkTheme(isDark);
+      await saveDarkTheme(isDark);
+      setIsLoading(false);
+    };
 
-    // Listen for changes to the prefers-color-scheme media query
-    prefersDark.addEventListener('change', (mediaQuery) =>
-      initializeDarkTheme(mediaQuery.matches)
-    );
+    getCurrentTheme();
   }, []);
 
   const onClick = () => {
-    const themeToggleFlag = !themeToggle;
-    setThemeToggle(themeToggleFlag);
-    toggleDarkTheme(themeToggleFlag);
+    toggleDarkTheme(!isDarkTheme);
+    saveDarkTheme(!isDarkTheme);
+  }
+
+  const saveDarkTheme = async (isDark: boolean) => {
+    setIsDarkTheme(isDark);
+    await setTheme(isDark ? 'dark' : 'light');
   }
 
   return (
     <>
-      <IonButton slot='end' fill='clear' onClick={onClick} >
-        <IonIcon color='primary' size='large' icon={themeToggle ? contrastOutline : contrast} /> 
-      </IonButton>
+      {
+        !isLoading && 
+          <IonButton slot='end' fill='clear' onClick={onClick} >
+            <IonIcon color='primary' size='large' icon={isDarkTheme ? contrastOutline : contrast} /> 
+          </IonButton>
+      }
     </>
   );
 }

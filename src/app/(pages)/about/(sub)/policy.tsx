@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { IonText } from '@ionic/react';
-import SubTemplate from './templage';
+import SubTemplate from './template';
 
 export default function PolicyPage() {
   return (
     <>
       <SubTemplate title='Privacy Policy'>
-        <IonText className='p-10'>
+        <IonText className='indent-4'>
           {/* <p className='text-xl font-bold'>TrendInsight Privacy Policy</p>
           <hr className='my-4' /> */}
         
@@ -24,7 +24,7 @@ export default function PolicyPage() {
 
           <br/>
         
-          <p className='text-lg font-bold'>
+          <p className='text-lg font-bold indent-0'>
             Information Collection and Use
           </p>
           <p>
@@ -33,7 +33,7 @@ export default function PolicyPage() {
 
           <br/>
 
-          <p className='text-lg font-bold'>
+          <p className='text-lg font-bold indent-0'>
             Log Data
           </p>
           <p>
@@ -42,7 +42,7 @@ export default function PolicyPage() {
 
           <br/>
 
-          <p className='text-lg font-bold'>
+          <p className='text-lg font-bold indent-0'>
             Cookies
           </p>
           <p>
@@ -54,7 +54,7 @@ export default function PolicyPage() {
 
           <br/>
 
-          <p className='text-lg font-bold'>
+          <p className='text-lg font-bold indent-0'>
             Service Providers
           </p>
           <p>
@@ -78,7 +78,7 @@ export default function PolicyPage() {
 
           <br/>
 
-          <p className='text-lg font-bold'>
+          <p className='text-lg font-bold indent-0'>
             Security
           </p>
           <p>
@@ -87,7 +87,7 @@ export default function PolicyPage() {
 
           <br/>
 
-          <p className='text-lg font-bold'>
+          <p className='text-lg font-bold indent-0'>
             Links to Other Sites
           </p>
           <p>
@@ -96,7 +96,7 @@ export default function PolicyPage() {
 
           <br/>
 
-          <p className='text-lg font-bold'>
+          <p className='text-lg font-bold indent-0'>
             Children’s Privacy
           </p>
           <p>
@@ -105,7 +105,7 @@ export default function PolicyPage() {
 
           <br/>
 
-          <p className='text-lg font-bold'>
+          <p className='text-lg font-bold indent-0'>
             Changes to This Privacy Policy
           </p>
           <p>
@@ -117,7 +117,7 @@ export default function PolicyPage() {
 
           <br/>
 
-          <p className='text-lg font-bold'>
+          <p className='text-lg font-bold indent-0'>
             Contact Us
           </p>
           <p>

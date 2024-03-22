@@ -1,5 +1,5 @@
+import { addBookmark, deleteBookmark, getBookmark } from '@/utils/preferences';
 import { Capacitor } from '@capacitor/core';
-import { Preferences } from '@capacitor/preferences';
 import { Share } from '@capacitor/share';
 import { IonButton, IonIcon, useIonToast } from '@ionic/react';
 import { bookmark, bookmarkOutline, caretBackCircleOutline, caretForwardCircleOutline, shareOutline } from 'ionicons/icons';
@@ -40,22 +40,20 @@ export default function ComponentExpandButton({
 
     if (!isBookmarked) {
       presentToast('bottom', 'Bookmark successfully created.', '');
-      await Preferences.set({
-        key: videoId,
-        value: JSON.stringify(
-          {
-            id: videoId,
-            group: channelTitle,
-            name: videoTitle,
-            url: process.env.YOUTUBE_URL_WATCH + videoId,
-            timestamp: Date.now().toString()
-          }
-        ),
-      });
+      await addBookmark(
+        videoId,
+        {
+          id: videoId,
+          group: channelTitle,
+          name: videoTitle,
+          url: process.env.YOUTUBE_URL_WATCH + videoId,
+          timestamp: Date.now().toString()
+        }
+      )
     }
     else {
       presentToast('bottom', 'Bookmark successfully deleted.', '');
-      await Preferences.remove({key: videoId});
+      await deleteBookmark(videoId);
     }
     
     setIsBookmarked(!isBookmarked);
@@ -94,8 +92,7 @@ export default function ComponentExpandButton({
       currentDescElement?.classList.add('animate__fadeInLeft');
     }
     
-
-    const { value } = await Preferences.get({ key: videoId });
+    const value = await getBookmark(videoId);
     setIsBookmarked(value ? true : false);
     setButtonExpanded(!buttonExpanded);
   }
