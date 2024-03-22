@@ -4,30 +4,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IonAccordion, IonAccordionGroup, IonButton, IonFooter, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonNavLink, IonText, IonToolbar } from '@ionic/react';
 import { iBookmark } from '@/shared/interface/bookmark';
 import { chevronCollapse, chevronExpand, share, trash } from 'ionicons/icons';
-import { Preferences } from '@capacitor/preferences';
 import { useQuery } from '@tanstack/react-query';
 import SubTemplate from './template';
 import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 import BookmarkPlayerPage from './bookmarkPlayer';
+import { deleteBookmark, getBookmarkList } from '@/utils/preferences';
 
-const getBookmarkList = async () => {
-  const { keys } = await Preferences.keys();
-  if (0 === keys.length) {
-    return [];
-  }
-  
-  return Promise.all(
-    keys.map(async (key: string) => {
-      const { value } = await Preferences.get({ key: key });
-      if (!value) {
-        return;
-      }
-
-      return JSON.parse(value);
-    })
-  );
-}
 
 export default function BookmarksPage() {
   const [bookmarkList, setBookmarkList] = useState<Record<string, iBookmark[]>>();
@@ -64,7 +47,7 @@ export default function BookmarksPage() {
     }
     setBookmarkList(temp);
 
-    await Preferences.remove({key: item.id});
+    await deleteBookmark(item.id);
   }
 
   const { isPending, error, data, isFetching } = useQuery({
