@@ -75,6 +75,11 @@ const deleteBookmark = async (key: string) => {
   return bookmarksPreferences.remove({key: key});
 }
 
+const deleteAllBookmark = async () => {
+  await initBookmarksPreferences();
+  return bookmarksPreferences.clear();
+}
+
 export { 
   getTheme,
   setTheme,
@@ -82,4 +87,5 @@ export {
   getBookmark,
   addBookmark,
   deleteBookmark,
+  deleteAllBookmark,
 };

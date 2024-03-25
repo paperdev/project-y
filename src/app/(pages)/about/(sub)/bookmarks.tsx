@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { IonAccordion, IonAccordionGroup, IonButton, IonFooter, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonNavLink, IonText, IonToolbar } from '@ionic/react';
+import { IonAccordion, IonAccordionGroup, IonAlert, IonButton, IonCol, IonFooter, IonGrid, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonNavLink, IonRow, IonText, IonToolbar } from '@ionic/react';
 import { iBookmark } from '@/shared/interface/bookmark';
-import { chevronCollapse, chevronExpand, share, trash } from 'ionicons/icons';
-import { useQuery } from '@tanstack/react-query';
+import { chevronDown, chevronUp, share, trash } from 'ionicons/icons';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import SubTemplate from './template';
 import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 import BookmarkPlayerPage from './bookmarkPlayer';
-import { deleteBookmark, getBookmarkList } from '@/utils/preferences';
+import { deleteAllBookmark, deleteBookmark, getBookmarkList } from '@/utils/preferences';
 
 
 export default function BookmarksPage() {
@@ -17,6 +17,7 @@ export default function BookmarksPage() {
   const [expandList, setExpandList] = useState<Record<string, boolean>>();
   const [allHiddenFlag, setAllHiddenFlag] = useState<boolean>(false);
   const accordionGroupRef = useRef<HTMLIonAccordionGroupElement>(null);
+  const queryClient = useQueryClient();
 
   const onClickShare = async (key: string, index: number) => {
     if ('web' === Capacitor.getPlatform()) {
@@ -121,6 +122,16 @@ export default function BookmarksPage() {
     setAllHiddenFlag(!allHiddenFlag);
   }
 
+  const onClickConfirmClear = async (event: React.SyntheticEvent) => {
+    setBookmarkList({});
+    await deleteAllBookmark();
+
+    if(!queryClient) {
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ['bookmarks'] })
+  }
+
   const onClickGroup = (event: React.SyntheticEvent) => {
     if (!accordionGroupRef.current) {
       return;
@@ -186,16 +197,51 @@ export default function BookmarksPage() {
 
       <IonFooter>
         <IonToolbar className='text-center'>
-          <IonButton
-            onClick={onClickExpandBookmark}
-            expand='full'
-          >
-            {
-              allHiddenFlag
-                ? <IonIcon slot='icon-only' icon={chevronExpand} />
-                : <IonIcon slot='icon-only' icon={chevronCollapse} />
-            }
-          </IonButton>
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <IonButton
+                  onClick={onClickExpandBookmark}
+                  expand='full'
+                  fill='clear'
+                >
+                  {
+                    allHiddenFlag
+                      ? <IonIcon slot='icon-only' icon={chevronDown} />
+                      : <IonIcon slot='icon-only' icon={chevronUp} />
+                  }
+                </IonButton>
+              </IonCol>
+
+              <IonCol>
+                <IonButton
+                  id='clear-alert'
+                  expand='full'
+                  fill='clear'
+                >
+                  <IonIcon slot='icon-only' icon={trash} />
+                </IonButton>
+
+                <IonAlert
+                  trigger='clear-alert'
+                  header='Warning!'
+                  message='It can not be recovered. Are you sure to clear all bookmarks?'
+                  buttons={[
+                    {
+                      text: 'Cancel',
+                      role: 'cancel',
+                      handler: () => {},
+                    },
+                    {
+                      text: 'OK',
+                      role: 'confirm',
+                      handler: onClickConfirmClear,
+                    },
+                  ]}
+                ></IonAlert>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         </IonToolbar>
       </IonFooter>
     </>
