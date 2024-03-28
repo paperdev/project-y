@@ -69,8 +69,8 @@ export default function ComponentChannelButton({
 
     present(
       {
-        initialBreakpoint: 0.95,
-        // presentingElement: presentingElement!
+        // initialBreakpoint: 0.95,
+        presentingElement: presentingElement!
       }
     );
   }

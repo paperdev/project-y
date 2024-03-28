@@ -57,17 +57,8 @@
         window.ReactNativeWebView.postMessage(JSON.stringify(msg));
       }
 
-      let metaString = '';
-      if (contentScale_s) {
-        metaString += `initial-scale=${contentScale_s}, `;
-      }
-
-      if (!allowWebViewZoom) {
-        metaString += `maximum-scale=${contentScale_s}`;
-      }
-
       const viewport = document.querySelector('meta[name=viewport]');
-      viewport.setAttribute('content', 'width=device-width, ' + metaString);
+      viewport.setAttribute('content', 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1.0, viewport-fit=cover');
 
       var tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
