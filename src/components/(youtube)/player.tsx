@@ -23,18 +23,19 @@ const PlayerThumbnail = ({
 const PlayerContent = ({
   videoId,
   onLoad,
+  autoPlay,
 }: {
   videoId: string | undefined;
   onLoad: any;
+  autoPlay: boolean;
 }) => {
-  console.log(`${process.env.YOUTUBE_URL_PLAYER}${JSON.stringify({videoId_s: videoId, autoplay: 1})}`);
   return (
     <>
       {videoId && (
         <iframe
           onLoad={onLoad}
           className='h-full w-full rounded-lg invisible'
-          src={`${process.env.YOUTUBE_URL_PLAYER}${JSON.stringify({videoId_s: videoId, autoplay: 1})}`}
+          src={`${process.env.YOUTUBE_URL_PLAYER}${JSON.stringify({videoId_s: videoId, autoplay: autoPlay ? 1 : 0})}`}
           loading='lazy'
           allow='autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture;'
           allowFullScreen
@@ -92,7 +93,7 @@ export default function ComponentPlayer({
         {
           isVisible &&
             <div className='absolute w-full h-full'>
-              <PlayerContent videoId={videoId} onLoad={onLoad}/>
+              <PlayerContent videoId={videoId} onLoad={onLoad} autoPlay={thumbnailURL ? true : false}/>
             </div>
         }
       </div>
