@@ -33,6 +33,7 @@
       const parsedUrl = new URL(window.location.href);
       const UrlQueryData = parsedUrl.searchParams.get('data');
       const {
+        autoplay,
         end,
         list,
         color,
@@ -54,7 +55,7 @@
       } = JSON.parse(UrlQueryData);
 
       function sendMessageToRN(msg) {
-        window.ReactNativeWebView.postMessage(JSON.stringify(msg));
+        // console.log(msg);
       }
 
       const viewport = document.querySelector('meta[name=viewport]');
@@ -72,6 +73,7 @@
           height: '1000',
           videoId: videoId_s,
           playerVars: {
+            autoplay: autoplay,
             end: end,
             rel: rel_s,
             list: list,
@@ -112,6 +114,9 @@
       }
 
       function onPlayerReady(event) {
+        if (autoplay) {
+          event.target.playVideo();
+        }
         sendMessageToRN({eventType: 'playerReady'});
       }
 

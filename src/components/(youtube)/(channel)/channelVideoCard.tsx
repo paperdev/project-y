@@ -41,7 +41,11 @@ export default function ComponentChannelVideoCard({
         </IonCardHeader>
 
         <IonCardContent>
-          <ComponentPlayer videoId={video.snippet.resourceId.videoId} />
+          {
+            video.snippet.thumbnails['standard']
+              ? <ComponentPlayer videoId={video.snippet.resourceId.videoId} thumbnailURL={video.snippet.thumbnails['standard'].url} />
+              : <ComponentPlayer videoId={video.snippet.resourceId.videoId}/>
+          }
         </IonCardContent>
 
         <div className='flex flex-row justify-between'>

@@ -100,7 +100,11 @@ export default function ComponentTrendVideoCard({
           </div>
 
           <div className='mt-2'>
-            <ComponentPlayer videoId={video.id} />
+            {
+              video.snippet.thumbnails['standard']
+                ? <ComponentPlayer videoId={video.id} thumbnailURL={video.snippet.thumbnails['standard'].url} />
+                : <ComponentPlayer videoId={video.id}/>
+            }
           </div>
         </IonCardContent>
 
