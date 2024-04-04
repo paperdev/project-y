@@ -22,6 +22,7 @@ const nextConfig = {
     YOUTUBE_REGION_URL: process.env.YOUTUBE_REGION_URL,
     YOUTUBE_VIDEO_CATEGORY_URL: process.env.YOUTUBE_VIDEO_CATEGORY_URL,
 
+    YOUTUBE_URL: process.env.YOUTUBE_URL,
     YOUTUBE_URL_WATCH: process.env.YOUTUBE_URL_WATCH,
     YOUTUBE_URL_EMBED: process.env.YOUTUBE_URL_EMBED,
     YOUTUBE_URL_CHANNEL: process.env.YOUTUBE_URL_CHANNEL,
@@ -30,9 +31,17 @@ const nextConfig = {
     GOOGLE_TREND_URL: process.env.GOOGLE_TREND_URL,
     GOOGLE_TREND_DAILY_URL: process.env.GOOGLE_TREND_DAILY_URL,
   },
-  
+
   async rewrites() {
     return [
+      {
+        source: "/watch",
+        destination: `${process.env.YOUTUBE_URL}/watch`,
+      },
+      {
+        source: "/s/:path*",
+        destination: `${process.env.YOUTUBE_URL}/s/:path*`,
+      },
       {
         source: '/:path*',
         destination: `${process.env.GOOGLE_TREND_URL}/:path*`,
