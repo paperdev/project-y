@@ -284,7 +284,6 @@ async function getGoogleTrendList(regionCode: string | null | undefined) {
     return _requestDownloadFile(url, 'json.txt', Directory.Cache);
   }
 
-
   const res = await axiosInstanceGoogle.get(url);
   if (200 !== res.status) {
     throw new Error('Failed to fetch data.');
