@@ -3,7 +3,7 @@
 import React, { MouseEventHandler, useEffect, useState } from 'react';
 import SubTemplate from './template';
 import ComponentPlayer from '@/components/(youtube)/player';
-import { IonButton, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonRow, useIonAlert } from '@ionic/react';
+import { IonAlert, IonButton, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonRow, useIonAlert } from '@ionic/react';
 import DecodedText from '@/components/template/decodedText';
 import { share, trash } from 'ionicons/icons';
 import { iBookmark } from '@/shared/interface/bookmark';
@@ -28,7 +28,7 @@ export default function BookmarkPlayerPage({
 
   useEffect(() => {
     checkVideoExist(bookmark.name).then((videoExist) => {
-      if (videoExist) {
+      if (videoExist && videoExist.uri) {
         setIsDownloaded(true);
         setVideoURL(Capacitor.convertFileSrc(videoExist.uri));
       }
@@ -68,15 +68,21 @@ export default function BookmarkPlayerPage({
 
     setShowProgress(true);
     await downloadVideo(bookmark.name, video.url, onDownloadProgress);
-    setShowProgress(false);
     setIsDownloaded(true);
+    setShowProgress(false);
+
+    const videoURI = await checkVideoExist(bookmark.name);
+    if (videoURI && videoURI.uri) {
+      setVideoURL(Capacitor.convertFileSrc(videoURI.uri));
+    }
   };
 
   const onDownloadProgress = (status: ProgressStatus) => {
     setPercent(parseFloat(((status.bytes / status.contentLength) * 100).toFixed(2)));
   }
 
-  const onClickDeleteCurrent = async (event: React.SyntheticEvent) => {
+  const onClickDeleteCurrent = async (event: React.MouseEvent<HTMLIonButtonElement>) => {
+    onClickDelete(event);
     const nav = document.getElementById('aboutNav') as HTMLIonNavElement;
     if (!nav) {
       return;
@@ -120,18 +126,31 @@ export default function BookmarkPlayerPage({
 
             <IonCol>
               <IonButton
+                id='delete-bookmark-alert'
                 expand='block'
                 color={'danger'}
                 fill='outline'
-                onClick={
-                  (event) => {
-                    onClickDelete(event);
-                    onClickDeleteCurrent(event);
-                  } 
-                }
               >
                 <IonIcon slot='icon-only' icon={trash}></IonIcon>
               </IonButton>
+
+              <IonAlert
+                  trigger='delete-bookmark-alert'
+                  header='Warning!'
+                  message='Are you sure to delete?'
+                  buttons={[
+                    {
+                      text: 'Cancel',
+                      role: 'cancel',
+                      handler: () => {},
+                    },
+                    {
+                      text: 'OK',
+                      role: 'confirm',
+                      handler: onClickDeleteCurrent,
+                    },
+                  ]}
+                />
             </IonCol>
           </IonRow>
 
