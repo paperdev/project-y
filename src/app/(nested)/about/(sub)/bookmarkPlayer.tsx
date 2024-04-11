@@ -13,6 +13,9 @@ import { checkVideoExist, downloadVideo, getVideoInfo } from '@/utils/video';
 import { ProgressStatus } from '@capacitor/filesystem';
 import { ComponentProgressBar } from '@/components/(youtube)/progress';
 
+const THUMBNAIL_EXT_0 = '0.jpg';
+const THUMBNAIL_EXT_ST_DEFAULT = 'sddefault.jpg';
+
 export default function BookmarkPlayerPage({
   bookmark,
   onClickDelete
@@ -21,12 +24,17 @@ export default function BookmarkPlayerPage({
   onClickDelete: MouseEventHandler<HTMLIonButtonElement>
 }) {
   const [videoURL, setVideoURL] = useState('');
+  const [videoThumbnail, setVideoThumbnail] = useState('');
   const [percent, setPercent] = useState(0);
   const [showProgress, setShowProgress] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [presentAlert] = useIonAlert();
 
   useEffect(() => {
+    if (!videoThumbnail && process.env.YOUTUBE_URL_THUMBNAIL) {
+      setVideoThumbnail(`${process.env.YOUTUBE_URL_THUMBNAIL}${bookmark.id}/${THUMBNAIL_EXT_ST_DEFAULT}`);
+    }
+    
     checkVideoExist(bookmark.name).then((videoExist) => {
       if (videoExist && videoExist.uri) {
         setIsDownloaded(true);
@@ -104,7 +112,7 @@ export default function BookmarkPlayerPage({
           {
             (isDownloaded && videoURL)
               ? 
-                <video controls className='w-full h-full' >
+                <video controls className='w-full h-full object-cover rounded-xl aspect-video' poster={videoThumbnail} >
                   <source src={videoURL} type='video/mp4' />
                   Sorry, your browser doesn't support embedded video
                 </video>

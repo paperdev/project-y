@@ -10,7 +10,7 @@ import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 import BookmarkPlayerPage from './bookmarkPlayer';
 import { deleteAllBookmark, deleteBookmark, getBookmarkList } from '@/utils/preferences';
-import { deleteVideo } from '@/utils/video';
+import { clearVideo, deleteVideo } from '@/utils/video';
 
 
 export default function BookmarksPage() {
@@ -128,6 +128,7 @@ export default function BookmarksPage() {
   const onClickConfirmClear = async (event: React.SyntheticEvent) => {
     setBookmarkList({});
     await deleteAllBookmark();
+    await clearVideo();
 
     if(!queryClient) {
       return;
