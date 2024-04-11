@@ -1,6 +1,6 @@
 import { Http } from '@capacitor-community/http';
 import { Capacitor } from '@capacitor/core';
-import { Directory, DownloadFileOptions, Filesystem, ReadFileOptions, StatOptions } from '@capacitor/filesystem';
+import { DeleteFileOptions, Directory, DownloadFileOptions, Filesystem, ReadFileOptions, StatOptions } from '@capacitor/filesystem';
 import axios from 'axios';
 const M3U8FileParser = require('m3u8-file-parser');
 const m3u8Parser = new M3U8FileParser();
@@ -263,9 +263,28 @@ const readVideo = async (name: string) => {
   }
 }
 
+const deleteVideo = async (name: string) => {
+  if (PLATFORM.WEB === Capacitor.getPlatform()) {
+    return null;
+  }
+
+  try {
+    const deleteFileOptions: DeleteFileOptions = {
+      path: `${DOWNLOAD_PATH}/${name}${DOWNLOAD_FORMAT}`,
+      directory: Directory.Documents
+    };
+
+    await Filesystem.deleteFile(deleteFileOptions);
+    return true;
+  } catch (error) {
+    return null;
+  }
+}
+
 export {
   getVideoInfo,
   downloadVideo,
   checkVideoExist,
   readVideo,
+  deleteVideo,
 };

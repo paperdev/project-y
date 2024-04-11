@@ -10,6 +10,7 @@ import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 import BookmarkPlayerPage from './bookmarkPlayer';
 import { deleteAllBookmark, deleteBookmark, getBookmarkList } from '@/utils/preferences';
+import { deleteVideo } from '@/utils/video';
 
 
 export default function BookmarksPage() {
@@ -49,6 +50,7 @@ export default function BookmarksPage() {
     setBookmarkList(temp);
 
     await deleteBookmark(item.id);
+    await deleteVideo(item.name);
   }
 
   const { isPending, error, data, isFetching } = useQuery({
