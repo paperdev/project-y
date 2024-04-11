@@ -65,16 +65,17 @@ export default function BookmarkPlayerPage({
     }
 
     setVideoURL(video.url);
-
     setShowProgress(true);
-    await downloadVideo(bookmark.name, video.url, onDownloadProgress);
-    setIsDownloaded(true);
-    setShowProgress(false);
 
+    await downloadVideo(bookmark.name, video.url, onDownloadProgress);
     const videoURI = await checkVideoExist(bookmark.name);
+
     if (videoURI && videoURI.uri) {
       setVideoURL(Capacitor.convertFileSrc(videoURI.uri));
     }
+
+    setIsDownloaded(true);
+    setShowProgress(false);
   };
 
   const onDownloadProgress = (status: ProgressStatus) => {

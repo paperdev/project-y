@@ -233,12 +233,12 @@ const checkVideoExist = async (name: string) => {
   }
 
   try {
-    const getURLOptions: StatOptions = {
+    const statOptions: StatOptions = {
       path: `${DOWNLOAD_PATH}/${name}${DOWNLOAD_FORMAT}`,
       directory: Directory.Documents
     };
 
-    const resStat = await Filesystem.stat(getURLOptions);
+    const resStat = await Filesystem.stat(statOptions);
     return resStat;
   } catch (error) {
     return null;
