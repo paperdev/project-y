@@ -61,10 +61,12 @@ function ComponentProgressBar({
     <>
       <div className='ion-button rounded-xl shadow-sm p-1 w-full h-12 border border-blue-500 cursor-pointer' onClick={onClick}>
         <div className='relative h-full flex items-center justify-center'>
-          <div className={`absolute top-0 bottom-0 left-0 rounded-xl bg-blue-500`} style={{width : `${percent}%`}}></div>
           {
             showProgress
-              ? <IonText color='medium' className='relative font-bold'>{percent}%</IonText>
+              ? <>
+                  <div className={`absolute top-0 bottom-0 left-0 rounded-xl bg-blue-500`} style={{width : `${percent}%`}}></div>
+                  <IonText color='medium' className='relative font-bold'>{percent}%</IonText>
+                </>
               : <IonIcon color='primary' size='large' icon={isDownloaded ? cloudDownload : cloudDownloadOutline}></IonIcon>
           }
         </div>
