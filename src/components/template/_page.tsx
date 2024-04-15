@@ -47,7 +47,7 @@ export default function TemplatePage({
 
   return (
     <>
-      <IonPage id='rootPage' className='safe-area-padding'>
+      <IonPage id='rootPage' className='safe-area-padding paper-default-view'>
         {
           showHeader && <Header />
         }
