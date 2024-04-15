@@ -13,6 +13,9 @@ import { Capacitor } from '@capacitor/core';
 import { Query } from '@/shared/interface/query';
 import { getCurrentLocation } from '@/utils/request';
 import { Options } from '@/shared/interface/options';
+import { IonApp, setupIonicReact } from '@ionic/react';
+
+setupIonicReact({ mode: 'ios' });
 
 const defaultQuery: Query = {
   regionCode: process.env.DEFAULT_REGION ? process.env.DEFAULT_REGION : 'US',
@@ -83,7 +86,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <QueryContext.Provider value={query}>
               <SetQueryContext.Provider value={setQuery}>
                 <QueryClientProvider client={queryClient}>
-                  {children}
+                  <IonApp>
+                    {children}
+                  </IonApp>
                 </QueryClientProvider>
               </SetQueryContext.Provider>
             </QueryContext.Provider>

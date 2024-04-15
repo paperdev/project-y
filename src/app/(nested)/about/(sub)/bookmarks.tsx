@@ -10,6 +10,7 @@ import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 import BookmarkPlayerPage from './bookmarkPlayer';
 import { deleteAllBookmark, deleteBookmark, getBookmarkList } from '@/utils/preferences';
+import { clearVideo, deleteVideo } from '@/utils/video';
 
 
 export default function BookmarksPage() {
@@ -49,6 +50,7 @@ export default function BookmarksPage() {
     setBookmarkList(temp);
 
     await deleteBookmark(item.id);
+    await deleteVideo(item.name);
   }
 
   const { isPending, error, data, isFetching } = useQuery({
@@ -118,13 +120,15 @@ export default function BookmarksPage() {
     if (!accordionGroupRef.current) {
       return;
     }
-    accordionGroupRef.current.value = accordionGroupRef.current.value ? undefined : Object.keys(expandList!);
+
+    accordionGroupRef.current.value = accordionGroupRef.current.value || !expandList ? undefined : Object.keys(expandList);
     setAllHiddenFlag(!allHiddenFlag);
   }
 
   const onClickConfirmClear = async (event: React.SyntheticEvent) => {
     setBookmarkList({});
     await deleteAllBookmark();
+    await clearVideo();
 
     if(!queryClient) {
       return;
@@ -152,45 +156,51 @@ export default function BookmarksPage() {
       <SubTemplate title='Bookmarks' padding='p-0'>
         <IonAccordionGroup ref={accordionGroupRef} multiple={true} onClick={onClickGroup}>
           {
-            bookmarkList && 
-            Object.keys(bookmarkList).map((key: string) => {
-              return (
-                  <IonAccordion key={key} value={key}>
+            (!bookmarkList || 0 === Object.keys(bookmarkList).length)
+              ? 
+                <IonGrid className='font-bold'>
+                  <IonLabel className='justify-center flex' color={'medium'}>No bookmarks have been added yet!</IonLabel>
+                  <IonLabel className='justify-center flex mt-2' color={'medium'}>Please add some.</IonLabel>
+                </IonGrid>
+              : 
+                Object.keys(bookmarkList).map((key: string) => {
+                  return (
+                      <IonAccordion key={key} value={key}>
 
-                    <IonItem slot='header' color={'medium'} className='opacity-60'>
-                      <IonLabel>{key}</IonLabel>
-                    </IonItem>
+                        <IonItem slot='header' color={'medium'} className='opacity-60'>
+                          <IonLabel>{key}</IonLabel>
+                        </IonItem>
 
-                    <div slot='content'>
-                      {
-                        bookmarkList[key].map((item: iBookmark, index: number) => {
-                          return (
-                            <IonItemSliding key={index}>
-                              <IonNavLink routerDirection='forward' component={() => <BookmarkPlayerPage bookmark={item} onClickDelete={(event) => {onClickDelete(event, key, index, false)}} />}>
-                                <IonItem>
-                                  <IonText className='truncate overflow-hidden'>
-                                    {item.name}
-                                  </IonText>
-                                </IonItem>
-                              </IonNavLink>
+                        <div slot='content'>
+                          {
+                            bookmarkList[key].map((item: iBookmark, index: number) => {
+                              return (
+                                <IonItemSliding key={index}>
+                                  <IonNavLink routerDirection='forward' component={() => <BookmarkPlayerPage bookmark={item} onClickDelete={(event) => {onClickDelete(event, key, index, false)}} />}>
+                                    <IonItem>
+                                      <IonText className='truncate overflow-hidden'>
+                                        {item.name}
+                                      </IonText>
+                                    </IonItem>
+                                  </IonNavLink>
 
-                              <IonItemOptions>
-                                <IonItemOption color='primary'>
-                                  <IonIcon slot='icon-only' icon={share} onClick={() => {onClickShare(key, index)}} />
-                                </IonItemOption>
-                                <IonItemOption color='danger'>
-                                  <IonIcon slot='icon-only' icon={trash} onClick={(event) => {onClickDelete(event, key, index, true)}} />
-                                </IonItemOption>
-                              </IonItemOptions>
-                            </IonItemSliding>
-                          )
-                        })
-                      }
-                    </div>
+                                  <IonItemOptions>
+                                    <IonItemOption color='primary'>
+                                      <IonIcon slot='icon-only' icon={share} onClick={() => {onClickShare(key, index)}} />
+                                    </IonItemOption>
+                                    <IonItemOption color='danger'>
+                                      <IonIcon slot='icon-only' icon={trash} onClick={(event) => {onClickDelete(event, key, index, true)}} />
+                                    </IonItemOption>
+                                  </IonItemOptions>
+                                </IonItemSliding>
+                              )
+                            })
+                          }
+                        </div>
 
-                  </IonAccordion>
-              )
-            })
+                      </IonAccordion>
+                  )
+                })
           }
         </IonAccordionGroup>
       </SubTemplate>

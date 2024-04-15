@@ -59,7 +59,11 @@ export default function ComponentSearchVideoCard({
         </IonCardHeader>
 
         <IonCardContent>
-          <ComponentPlayer videoId={video.id.videoId} />
+          {
+            video.snippet.thumbnails['high']
+              ? <ComponentPlayer videoId={video.id.videoId} thumbnailURL={video.snippet.thumbnails['high'].url} />
+              : <ComponentPlayer videoId={video.id.videoId}/>
+          }
         </IonCardContent>
 
         <div className='flex flex-row justify-between'>

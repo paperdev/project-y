@@ -1,10 +1,43 @@
 'use client';
 
-import { IonButton, IonButtons, IonChip, IonContent, IonHeader, IonIcon, IonLabel, IonModal, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonChip, IonContent, IonHeader, IonIcon, IonLabel, IonPage, IonTitle, IonToolbar, useIonModal } from '@ionic/react';
 import ChannelPage from '@/app/(pages)/channel/page';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ellipsisHorizontalCircle } from 'ionicons/icons';
 import { QueryContext, SetQueryContext } from '@/app/providers';
+
+const ChannelModal = (
+  {
+    channelTitle,
+    onDismiss,
+  }: {
+    channelTitle: string;
+    onDismiss: any;
+  }
+) => {
+  const onClickClose = () => {
+    onDismiss();
+  }
+
+  return (
+    <IonPage className='ion-padding-top ion-padding-bottom'>
+
+      <IonHeader collapse='condense'>
+        <IonToolbar>
+          <IonTitle color={'primary'}>{channelTitle}</IonTitle>
+          <IonButtons slot='end'>
+            <IonButton onClick={onClickClose}>Close</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent>
+        <ChannelPage/>
+      </IonContent>
+
+    </IonPage>
+  )
+}
 
 export default function ComponentChannelButton({
   channelId,
@@ -15,10 +48,16 @@ export default function ComponentChannelButton({
   channelTitle: string;
   etag: string;
 }) {
-  const modal = useRef<HTMLIonModalElement>(null);
   const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
   const query = useContext(QueryContext);
   const setQuery = useContext(SetQueryContext);
+  const [present, dismiss] = useIonModal(
+    ChannelModal,
+    {
+      channelTitle: channelTitle,
+      onDismiss: () => { dismiss(); },
+    }
+  );
 
   const onClickChannel = () => {
     setQuery({
@@ -27,10 +66,13 @@ export default function ComponentChannelButton({
       channelId: channelId,
       searchKey: query.searchKey,
     });
-  }
 
-  const onClickClose = () => {
-    modal.current?.dismiss();
+    present(
+      {
+        // initialBreakpoint: 0.95,
+        presentingElement: presentingElement!
+      }
+    );
   }
 
   useEffect(() => {
@@ -46,37 +88,11 @@ export default function ComponentChannelButton({
     <>
       <IonChip 
         color={'primary'}
-        id={`open-channel-${channelId}-${etag}`}
         onClick={onClickChannel}
       >
         <IonLabel>{channelTitle}</IonLabel>
         <IonIcon icon={ellipsisHorizontalCircle} />
       </IonChip>
-
-      <IonModal
-        showBackdrop={true}
-        ref={modal}
-        trigger={`open-channel-${channelId}-${etag}`}
-        // presentingElement={presentingElement!}
-        initialBreakpoint={0.94}
-      >
-        <IonPage className='ion-padding-top ion-padding-bottom'>
-
-          <IonHeader collapse='condense'>
-            <IonToolbar>
-              <IonTitle color={'primary'}>{channelTitle}</IonTitle>
-              <IonButtons slot='end'>
-                <IonButton onClick={onClickClose}>Close</IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-
-          <IonContent>
-            <ChannelPage/>
-          </IonContent>
-
-        </IonPage>
-      </IonModal>
     </>
   );
 }
