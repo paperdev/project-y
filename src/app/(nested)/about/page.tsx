@@ -7,7 +7,7 @@ import ListPage from './listPage';
 export default function Page() {
   return (
     <>
-      <IonNav id='aboutNav' animated={true} swipeGesture={true} root={() => <ListPage />} />
+      <IonNav className='paper-default-view' id='aboutNav' animated={true} swipeGesture={true} root={() => <ListPage />} />
     </>
   )
 }

@@ -8,6 +8,12 @@
   }
 }
 
+@layer components {
+  .paper-default-view {
+    @apply max-w-2xl flex flex-col mx-auto max-h-screen
+  }
+}
+
 @import '@ionic/react/css/core.css';
 /* Basic CSS for apps built with Ionic */
 @import '@ionic/react/css/normalize.css';
