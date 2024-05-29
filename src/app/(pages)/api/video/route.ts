@@ -6,22 +6,22 @@ export async function GET(request: NextRequest) {
     url: '',
     error: ''
   }
+  
+  const url = new URL(request.url);
+  const searchParams = new URLSearchParams(url.search);
+
+  const apiKey = searchParams.get("apiKey");
+  const videoId = searchParams.get("videoId");
+  
+  if (!apiKey || !videoId) {
+    return NextResponse.json(result);
+  }
+
+  if (process.env.API_KEY !== apiKey) {
+    return NextResponse.json(result);
+  }
+
   try {
-
-    const url = new URL(request.url);
-    const searchParams = new URLSearchParams(url.search);
-
-    const apiKey = searchParams.get("apiKey");
-    const videoId = searchParams.get("videoId");
-    
-    if (!apiKey || !videoId) {
-      return NextResponse.json(result);
-    }
-
-    if (process.env.API_KEY !== apiKey) {
-      return NextResponse.json(result);
-    }
-
     const video = await getVideoInfo({videoURL: process.env.YOUTUBE_URL_WATCH + videoId});
     return NextResponse.json(video);
   }
