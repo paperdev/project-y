@@ -8,8 +8,14 @@ export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);
 
+  const apiKey = searchParams.get("apiKey");
   const videoId = searchParams.get("videoId");
-  if (!videoId) {
+  
+  if (!apiKey || !videoId) {
+    return NextResponse.json(result);
+  }
+
+  if (process.env.API_KEY !== apiKey) {
     return NextResponse.json(result);
   }
 
