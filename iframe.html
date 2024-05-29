@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name='viewport' content='width=device-width' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
     <style>
-      body {
-        margin: 0;
+      html {
+        overflow: hidden;
       }
+      
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: absolute;
+        margin: 0;
+        padding: 0;
+      }
+
       .container {
         position: relative;
         width: 100%;
-        height: 0;
-        padding-bottom: 56.25%;
+        height: 100%;
       }
+      
       .video {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-      }
+      }      
     </style>
   </head>
   <body>
@@ -58,8 +68,8 @@
         // console.log(msg);
       }
 
-      const viewport = document.querySelector('meta[name=viewport]');
-      viewport.setAttribute('content', 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1.0, viewport-fit=cover');
+      // const viewport = document.querySelector('meta[name=viewport]');
+      // viewport.setAttribute('content', 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1.0, viewport-fit=cover');
 
       var tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
@@ -69,8 +79,8 @@
       var player;
       function onYouTubeIframeAPIReady() {
         player = new YT.Player(randomPlayerId, {
-          width: '1000',
-          height: '1000',
+          width: '1280',
+          height: '720',
           videoId: videoId_s,
           playerVars: {
             autoplay: autoplay,
