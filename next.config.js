@@ -12,6 +12,7 @@ const nextConfig = {
   /* config options here */
   env: {
     DEFAULT_REGION: process.env.DEFAULT_REGION,
+    API_KEY: process.env.API_KEY,
     YOUTUBE_KEY: process.env.YOUTUBE_KEY,
     YOUTUBE_BASE_URL: process.env.YOUTUBE_BASE_URL,
 
