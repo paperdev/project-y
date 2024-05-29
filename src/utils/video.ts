@@ -115,7 +115,9 @@ const getRemoteFile = async (url: string) => {
       res = await Http.get({url: process.env.YOUTUBE_URL + url});
     }
     else {
-      res = await axiosInstanceVideo.get(url);
+      res = await axiosInstanceVideo.get(process.env.YOUTUBE_URL + url);
+      // TODO: fixed
+      // res = await axiosInstanceVideo.get(url);
     }
     return res.data;
   } catch (e) {
