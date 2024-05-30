@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   let result = {
     url: '',
+    env: process.env.NODE_ENV,
     error: ''
   }
   
