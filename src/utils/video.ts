@@ -115,13 +115,16 @@ const getRemoteFile = async (url: string) => {
       res = await Http.get({url: process.env.YOUTUBE_URL + url});
     }
     else {
-      res = await axiosInstanceVideo.get(process.env.YOUTUBE_URL + url);
-      // TODO: fixed
-      // res = await axiosInstanceVideo.get(url);
+      if ('development' === process.env.NODE_ENV) {
+        res = await axiosInstanceVideo.get(url);
+      }
+      else {
+        res = await axiosInstanceVideo.get(process.env.YOUTUBE_URL + url);
+      }
     }
     return res.data;
-  } catch (e) {
-    return null;
+  } catch (error) {
+    throw error
   }
 };
 
@@ -136,10 +139,13 @@ const getVideoInfo = async ({ videoURL, iTag = 18, withDetails = false }: {video
     res = await Http.get({url: videoURL + '&app=desktop'});
   }
   else {
-    let url = videoURL.startsWith(process.env.YOUTUBE_URL)
+    let url = videoURL;
+    if ('development' === process.env.NODE_ENV) {
+      url = videoURL.startsWith(process.env.YOUTUBE_URL)
       ? videoURL.slice(process.env.YOUTUBE_URL.length)
       : videoURL;
-
+    }
+    
     res = await axiosInstanceVideo.get(url + '&app=desktop');
   }
   
