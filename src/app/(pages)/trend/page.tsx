@@ -40,7 +40,7 @@ export default function Page() {
         messages={[
           'The current region is not available.',
           'Try a different region.',
-          'Message: ' + error.message,
+          // 'Message: ' + error.message,
         ]}
       />
     );
@@ -53,8 +53,8 @@ export default function Page() {
   return (
     <>
       {
-        0 !== searchItem.length && <ComponentItemList dataItem={searchItem} />
-      }
+          0 !== searchItem.length && <ComponentItemList dataItem={searchItem} />
+        }
     </>
   );
 }

@@ -7,15 +7,13 @@ import {
   type Dispatch,
   useEffect,
 } from 'react';
-import { NextUIProvider } from '@nextui-org/react';
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import { useRouter } from 'next/navigation';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Query } from '@/shared/interface/query';
 import { getCurrentLocation } from '@/utils/request';
+import { Options } from '@/shared/interface/options';
+import { IonApp, setupIonicReact } from '@ionic/react';
+
+setupIonicReact({ mode: 'ios' });
 
 const defaultQuery: Query = {
   regionCode: process.env.DEFAULT_REGION ? process.env.DEFAULT_REGION : 'US',
@@ -27,11 +25,26 @@ const SetQueryContext = createContext<Dispatch<SetStateAction<Query>>>(
   () => {}
 );
 
+const defaultOptions: Options = {
+  theme: 'light',
+  showHeader: true,
+  showBackButton: false,
+  showContent: true,
+  showFooter: true,
+  title: 'Trend Insight',
+  subTitle: '',
+};
+
+const OptionsContext = createContext<Options>(defaultOptions);
+const SetOptionsContext = createContext<Dispatch<SetStateAction<Options>>>(
+  () => {}
+);
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const [query, setQuery] = useState<Query>(defaultQuery);
+  const [options, setOptions] = useState<Options>(defaultOptions);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const router = useRouter();
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -62,20 +75,27 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <>
       {!isLoading && (
-        <QueryContext.Provider value={query}>
-          <SetQueryContext.Provider value={setQuery}>
-            <QueryClientProvider client={queryClient}>
-              <NextThemesProvider attribute='class'>
-                <NextUIProvider navigate={router.push}>
-                  {children}
-                </NextUIProvider>
-              </NextThemesProvider>
-            </QueryClientProvider>
-          </SetQueryContext.Provider>
-        </QueryContext.Provider>
+        <OptionsContext.Provider value={options}>
+          <SetOptionsContext.Provider value={setOptions}>
+            <QueryContext.Provider value={query}>
+              <SetQueryContext.Provider value={setQuery}>
+                <QueryClientProvider client={queryClient}>
+                  <IonApp>
+                    {children}
+                  </IonApp>
+                </QueryClientProvider>
+              </SetQueryContext.Provider>
+            </QueryContext.Provider>
+          </SetOptionsContext.Provider>
+        </OptionsContext.Provider>
       )}
     </>
   );
 }
 
-export { QueryContext, SetQueryContext };
+export { 
+  QueryContext, 
+  SetQueryContext,
+  OptionsContext,
+  SetOptionsContext,
+};

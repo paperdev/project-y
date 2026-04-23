@@ -1,2 +1,2 @@
 # project-y
-Project Y
+Click to visit [https://papertrend.vercel.app/](https://papertrend.vercel.app/)

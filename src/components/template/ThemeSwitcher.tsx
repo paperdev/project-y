@@ -1,39 +1,60 @@
 'use client';
 
-import { useTheme } from 'next-themes';
 import React, { useEffect, useState } from 'react';
-import { Switch } from '@nextui-org/react';
-import { MdLightMode, MdDarkMode } from 'react-icons/md';
+import { IonButton, IonIcon } from '@ionic/react';
+import { contrast, contrastOutline } from 'ionicons/icons';
+import { getTheme, setTheme } from '@/utils/preferences';
 
 export function ThemeSwitcher() {
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const [isSelected, setIsSelected] = useState(theme === 'dark' ? true : false);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.target.checked ? setTheme('dark') : setTheme('light');
-    setIsSelected(event.target.checked);
+  const toggleDarkTheme = (shouldAdd: boolean) => {
+    document.body.classList.toggle('dark', shouldAdd);
   };
 
   useEffect(() => {
-    setMounted(true);
+    const getCurrentTheme = async () => {
+      setIsLoading(true);
+      const value = await getTheme();
+      
+      let isDark: boolean;
+      if (value) {
+        isDark = 'dark' === value ? true : false;
+        toggleDarkTheme(isDark);
+        await saveDarkTheme(isDark);
+        setIsLoading(false);
+        return;
+      }
+
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      isDark = prefersDark.matches;
+      toggleDarkTheme(isDark);
+      await saveDarkTheme(isDark);
+      setIsLoading(false);
+    };
+
+    getCurrentTheme();
   }, []);
 
-  if (!mounted) return null;
+  const onClick = () => {
+    toggleDarkTheme(!isDarkTheme);
+    saveDarkTheme(!isDarkTheme);
+  }
+
+  const saveDarkTheme = async (isDark: boolean) => {
+    setIsDarkTheme(isDark);
+    await setTheme(isDark ? 'dark' : 'light');
+  }
 
   return (
     <>
-      <Switch
-        isSelected={isSelected}
-        onValueChange={setIsSelected}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          onChange(event);
-        }}
-        size='md'
-        color='primary'
-        startContent={<MdLightMode />}
-        endContent={<MdDarkMode />}
-      />
+      {
+        !isLoading && 
+          <IonButton slot='end' fill='clear' onClick={onClick} >
+            <IonIcon color='primary' size='large' icon={isDarkTheme ? contrastOutline : contrast} /> 
+          </IonButton>
+      }
     </>
   );
 }

@@ -1,16 +1,18 @@
 import '@/css/globals.css';
-import TemplateHome from '@/components/template/home';
+import 'animate.css';
 import { Providers } from './providers';
-import type { Viewport } from 'next'
- 
+
+import type { Viewport } from 'next';
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
+  minimumScale: 1,
   userScalable: false,
+  viewportFit: 'cover',
   // Also supported by less commonly used
   // interactiveWidget: 'resizes-visual',
-}
+};
 
 export default function RootLayout({
   children,
@@ -19,11 +21,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' suppressHydrationWarning={true}>
+      <head>
+        <meta name='color-scheme' content='light dark' />
+      </head>
       <body>
         <Providers>
-          <TemplateHome>
-            {children}
-          </TemplateHome>
+          {children}
         </Providers>
       </body>
     </html>

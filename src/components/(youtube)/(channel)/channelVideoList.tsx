@@ -1,15 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import {
-  Divider,
-  Spinner,
-} from '@nextui-org/react';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { getPlayListItems } from '@/utils/request';
 import { useQuery } from '@tanstack/react-query';
 import ComponentChannelVideoCard from '@/components/(youtube)/(channel)/channelVideoCard';
 import { iChannelVideoItem } from '@/shared/interface/channelVideo';
+import { IonInfiniteScroll, IonInfiniteScrollContent, IonList } from '@ionic/react';
 
 export default function ComponentChannelVideoList({
   playlistId,
@@ -19,7 +15,6 @@ export default function ComponentChannelVideoList({
   const [recentVideo, setRecentVideo] = useState<iChannelVideoItem[]>([]);
   const [pageToken, setPageToken] = useState<string>('');
   const [totalResults, setTotalResults] = useState<number>(0);
-  const [loadMore, setLoadMore] = useState<boolean>(true);
 
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['channelVideoList', playlistId],
@@ -39,7 +34,6 @@ export default function ComponentChannelVideoList({
 
   const loadMoreVideo = async () => {
     if (recentVideo.length >= totalResults) {
-      setLoadMore(false);
       return;
     }
 
@@ -50,32 +44,22 @@ export default function ComponentChannelVideoList({
 
   return (
     <>
-      <InfiniteScroll
-        dataLength={recentVideo.length}
-        next={loadMoreVideo}
-        scrollThreshold={'200px'}
-        hasMore={loadMore}
-        loader={
-          <div className='flex justify-center'>
-            <Spinner label='Loading...' color='primary' />
-          </div>
-        }
-        endMessage={
-          <div className='flex justify-center font-bold'>No more videos!</div>
-        }
-        scrollableTarget='scrollableElementDiv'
-      >
-
+      <IonList lines='none'>
         {recentVideo.map((video, index) => {
           return (
-            <div key={index}>
-              <ComponentChannelVideoCard video={video} />
-              <Divider />
-            </div>
+            <ComponentChannelVideoCard key={index} video={video} />
           );
         })}
+      </IonList>
 
-      </InfiniteScroll>
+      <IonInfiniteScroll
+        onIonInfinite={(event) => {
+          loadMoreVideo();
+          setTimeout(() => event.target.complete(), 500);
+        }}
+      >
+        <IonInfiniteScrollContent loadingSpinner='circular' />
+      </IonInfiniteScroll>
     </>
   );
 }

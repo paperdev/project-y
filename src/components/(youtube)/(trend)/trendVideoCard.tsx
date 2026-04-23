@@ -3,35 +3,18 @@
 import React, { useState } from 'react';
 import ComponentPlayer from '@/components/(youtube)/player';
 import { ComponentTag, ComponentHiddenTag } from '@/components/(youtube)/tag';
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Link,
-} from '@nextui-org/react';
-import {
-  MdThumbUp,
-  MdVisibility,
-  MdComment,
-  MdFavorite,
-  MdExpandMore,
-  MdExpandLess,
-  MdUnfoldMore,
-  MdUnfoldLess,
-  MdZoomOutMap,
-} from 'react-icons/md';
 import { iTrendVideoItem } from '@/shared/interface/trendVideo';
+import ComponentChannelButton from '@/components/(youtube)/channelButton';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonLabel } from '@ionic/react';
+import { bookmark, caretDownCircleOutline, caretUpCircleOutline, chatboxEllipses, chevronCollapse, chevronExpand, eye, heartCircle } from 'ionicons/icons';
 import DecodedText from '@/components/template/decodedText';
-
-// https://www.youtube.com/watch?app=desktop&v=m76PnRxrcQM&embeds_referring_euri=https://lonelycpp.github.io/&embeds_referring_origin=https://lonelycpp.github.io&source_ve_path=Mjg2NjY&feature=emb_logo&ab_channel=NewHeights
-// https://www.youtube.com/watch?app=desktop&v=RgKAFK5djSk&embeds_referring_euri=https://lonelycpp.github.io/&embeds_referring_origin=https://lonelycpp.github.io&source_ve_path=Mjg2NjY&feature=emb_logo&ab_channel=NewHeights
+import { formatDate, formatNumber } from '@/utils/helper';
+import ComponentExpandButton from '@/components/(youtube)/expandButton';
 
 export default function ComponentTrendVideoCard({
-  video
+  video,
 }: {
-  video: iTrendVideoItem
+  video: iTrendVideoItem;
 }) {
   const [tagExpanded, setTagExpanded] = useState<boolean>(false);
   const [descExpanded, setDescExpanded] = useState<boolean>(false);
@@ -42,23 +25,10 @@ export default function ComponentTrendVideoCard({
     }
 
     const currentDescElement =
-      event.currentTarget.parentElement?.parentElement?.parentElement?.getElementsByClassName(
+      event.currentTarget.parentElement?.parentElement?.getElementsByClassName(
         'hiddenDescClass'
       )[0];
-    const isHidden = currentDescElement?.classList.contains('hidden');
-    if (isHidden) {
-      currentDescElement?.classList.remove('hidden');
-    } else {
-      currentDescElement?.classList.add('hidden');
-    }
-
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
+    currentDescElement?.classList.toggle('hidden');
 
     setDescExpanded(!descExpanded);
   };
@@ -72,63 +42,55 @@ export default function ComponentTrendVideoCard({
       event.currentTarget.parentElement?.parentElement?.getElementsByClassName(
         'hiddenTagClass'
       )[0];
-    const isHidden = currentTagElement?.classList.contains('hidden');
-    if (isHidden) {
-      currentTagElement?.classList.remove('hidden');
-    } else {
-      currentTagElement?.classList.add('hidden');
-    }
-
-    if (!event.currentTarget.hasAttribute('data-videoid')) {
-      return;
-    }
-    const videoId = event.currentTarget.getAttribute('data-videoid');
-    if (null == videoId) {
-      return;
-    }
+    currentTagElement?.classList.toggle('hidden');
 
     setTagExpanded(!tagExpanded);
   };
 
   return (
     <>
-      <Card shadow='none' className='rounded-none'>
-        <CardHeader>
-          <div>
-            <DecodedText text={video.snippet.title} className='text-2xl font-bold text-primary-500' />
-            <span className='text-xs ml-2 text-default-500'>
-              {video.snippet.publishedAt}
-            </span>
-            <div className='flex mt-2 gap-2 items-center'>
-              <div className='text-default-500'>Channel : </div>
-              <Link
-                showAnchorIcon
-                anchorIcon={<MdZoomOutMap />}
-                href={'/channel?channelId=' + video.snippet.channelId}
-              >
-                {video.snippet.channelTitle}
-              </Link>
-            </div>
-          </div>
-        </CardHeader>
-
-        <CardBody className='flex '>
-          <div className='flex justify-between'>
-            <ComponentTag
-              className='flex flex-wrap gap-1'
-              tags={video.snippet.tags}
+      <IonCard>
+        <IonCardHeader>
+          <IonCardSubtitle className='flex items-center'>
+            <ComponentChannelButton
+              channelId={video.snippet.channelId}
+              channelTitle={video.snippet.channelTitle}
+              etag={video.etag}
             />
+          </IonCardSubtitle>
+          <IonLabel className='ml-2'>
+            {formatDate(video.snippet.publishedAt)}
+          </IonLabel>
+          <IonCardTitle color={'primary'} className='text-xl'>
+            <DecodedText text={video.snippet.title} className='' />
+          </IonCardTitle>
+        </IonCardHeader>
 
-            <Button
-              isIconOnly
-              variant='flat'
-              className='w-7 h-7'
-              onClick={onClickTagExpand}
-              data-videoid={video.id}
-            >
-              {tagExpanded ? <MdUnfoldLess /> : <MdUnfoldMore />}
-            </Button>
-          </div>
+        <IonCardContent>
+          {
+            (!video.snippet.tags) 
+              ? 
+                <IonLabel>No tags!</IonLabel>
+              : 
+              <div className='flex justify-between'>
+                <ComponentTag
+                  className='flex flex-wrap gap-1'
+                  tags={video.snippet.tags}
+                />
+    
+                <IonButton
+                  onClick={onClickTagExpand}
+                  size='small'
+                  fill='clear'
+                >
+                  {tagExpanded ? (
+                    <IonIcon slot='icon-only' icon={chevronCollapse} />
+                  ) : (
+                    <IonIcon slot='icon-only' icon={chevronExpand} />
+                  )}
+                </IonButton>
+              </div>
+          }
 
           <div className='hiddenTagClass hidden pt-1'>
             <ComponentHiddenTag
@@ -136,54 +98,61 @@ export default function ComponentTrendVideoCard({
               tags={video.snippet.tags}
             />
           </div>
-        </CardBody>
 
-        <CardBody>
-          <ComponentPlayer videoId={video.id} />
-        </CardBody>
+          <div className='mt-2'>
+            {
+              video.snippet.thumbnails['standard']
+                ? <ComponentPlayer videoId={video.id} thumbnailURL={video.snippet.thumbnails['standard'].url} />
+                : <ComponentPlayer videoId={video.id}/>
+            }
+          </div>
+        </IonCardContent>
 
-        <CardFooter className='justify-between'>
+        <div className='flex flex-row justify-between'>
+          <ComponentExpandButton videoId={video.id} videoTitle={video.snippet.title} channelTitle={video.snippet.channelTitle} />
+
           <div className='flex flex-row gap-4'>
             {video.statistics && (
               <>
-                <div className='flex gap-1 items-center text-gray-600'>
-                  <MdThumbUp />
-                  <div>{video.statistics.likeCount}</div>
+                <div className='flex gap-1 items-center'>
+                  <IonIcon icon={heartCircle} />
+                  <div>{formatNumber(video.statistics.likeCount)}</div>
                 </div>
 
-                <div className='flex gap-1 items-center text-gray-600'>
-                  <MdVisibility />
-                  <div>{video.statistics.viewCount}</div>
+                <div className='flex gap-1 items-center'>
+                  <IonIcon icon={eye} />
+                  <div>{formatNumber(video.statistics.viewCount)}</div>
                 </div>
 
-                <div className='flex gap-1 items-center text-gray-600'>
-                  <MdComment />
-                  <div>{video.statistics.commentCount}</div>
+                <div className='flex gap-1 items-center'>
+                  <IonIcon icon={chatboxEllipses} />
+                  <div>{formatNumber(video.statistics.commentCount)}</div>
                 </div>
 
-                <div className='flex gap-1 items-center text-gray-600'>
-                  <MdFavorite />
-                  <div>{video.statistics.favoriteCount}</div>
+                <div className='flex gap-1 items-center'>
+                  <IonIcon icon={bookmark} />
+                  <div>{formatNumber(video.statistics.favoriteCount)}</div>
                 </div>
               </>
             )}
           </div>
 
-          <Button
-            isIconOnly
-            variant='flat'
-            className='w-7 h-7'
+          <IonButton
             onClick={onClickDescExpand}
-            data-videoid={video.id}
+            fill='clear'
           >
-            {descExpanded ? <MdExpandLess /> : <MdExpandMore />}
-          </Button>
-        </CardFooter>
+            {descExpanded ? (
+              <IonIcon slot='icon-only' icon={caretUpCircleOutline} size='large' />
+            ) : (
+              <IonIcon slot='icon-only' icon={caretDownCircleOutline} size='large' />
+            )}
+          </IonButton>
+        </div>
 
-        <CardBody className='hiddenDescClass hidden whitespace-pre-wrap'>
-          {video.snippet.description}
-        </CardBody>
-      </Card>
+        <div className='hiddenDescClass hidden whitespace-pre-wrap'>
+          <IonCardContent>{video.snippet.description}</IonCardContent>
+        </div>
+      </IonCard>
     </>
   );
 }

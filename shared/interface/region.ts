@@ -19,7 +19,7 @@ interface iSnippet {
 interface iRegionElement {
   label: string;
   value: string;
-  src: string;
+  src?: string;
 }
 
 export {

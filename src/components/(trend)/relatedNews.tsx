@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Link, Card, CardHeader } from '@nextui-org/react';
 import { iArticle } from '@/shared/interface/trendItem';
 import ComponentImage from '@/components/(trend)/image';
-import DecodedText from '../template/decodedText';
+import DecodedText from '@/components/template/decodedText';
+import { IonCol, IonItem } from '@ionic/react';
 
 export default function ComponentRelatedNews({
   className,
@@ -19,33 +19,37 @@ export default function ComponentRelatedNews({
 
   return (
     <>
-      <div className={`${className} `}>
+      <div className={`${className} overflow-x-scroll`}>
         {relatedNews.map((article: iArticle, index: number) => {
-          return (
-            <Link
-              key={index}
-              onPress={() => {
-                window.open(article.url, '_blank', 'noopener,noreferrer');
-              }}
-              className='min-w-full'
-            >
-              <Card className='w-full'>
-                <CardHeader className='gap-4'>
+          if (article.image) {
+            return (
+              <IonItem
+                button={true}
+                key={index}
+                onClick={() => {
+                  window.open(article.url, '_blank', 'noopener,noreferrer');
+                }}
+                className='min-w-full rounded-lg border-with border'
+              >
+                <IonCol slot='start' size='auto'>
                   <ComponentImage
+                    className='flex w-full h-full'
                     dataImage={article.image}
                     isShownLink={false}
+                    isShownSource={false}
                   />
-
-                  <div>
+                </IonCol>
+                <IonCol>
+                  <div className='flex flex-col justify-center ml-2'>
                     <DecodedText text={article.title} className='whitespace-pre-wrap line-clamp-2' />
-                    <div className='text-xs mt-2 text-default-500'>
+                    <div className='text-xs mt-2'>
                       {article.source} - {article.timeAgo}
                     </div>
                   </div>
-                </CardHeader>
-              </Card>
-            </Link>
-          );
+                </IonCol>
+              </IonItem>
+            );
+          }
         })}
       </div>
     </>

@@ -1,56 +1,92 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import ComponentPlayer from '@/components/(youtube)/player';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Link,
-} from '@nextui-org/react';
 import { iSearchVideoItem } from '@/shared/interface/searchVideo';
+import ComponentChannelButton from '@/components/(youtube)/channelButton';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonIcon,
+  IonLabel,
+} from '@ionic/react';
 import DecodedText from '@/components/template/decodedText';
-import { MdZoomOutMap } from 'react-icons/md';
+import { formatDate } from '@/utils/helper';
+import ComponentExpandButton from '@/components/(youtube)/expandButton';
+import { caretDownCircleOutline, caretUpCircleOutline } from 'ionicons/icons';
 
 export default function ComponentSearchVideoCard({
   video,
 }: {
-  video: iSearchVideoItem,
+  video: iSearchVideoItem;
 }) {
+  const [descExpanded, setDescExpanded] = useState<boolean>(false);
+
+  const onClickDescExpand = (event: React.SyntheticEvent) => {
+    if (!event || !event.currentTarget) {
+      return;
+    }
+
+    const currentDescElement =
+      event.currentTarget.parentElement?.parentElement?.getElementsByClassName(
+        'hiddenDescClass'
+      )[0];
+
+    currentDescElement?.classList.toggle('hidden');
+
+    setDescExpanded(!descExpanded);
+  };
+
   return (
     <>
-      <Card shadow='none' className='rounded-none'>
-        <CardHeader>
-          <div>
-            <DecodedText text={video.snippet.title} className='text-2xl font-bold text-primary-500' />
-            <span className='text-xs ml-2 text-default-500'>
-              {video.snippet.publishedAt}
-            </span>
-            <div className='flex mt-2 gap-1'>
-              <div className='text-primary-500'>Channel : </div>
-              <Link
-                showAnchorIcon
-                anchorIcon={<MdZoomOutMap />}
-                href={'/channel?channelId=' + video.snippet.channelId}
-              >
-                {video.snippet.channelTitle}
-              </Link>
-            </div>
-          </div>
-        </CardHeader>
+      <IonCard>
+        <IonCardHeader>
+          <IonCardSubtitle className='flex items-center'>
+            <ComponentChannelButton
+              channelId={video.snippet.channelId}
+              channelTitle={video.snippet.channelTitle}
+              etag={video.etag}
+            />
+          </IonCardSubtitle>
+          <IonLabel className='ml-2'>{formatDate(video.snippet.publishedAt)}</IonLabel>
+          <IonCardTitle color={'primary'} className='text-xl'>
+            <DecodedText text={video.snippet.title} className='' />
+          </IonCardTitle>
+        </IonCardHeader>
 
-        <CardBody>
-          <ComponentPlayer videoId={video.id.videoId} />
-        </CardBody>
+        <IonCardContent>
+          {
+            video.snippet.thumbnails['high']
+              ? <ComponentPlayer videoId={video.id.videoId} thumbnailURL={video.snippet.thumbnails['high'].url} />
+              : <ComponentPlayer videoId={video.id.videoId}/>
+          }
+        </IonCardContent>
 
-        <CardFooter>
-          <div className='whitespace-pre-wrap'>
-            {video.snippet.description}
-          </div>
-          
-        </CardFooter>
-      </Card>
+        <div className='flex flex-row justify-between'>
+          <ComponentExpandButton videoId={video.id.videoId!} videoTitle={video.snippet.title} channelTitle={video.snippet.channelTitle} />
+
+          <IonButton
+            onClick={onClickDescExpand}
+            size='small'
+            fill='clear'
+          >
+            {descExpanded ? (
+              <IonIcon slot='icon-only' icon={caretUpCircleOutline} size='large' />
+            ) : (
+              <IonIcon icon={caretDownCircleOutline} size='large' />
+            )}
+          </IonButton>
+        </div>
+
+        <div className='hiddenDescClass hidden whitespace-pre-wrap'>
+          <IonCardContent>{video.snippet.description}</IonCardContent>
+        </div>
+        
+      </IonCard>
     </>
   );
 }

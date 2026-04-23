@@ -35,7 +35,7 @@ export default function Page() {
         messages={[
           'The current region is not available.',
           'Try a different region.',
-          'Message: ' + error.message,
+          // 'Message: ' + error.message,
         ]}
       />
     );
