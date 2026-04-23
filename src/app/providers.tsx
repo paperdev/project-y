@@ -8,8 +8,6 @@ import {
   useEffect,
 } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { setBackForwardNavigationGestures } from 'capacitor-plugin-ios-webview-configurator';
-import { Capacitor } from '@capacitor/core';
 import { Query } from '@/shared/interface/query';
 import { getCurrentLocation } from '@/utils/request';
 import { Options } from '@/shared/interface/options';
@@ -61,10 +59,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
         },
       })
   );
-
-  if ('web' !== Capacitor.getPlatform()) {
-    setBackForwardNavigationGestures(true);
-  }
 
   useEffect(() => {
     queryClient

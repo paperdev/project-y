@@ -3,7 +3,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import Header from './header';
 import Footer from './footer';
-import { Capacitor } from '@capacitor/core';
 import { IonContent, IonPage } from '@ionic/react';
 import { RegionSelectorMenu } from '@/components/RegionSelectorMenu';
 import { OptionsContext } from '@/app/providers';
@@ -26,16 +25,6 @@ export default function TemplatePage({
     setShowFooter(options.showFooter);
   }, [options]);
 
-
-  useEffect(() => {
-    if ('ios' === Capacitor.getPlatform()) {
-      if (window) {
-        window.addEventListener('statusTap', function () {
-          scrollToTop();
-        });
-      }
-    }
-  }, []);
 
   const scrollToTop = () => {
     if (!navTopRef.current) {

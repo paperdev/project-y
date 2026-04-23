@@ -7,14 +7,16 @@ import { IonAlert, IonButton, IonCardContent, IonCardHeader, IonCardTitle, IonCo
 import DecodedText from '@/components/template/decodedText';
 import { share, trash } from 'ionicons/icons';
 import { iBookmark } from '@/shared/interface/bookmark';
-import { Capacitor } from '@capacitor/core';
-import { Share } from '@capacitor/share';
 import { checkVideoExist, downloadVideo, getVideoInfo } from '@/utils/video';
-import { ProgressStatus } from '@capacitor/filesystem';
 import { ComponentProgressBar } from '@/components/(youtube)/progress';
 
 const THUMBNAIL_EXT_0 = '0.jpg';
 const THUMBNAIL_EXT_ST_DEFAULT = 'sddefault.jpg';
+
+type ProgressStatus = {
+  bytes: number;
+  contentLength: number;
+};
 
 export default function BookmarkPlayerPage({
   bookmark,
@@ -38,19 +40,19 @@ export default function BookmarkPlayerPage({
     checkVideoExist(bookmark.name).then((videoExist) => {
       if (videoExist && videoExist.uri) {
         setIsDownloaded(true);
-        setVideoURL(Capacitor.convertFileSrc(videoExist.uri));
+        setVideoURL(videoExist.uri);
       }
     });
   }, [])
 
   const onClickShare = async () => {
-    if ('web' === Capacitor.getPlatform()) {
+    const url = bookmark.url;
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
+      await navigator.share({ url });
       return;
     }
 
-    await Share.share({
-      url: bookmark.url,
-    });
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const onClickDownload = async () => {
@@ -79,7 +81,7 @@ export default function BookmarkPlayerPage({
     const videoURI = await checkVideoExist(bookmark.name);
 
     if (videoURI && videoURI.uri) {
-      setVideoURL(Capacitor.convertFileSrc(videoURI.uri));
+      setVideoURL(videoURI.uri);
     }
 
     setIsDownloaded(true);

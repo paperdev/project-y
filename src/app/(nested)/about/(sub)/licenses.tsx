@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { IonText } from '@ionic/react';
-import { Browser } from '@capacitor/browser';
 import SubTemplate from './template';
 
 export default function LicensesPage() {
@@ -16,18 +15,18 @@ export default function LicensesPage() {
               <IonText 
                 color={'primary'}
                 onClick={() => {
-                  Browser.open({
-                    url: 'https://developers.google.com/youtube/terms/api-services-terms-of-service',
-                  });
+                  window.open(
+                    'https://developers.google.com/youtube/terms/api-services-terms-of-service',
+                    '_blank',
+                    'noopener,noreferrer'
+                  );
                 }}
               > YouTube API Services Terms of Service </IonText>
               and
               <IonText 
                 color={'primary'}
                 onClick={() => {
-                  Browser.open({
-                    url: 'https://www.youtube.com/t/terms',
-                  });
+                  window.open('https://www.youtube.com/t/terms', '_blank', 'noopener,noreferrer');
                 }}
               > YouTube Terms of Service.</IonText>
             </li>
@@ -37,9 +36,7 @@ export default function LicensesPage() {
               <IonText 
                 color={'primary'}
                 onClick={() => {
-                  Browser.open({
-                    url: 'https://www.apache.org/licenses/LICENSE-2.0',
-                  });
+                  window.open('https://www.apache.org/licenses/LICENSE-2.0', '_blank', 'noopener,noreferrer');
                 }}
               > Apache License, Version 2.0.</IonText>
             </li>

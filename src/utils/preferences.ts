@@ -1,83 +1,56 @@
 import { iBookmark } from '@/shared/interface/bookmark';
-import { Preferences as themePreferences } from '@capacitor/preferences';
-import { Preferences as bookmarksPreferences } from '@capacitor/preferences';
 
 const GROUP_THEME = 'theme';
 const GROUP_BOOKMARKS = 'bookmarks';
 const KEY_THEME = 'theme';
 
-const initThemePreferences = async () => {
-  return themePreferences.configure(
-    {
-      group: GROUP_THEME
-    }
-  );
-}
-
-const initBookmarksPreferences = async () => {
-  return bookmarksPreferences.configure(
-    {
-      group: GROUP_BOOKMARKS
-    }
-  );
-}
+const storageKey = (group: string, key: string) => `${group}:${key}`;
 
 const getTheme = async () => {
-  await initThemePreferences();
-  const { value } = await themePreferences.get({ key: KEY_THEME });
-  return value;
+  return localStorage.getItem(storageKey(GROUP_THEME, KEY_THEME));
 }
 
 const setTheme = async (theme: 'light' | 'dark') => {
-  await initThemePreferences();
-  return themePreferences.set({
-    key: KEY_THEME,
-    value: theme
-  });
+  localStorage.setItem(storageKey(GROUP_THEME, KEY_THEME), theme);
 }
 
 const getBookmarkList = async () => {
-  await initBookmarksPreferences();
-  
-  const { keys } = await bookmarksPreferences.keys();
-  if (0 === keys.length) {
-    return [];
-  }
-  
-  return Promise.all(
-    keys.map(async (key: string) => {
-      const { value } = await bookmarksPreferences.get({ key: key });
-      if (!value) {
-        return;
-      }
+  const prefix = `${GROUP_BOOKMARKS}:`;
+  const values: iBookmark[] = [];
 
-      return JSON.parse(value);
-    })
-  );
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (!k || !k.startsWith(prefix)) continue;
+    const raw = localStorage.getItem(k);
+    if (!raw) continue;
+    try {
+      values.push(JSON.parse(raw));
+    } catch {}
+  }
+
+  return values;
 }
 
 const getBookmark = async (key: string) => {
-  await initBookmarksPreferences();
-  const { value } = await bookmarksPreferences.get({ key: key });
-  return value;
+  return localStorage.getItem(storageKey(GROUP_BOOKMARKS, key));
 }
 
 const addBookmark = async (key: string, value: iBookmark) => {
-  await initBookmarksPreferences();
-  return bookmarksPreferences.set({
-    key: key,
-    value: JSON.stringify(value),
-  });
+  localStorage.setItem(storageKey(GROUP_BOOKMARKS, key), JSON.stringify(value));
 }
 
 const deleteBookmark = async (key: string) => {
-  await initBookmarksPreferences();
-  return bookmarksPreferences.remove({key: key});
+  localStorage.removeItem(storageKey(GROUP_BOOKMARKS, key));
 }
 
 const deleteAllBookmark = async () => {
-  await initBookmarksPreferences();
-  return bookmarksPreferences.clear();
+  const prefix = `${GROUP_BOOKMARKS}:`;
+  const toDelete: string[] = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith(prefix)) toDelete.push(k);
+  }
+  toDelete.forEach((k) => localStorage.removeItem(k));
 }
 
 export { 

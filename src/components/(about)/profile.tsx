@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { iProfile } from '@/shared/interface/profile';
-import { AppLauncher } from '@capacitor/app-launcher';
 import { IonButton, IonIcon } from '@ionic/react';
 import { logoGithub, logoLinkedin, mail } from 'ionicons/icons';
 
@@ -13,14 +12,13 @@ export default function ComponentProfile({
   className: string;
   dataProfile: iProfile;
 }) {
-
-  const clickToOpen = async (url: string) => {
-    const { value } = await AppLauncher.canOpenUrl({url: url});
-
-    if (value) {
-      AppLauncher.openUrl({url: url});
+  const clickToOpen = (url: string) => {
+    if (url.startsWith('mailto:')) {
+      window.location.href = url;
+      return;
     }
-  }
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <>

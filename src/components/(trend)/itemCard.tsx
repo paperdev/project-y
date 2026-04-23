@@ -5,7 +5,6 @@ import { iTrendItem } from '@/shared/interface/trendItem';
 import ComponentImage from '@/components/(trend)/image';
 import ComponentRelatedSearch from '@/components/(trend)/relatedSearch';
 import ComponentRelatedNews from '@/components/(trend)/relatedNews';
-import { Browser } from '@capacitor/browser';
 import {
   IonCard,
   IonCardContent,
@@ -60,9 +59,8 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
               className='-ml-1'
               color={'primary'}
               onClick={() => {
-                Browser.open({
-                  url: process.env.GOOGLE_TREND_URL + item.title.exploreLink,
-                });
+                const url = (process.env.GOOGLE_TREND_URL || '') + item.title.exploreLink;
+                window.open(url, '_blank', 'noopener,noreferrer');
               }}
             >
               <IonLabel>Statistics</IonLabel>

@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { iImage } from '@/shared/interface/trendItem';
-import { Browser } from '@capacitor/browser';
 import { IonLabel } from '@ionic/react';
 
 export default function ComponentImage({
@@ -25,9 +24,7 @@ export default function ComponentImage({
       {isShownLink ? (
         <IonLabel
           onClick={() => {
-            Browser.open({
-              url: dataImage.newsUrl,
-            });
+            window.open(dataImage.newsUrl, '_blank', 'noopener,noreferrer');
           }}
         >
           <img

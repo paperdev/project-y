@@ -1,6 +1,4 @@
 import { addBookmark, deleteBookmark, getBookmark } from '@/utils/preferences';
-import { Capacitor } from '@capacitor/core';
-import { Share } from '@capacitor/share';
 import { IonButton, IonIcon, useIonToast } from '@ionic/react';
 import { bookmark, bookmarkOutline, caretBackCircleOutline, caretForwardCircleOutline, shareOutline } from 'ionicons/icons';
 import { useState } from 'react';
@@ -60,13 +58,13 @@ export default function ComponentExpandButton({
   };
 
   const onClickShare = async (event: React.SyntheticEvent) => {
-    if ('web' === Capacitor.getPlatform()) {
+    const url = (process.env.YOUTUBE_URL_WATCH || '') + videoId;
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
+      await navigator.share({ url });
       return;
     }
 
-    await Share.share({
-      url: process.env.YOUTUBE_URL_WATCH + videoId,
-    });
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const onClickButtonExpand = async (event: React.SyntheticEvent) => {

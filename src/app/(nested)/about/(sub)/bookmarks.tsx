@@ -6,8 +6,6 @@ import { iBookmark } from '@/shared/interface/bookmark';
 import { chevronDown, chevronUp, share, trash } from 'ionicons/icons';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import SubTemplate from './template';
-import { Capacitor } from '@capacitor/core';
-import { Share } from '@capacitor/share';
 import BookmarkPlayerPage from './bookmarkPlayer';
 import { deleteAllBookmark, deleteBookmark, getBookmarkList } from '@/utils/preferences';
 import { clearVideo, deleteVideo } from '@/utils/video';
@@ -21,17 +19,17 @@ export default function BookmarksPage() {
   const queryClient = useQueryClient();
 
   const onClickShare = async (key: string, index: number) => {
-    if ('web' === Capacitor.getPlatform()) {
-      return;
-    }
-
     if (!bookmarkList || !bookmarkList[key] || !bookmarkList[key][index].url) {
       return;
     }
 
-    await Share.share({
-      url: bookmarkList[key][index].url,
-    });
+    const url = bookmarkList[key][index].url;
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
+      await navigator.share({ url });
+      return;
+    }
+
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   const onClickDelete = async (event: React.SyntheticEvent, key: string, index: number, closeFlag: boolean) => {

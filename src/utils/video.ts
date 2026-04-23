@@ -1,18 +1,6 @@
-import { Http } from '@capacitor-community/http';
-import { Capacitor } from '@capacitor/core';
-import { DeleteFileOptions, Directory, DownloadFileOptions, Filesystem, ReadFileOptions, RmdirOptions, StatOptions } from '@capacitor/filesystem';
 import axios from 'axios';
 const M3U8FileParser = require('m3u8-file-parser');
 const m3u8Parser = new M3U8FileParser();
-
-const PLATFORM = {
-  ANDROID: 'android',
-  IOS: 'ios',
-  WEB: 'web',
-}
-
-const DOWNLOAD_PATH = 'Downloads';
-const DOWNLOAD_FORMAT = '.mp4';
 
 interface iVideoResult {
   url: string;
@@ -58,6 +46,9 @@ const buildDecoder = async (watchHtml: string) => {
   }
 
   const jsFileContent = await getRemoteFile(jsFileUrlMatches[0]);
+  if (!jsFileContent) {
+    return null;
+  }
   const decodeFunctionMatches = jsFileContent.match(
     /function.*\.split\(\"\"\).*\.join\(\"\"\)}/
   );
@@ -110,19 +101,11 @@ const getRemoteFile = async (url: string) => {
   }
 
   try {
-    let res;
-    if (PLATFORM.IOS === Capacitor.getPlatform()) {
-      res = await Http.get({url: process.env.YOUTUBE_URL + url});
-    }
-    else {
-      if ('development' === process.env.NODE_ENV) {
-        res = await axiosInstanceVideo.get(url);
-      }
-      else {
-        res = await axiosInstanceVideo.get(process.env.YOUTUBE_URL + url);
-      }
-    }
-    return res.data;
+    const res =
+      'development' === process.env.NODE_ENV
+        ? await axiosInstanceVideo.get(url)
+        : await axiosInstanceVideo.get(process.env.YOUTUBE_URL + url);
+    return res.data as string;
   } catch (error) {
     throw error
   }
@@ -134,20 +117,14 @@ const getVideoInfo = async ({ videoURL, iTag = 18, withDetails = false }: {video
     return null;
   }
 
-  let res;
-  if (PLATFORM.IOS === Capacitor.getPlatform()) {
-    res = await Http.get({url: videoURL + '&app=desktop'});
-  }
-  else {
-    let url = videoURL;
-    if ('development' === process.env.NODE_ENV) {
-      url = videoURL.startsWith(process.env.YOUTUBE_URL)
+  let url = videoURL;
+  if ('development' === process.env.NODE_ENV) {
+    url = videoURL.startsWith(process.env.YOUTUBE_URL)
       ? videoURL.slice(process.env.YOUTUBE_URL.length)
       : videoURL;
-    }
-    
-    res = await axiosInstanceVideo.get(url + '&app=desktop');
   }
+
+  const res = await axiosInstanceVideo.get(url + '&app=desktop');
   
   if (!res || 200 !== res.status || !res.data) {
     throw new Error('Failed to fetch data.');
@@ -214,98 +191,40 @@ const getVideoInfo = async ({ videoURL, iTag = 18, withDetails = false }: {video
 };
 
 const downloadVideo = async (name: string, url: string, onDownloadProgress: any) => {
-  if (PLATFORM.WEB === Capacitor.getPlatform()) {
-    return;
-  }
-
   try {
-    const downloadFileOptions: DownloadFileOptions = {
-      url: url,
-      path: `${DOWNLOAD_PATH}/${name}${DOWNLOAD_FORMAT}`,
+    const res = await axios.get(url, {
       responseType: 'blob',
-      progress: true,
-      recursive: true
-    };
+      onDownloadProgress,
+    });
 
-    const progressListener =  await Filesystem.addListener('progress', onDownloadProgress);
-    await Filesystem.downloadFile(downloadFileOptions);
-    await progressListener.remove();
+    const blobUrl = URL.createObjectURL(res.data);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = `${name}.mp4`;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(blobUrl);
   } catch (error) {
     throw(error);
   }
 }
 
-const checkVideoExist = async (name: string) => {
-  if (PLATFORM.WEB === Capacitor.getPlatform()) {
-    return null;
-  }
-
-  try {
-    const statOptions: StatOptions = {
-      path: `${DOWNLOAD_PATH}/${name}${DOWNLOAD_FORMAT}`,
-      directory: Directory.Documents
-    };
-
-    const resStat = await Filesystem.stat(statOptions);
-    return resStat;
-  } catch (error) {
-    return null;
-  }
+const checkVideoExist = async (name: string): Promise<{ uri: string } | null> => {
+  return null;
 }
 
-const readVideo = async (name: string) => {
-  if (PLATFORM.WEB === Capacitor.getPlatform()) {
-    return null;
-  }
-
-  try {
-    const getURLOptions: ReadFileOptions = {
-      path: `${DOWNLOAD_PATH}/${name}${DOWNLOAD_FORMAT}`,
-      directory: Directory.Documents
-    };
-
-    const resVideo = await Filesystem.readFile(getURLOptions);
-    return resVideo;
-  } catch (error) {
-    return null;
-  }
+const readVideo = async (name: string): Promise<{ data: string } | null> => {
+  return null;
 }
 
-const deleteVideo = async (name: string) => {
-  if (PLATFORM.WEB === Capacitor.getPlatform()) {
-    return null;
-  }
-
-  try {
-    const deleteFileOptions: DeleteFileOptions = {
-      path: `${DOWNLOAD_PATH}/${name}${DOWNLOAD_FORMAT}`,
-      directory: Directory.Documents
-    };
-
-    await Filesystem.deleteFile(deleteFileOptions);
-    return true;
-  } catch (error) {
-    return null;
-  }
+const deleteVideo = async (name: string): Promise<boolean | null> => {
+  return null;
 }
 
-const clearVideo = async () => {
-  if (PLATFORM.WEB === Capacitor.getPlatform()) {
-    return null;
-  }
-
-  try {
-    const rmDirOptions: RmdirOptions = {
-      path: DOWNLOAD_PATH,
-      directory: Directory.Documents,
-      recursive: true
-    };
-
-    await Filesystem.rmdir(rmDirOptions);
-    return true;
-  } catch (error) {
-    return null;
-  }
+const clearVideo = async (): Promise<boolean | null> => {
+  return null;
 }
 
 export {

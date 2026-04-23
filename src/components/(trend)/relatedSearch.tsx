@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { iTitle } from '@/shared/interface/trendItem';
-import { Browser } from '@capacitor/browser';
 import { openOutline } from 'ionicons/icons';
 import { IonChip, IonIcon, IonLabel } from '@ionic/react';
 
@@ -27,9 +26,8 @@ export default function ComponentRelatedSearch({
               className='flex-none'
               color={'primary'}
               onClick={() => {
-                Browser.open({
-                  url: process.env.GOOGLE_TREND_URL + title.exploreLink
-                })
+                const url = (process.env.GOOGLE_TREND_URL || '') + title.exploreLink;
+                window.open(url, '_blank', 'noopener,noreferrer');
               }}
             >
               <IonLabel>{title.query}</IonLabel>

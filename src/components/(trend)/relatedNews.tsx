@@ -3,7 +3,6 @@
 import React from 'react';
 import { iArticle } from '@/shared/interface/trendItem';
 import ComponentImage from '@/components/(trend)/image';
-import { Browser } from '@capacitor/browser';
 import DecodedText from '@/components/template/decodedText';
 import { IonCol, IonItem } from '@ionic/react';
 
@@ -28,9 +27,7 @@ export default function ComponentRelatedNews({
                 button={true}
                 key={index}
                 onClick={() => {
-                  Browser.open({
-                    url: article.url
-                  })
+                  window.open(article.url, '_blank', 'noopener,noreferrer');
                 }}
                 className='min-w-full rounded-lg border-with border'
               >

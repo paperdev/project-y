@@ -34,6 +34,12 @@ const nextConfig = {
     GOOGLE_TREND_DAILY_URL: process.env.GOOGLE_TREND_DAILY_URL,
   },
 
+  // Vercel Image Optimization "Cache Reads" 사용량을 피하기 위해
+  // Next 이미지 최적화(/_next/image)를 비활성화합니다.
+  images: {
+    unoptimized: true,
+  },
+
   async rewrites() {
     return [
       {
