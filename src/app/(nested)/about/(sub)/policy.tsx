@@ -121,7 +121,7 @@ export default function PolicyPage() {
             Contact Us
           </p>
           <p>
-            If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me at intverse@gmail.com
+            If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me at contact@pxlab.cc
           </p>
 
           <br/>
