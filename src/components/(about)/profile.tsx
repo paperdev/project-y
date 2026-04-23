@@ -4,7 +4,6 @@ import React from 'react';
 import { Avatar, Button } from '@nextui-org/react';
 import { LuGithub, LuMail, LuLinkedin } from 'react-icons/lu';
 import { iProfile } from '@/shared/interface/profile';
-import { Browser } from '@capacitor/browser';
 
 export default function ComponentProfile({
   className,
@@ -36,9 +35,7 @@ export default function ComponentProfile({
                 isIconOnly
                 variant='light'
                 onPress={() => {
-                  Browser.open({
-                    url: dataProfile.github
-                  })
+                  window.open(dataProfile.github, '_blank', 'noopener,noreferrer');
                 }}
               >
                 <LuGithub className='w-6 h-6' />
@@ -49,9 +46,7 @@ export default function ComponentProfile({
                 isIconOnly
                 variant='light'
                 onPress={() => {
-                  Browser.open({
-                    url: dataProfile.linkedin
-                  })
+                  window.open(dataProfile.linkedin, '_blank', 'noopener,noreferrer');
                 }}
               >
                 <LuLinkedin className='w-6 h-6' />
@@ -62,9 +57,7 @@ export default function ComponentProfile({
                 isIconOnly
                 variant='light'
                 onPress={() => {
-                  Browser.open({
-                    url: `mailto:${dataProfile.email}`
-                  })
+                  window.location.href = `mailto:${dataProfile.email}`;
                 }}
               >
                 <LuMail className='w-6 h-6' />

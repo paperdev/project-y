@@ -3,7 +3,6 @@
 import React from 'react';
 import { Link, Card, CardFooter, Image } from '@nextui-org/react';
 import { iImage } from '@/shared/interface/trendItem';
-import { Browser } from '@capacitor/browser';
 
 export default function ComponentImage({
   dataImage,
@@ -22,9 +21,7 @@ export default function ComponentImage({
         {isShownLink ? (
           <Link 
             onPress={() => {
-              Browser.open({
-                url: dataImage.newsUrl
-              })
+              window.open(dataImage.newsUrl, '_blank', 'noopener,noreferrer');
             }}
            >
             <Image

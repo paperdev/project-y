@@ -1,14 +1,5 @@
 import axios from 'axios';
-import { Http, HttpDownloadFileOptions, HttpDownloadFileResult } from '@capacitor-community/http';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { Capacitor, CapacitorCookies } from '@capacitor/core';
 import { iTrendVideo, iTrendVideoItem } from '@/shared/interface/trendVideo';
-
-const PLATFORM = {
-  ANDROID: 'android',
-  IOS: 'ios',
-  WEB: 'web',
-}
 
 const axiosInstanceYotube = axios.create(
   {
@@ -262,29 +253,6 @@ async function getGoogleTrendList(regionCode: string | null | undefined) {
     return null;
   }
 
-  if (PLATFORM.IOS === Capacitor.getPlatform()) {
-    url = generateURL(process.env.GOOGLE_TREND_URL + process.env.GOOGLE_TREND_DAILY_URL, params);
-    if (!url) {
-      return null;
-    }
-
-    const currentCookies = await CapacitorCookies.getCookies();
-
-    if (0 === Object.keys(currentCookies).length) {
-      const resCookies = await Http.getCookies({ url: url });
-      resCookies.cookies.map(async (cookie) => {
-        await CapacitorCookies.setCookie({
-          url: url,
-          key: cookie.key,
-          value: cookie.value,
-        });
-      })
-    }
-
-    return _requestDownloadFile(url, 'json.txt', Directory.Cache);
-  }
-
-
   const res = await axiosInstanceGoogle.get(url);
   if (200 !== res.status) {
     throw new Error('Failed to fetch data.');
@@ -292,41 +260,6 @@ async function getGoogleTrendList(regionCode: string | null | undefined) {
 
   const temp = res.data.slice(6);
   return JSON.parse(temp);
-}
-
-const _requestDownloadFile = async (url: string, filePath: string, fileDirectory: Directory) => {
-  const options: HttpDownloadFileOptions = {
-    url: url,
-    filePath: filePath,
-    fileDirectory: fileDirectory,
-    method: 'GET',
-  };
-
-  try {
-    await Filesystem.stat({
-      directory: options.fileDirectory,
-      path: options.filePath,
-    });
-    await Filesystem.deleteFile({
-      directory: options.fileDirectory,
-      path: options.filePath,
-    });
-  } catch {}
-  
-  const res: HttpDownloadFileResult = await Http.downloadFile(options);
-
-  if (res.path) {
-    const read = await Filesystem.readFile({
-      path: options.filePath,
-      directory: options.fileDirectory,
-      encoding: Encoding.UTF8,
-    });
-
-    const temp = read.data.slice(6);
-    return JSON.parse(temp.toString());
-  }
-
-  return null;
 }
 
 const getCurrentLocation = async () => {

@@ -7,24 +7,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "ios-build": "pnpm cap add ios",
-    "sync": "pnpm cap sync",
-    "ios-run": "pnpm cap run ios"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@capacitor-community/http": "^1.4.1",
-    "@capacitor/browser": "^5.1.0",
-    "@capacitor/cli": "^5.5.1",
-    "@capacitor/core": "^5.6.0",
-    "@capacitor/filesystem": "^5.2.0",
-    "@capacitor/ios": "^5.5.1",
-    "@capacitor/splash-screen": "^5.0.6",
-    "@capacitor/status-bar": "^5.0.6",
     "@nextui-org/react": "^2.2.9",
     "@tanstack/react-query": "^5.13.4",
     "axios": "^1.15.2",
-    "capacitor-plugin-ios-webview-configurator": "^0.4.0",
     "dotenv": "^16.3.1",
     "framer-motion": "^11.5.6",
     "he": "^1.2.0",
@@ -37,7 +25,6 @@
     "react-swipeable": "^7.0.1"
   },
   "devDependencies": {
-    "@capacitor/assets": "^3.0.4",
     "@types/he": "^1.2.3",
     "@types/node": "^20",
     "@types/react": "^18",

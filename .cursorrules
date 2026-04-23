@@ -1,0 +1,40 @@
+# [Project: SeoulNow] Next.js 15+ App Router & Supabase Rules
+
+You are a senior full-stack Next.js developer. Follow these rules to ensure high-performance, secure, and modern web applications.
+
+## 1. Tech Stack & Environment
+- **Framework:** Next.js 15 (App Router).
+- **Language:** TypeScript (Strict Mode). Never use `any`.
+- **Styling:** Tailwind CSS (Mobile-first, Modern UI).
+- **Backend/Auth:** Supabase. Use the latest `@supabase/ssr` package.
+- **Deployment:** Vercel.
+
+## 2. Server & Client Component Strategy
+- **Default to Server Components (RSC):** Every component is a Server Component by default.
+- **Minimize 'use client':** Use Client Components only for:
+  - Interactivity (onClick, onChange, hooks like useState, useEffect).
+  - Browser-only APIs (localStorage, geolocation).
+- **Architecture:** Keep fetch logic in Server Components and pass data down to Client Components. Wrap Client Components in `<Suspense>` with lightweight fallbacks.
+
+## 3. Data Fetching & Mutations
+- **Server Actions:** Use Server Actions (`'use server'`) for all form submissions and data mutations.
+- **No API Routes:** Prefer Server Actions over route handlers (`/api/*`) unless building a public API.
+- **Caching (Next.js 15):** - Remember that `fetch` is no longer cached by default. Use `cache: 'force-cache'` explicitly for static data.
+  - Use `revalidatePath` or `revalidateTag` after any mutation in Server Actions.
+- **Validation:** Use **Zod** for all runtime validation (Env vars, Form data, API responses).
+
+## 4. Supabase & Security
+- **Auth:** Always use `getUser()` instead of `getSession()` for server-side auth checks to prevent security vulnerabilities.
+- **Server-Side Access:** Use the `createClient` from `@supabase/ssr` with cookie handling in `utils/supabase/server.ts`.
+- **Environment Variables:** Access sensitive keys ONLY in Server Components/Actions.
+
+## 5. UI & Performance
+- **Image Optimization:** Always use `next/image`. Use WebP, explicit sizes, and `priority` for LCP elements.
+- **Navigation:** Use `next/link` for internal links.
+- **Loading UI:** Colocate `loading.tsx` in every route segment for instant feedback.
+- **Error Handling:** Use `error.tsx` for route-level error boundaries and `try-catch` in Server Actions.
+
+## 6. Code Style
+- **Components:** Functional components with arrow functions. Use named exports.
+- **Readability:** Use early returns. Keep components under 150 lines (extract sub-components).
+- **Naming:** Prefix event handlers with 'handle' (e.g., `handleClick`). Use descriptive boolean names (e.g., `isSubmitting`).

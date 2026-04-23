@@ -4,7 +4,6 @@ import React, { useEffect, useRef } from 'react';
 import Header from './header';
 import Body from './body';
 import Footer from './footer';
-import { Capacitor } from '@capacitor/core';
 
 const ScoollHevavior: Record<string, ScrollBehavior> = {
   smooth: 'smooth',
@@ -20,13 +19,7 @@ export default function TemplateHome({
   const navTopRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    if ('ios' === Capacitor.getPlatform()) {
-      if (window) {
-        window.addEventListener('statusTap', function () {
-          scrollToTop(ScoollHevavior.smooth);
-        }); 
-      }
-    }
+    // Capacitor의 statusTap 이벤트는 웹에서는 존재하지 않음
   }, [])
    
   const scrollToTop = (behavior: ScrollBehavior) => {
@@ -36,10 +29,7 @@ export default function TemplateHome({
     navTopRef.current.scrollIntoView({ behavior: behavior, block: 'start', inline: 'nearest' });
   }
 
-  let divClass = 'h-screen mx-auto flex flex-col justify-between';
-  if ('web' === Capacitor.getPlatform()) {
-    divClass +=' max-w-2xl';
-  }
+  const divClass = 'h-screen mx-auto flex flex-col justify-between max-w-2xl';
 
   return (
     <>

@@ -6,7 +6,6 @@ import { Card, CardHeader, CardBody, Link } from '@nextui-org/react';
 import ComponentImage from '@/components/(trend)/image';
 import ComponentRelatedSearch from '@/components/(trend)/relatedSearch';
 import ComponentRelatedNews from '@/components/(trend)/relatedNews';
-import { Browser } from '@capacitor/browser';
 import DecodedText from '../template/decodedText';
 
 export default function ComponentItemCard({ item }: { item: iTrendItem }) {
@@ -38,9 +37,8 @@ export default function ComponentItemCard({ item }: { item: iTrendItem }) {
               <Link
                 showAnchorIcon
                 onPress={() => {
-                  Browser.open({
-                    url: process.env.GOOGLE_TREND_URL + item.title.exploreLink,
-                  });
+                  const url = (process.env.GOOGLE_TREND_URL || '') + item.title.exploreLink;
+                  window.open(url, '_blank', 'noopener,noreferrer');
                 }}
                 isBlock
               >

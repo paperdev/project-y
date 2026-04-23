@@ -4,7 +4,6 @@ import React from 'react';
 import { Link, Card, CardHeader } from '@nextui-org/react';
 import { iArticle } from '@/shared/interface/trendItem';
 import ComponentImage from '@/components/(trend)/image';
-import { Browser } from '@capacitor/browser';
 import DecodedText from '../template/decodedText';
 
 export default function ComponentRelatedNews({
@@ -26,9 +25,7 @@ export default function ComponentRelatedNews({
             <Link
               key={index}
               onPress={() => {
-                Browser.open({
-                  url: article.url
-                })
+                window.open(article.url, '_blank', 'noopener,noreferrer');
               }}
               className='min-w-full'
             >
