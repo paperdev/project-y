@@ -38,8 +38,8 @@ export default function ComponentVideoCategory() {
     }
   }, [data, regionCode]);
 
-  const onSelectionChange = (key: React.Key) => {
-    if (!key) {
+  const onSelectionChange = (key: React.Key | null) => {
+    if (key == null) {
       return;
     }
 

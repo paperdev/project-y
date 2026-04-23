@@ -52,8 +52,8 @@ export function RegionSelecter() {
     }
   }, [data]);
   
-  const onSelectionChange = (key: Key) => {
-    if (!key) {
+  const onSelectionChange = (key: Key | null) => {
+    if (key == null) {
       return;
     }
 

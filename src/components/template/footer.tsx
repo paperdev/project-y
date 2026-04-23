@@ -31,8 +31,9 @@ const bottomMenu = [
 export default function Footer({ className }: { className?: string }) {
   const router = useRouter();
 
-  const onSelectionChange = (key: React.Key) => {
-    router.replace(key.toString(), {scroll: false});
+  const onSelectionChange = (key: React.Key | null) => {
+    if (key == null) return;
+    router.replace(key.toString(), { scroll: false });
   };
 
   return (
